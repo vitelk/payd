@@ -1,0 +1,4 @@
+packages:
+  - "offchain"
+  - "front"
+  - "sdk"

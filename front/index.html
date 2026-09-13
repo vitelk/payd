@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#14130f" />
+    <meta name="description" content="Trading fees become real stock, paid to holders every 30 minutes. No staking, no sign-up — just hold the token." />
+
+    <!-- Social preview. Absolute URLs on purpose: crawlers do not resolve
+         relative paths, and the page is also served from IPFS gateways where
+         the base path changes. Both files ship in the build, so the card keeps
+         working from ipfs:// too — only the crawler needs the ENS gateway. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Payd Protocol" />
+    <meta property="og:title" content="Payd Protocol — $PAYD" />
+    <meta property="og:description" content="Trading fees become real stock, paid to holders every 30 minutes. No staking, no sign-up — just hold the token." />
+    <meta property="og:url" content="https://paydprotocol.eth.limo/app/" />
+    <meta property="og:image" content="https://paydprotocol.eth.limo/app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Payd Protocol — app</title>
+    <!-- The full mark, same file as the header. No reduced cut. Inline, so the page
+         still issues zero third-party requests. Strokes are thickened and the ink
+         follows the browser theme so the frame never vanishes into a dark tab. -->
+    <link rel="icon" media="(prefers-color-scheme: light)" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%27537%20167%20983%201514%27%20fill%3D%27none%27%20role%3D%27img%27%20aria-label%3D%27Payd%20Protocol%27%3E%3Cpath%20fill%3D%27%23191712%27%20d%3D%27M%20694.76%201078.07%20C%20709.247%201084.45%20718.723%201091.15%20735.455%201097.11%20C%20775.705%201111.43%20815.303%201119.35%20857.592%201125.32%20C%201000.02%201145.43%201157.05%201141.82%201296.37%201103.1%20C%201319.48%201096.68%201334.06%201087.26%201354.52%201078.25%20L%201355.51%201077.82%20C%201362.01%201088.33%201371.98%201110.06%201377.89%201121.91%20L%201414.97%201195.26%20L%201452.63%201270.37%20C%201465.87%201296.3%201480.55%201320.6%201488.38%201348.87%20C%201519.69%201462.03%201466.7%201575.17%201370.93%201638.01%20C%201347.45%201652.3%201322.16%201663.38%201295.73%201670.97%20C%201278.38%201675.65%201260.61%201678.58%201242.67%201679.72%20C%201217.27%201681.27%201183.73%201680.38%201157.74%201680.51%20L%20974.461%201680.4%20L%20867.319%201680.32%20C%20841.647%201680.33%20812.103%201681.21%20787.025%201677.79%20C%20755.558%201673.5%20717.324%201659.96%20689.587%201644.18%20C%20627.342%201608.71%20581.59%201550.13%20562.255%201481.15%20C%20536.508%201385.81%20565.436%201332.18%20607.26%201251.23%20L%20643.011%201180.55%20C%20658.477%201150.06%20677.954%201107.44%20694.76%201078.07%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23191712%27%20d%3D%27M%201175.63%20945.34%20C%201218.98%20945.997%201284.62%20958.193%201325.48%20974.061%20C%201337.83%20979.261%201356.94%20989.72%201361.49%201002.93%20C%201371.06%201030.71%201330.46%201046.82%201310.74%201054.16%20C%201259.96%201071.91%201208.85%201075.14%201156.37%201082.65%20C%201158.99%201078.64%201161.41%201074.5%201163.62%201070.25%20C%201183.91%201031.82%201188.23%20986.935%201175.63%20945.34%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23191712%27%20d%3D%27M%20820.647%20950.458%20L%20823.082%20950.205%20C%20826.891%20951.948%20823.457%20961.111%20822.775%20964.953%20C%20821.413%20973.07%20820.688%20981.282%20820.607%20989.512%20C%20820.321%201022.49%20828.977%201048.37%20844.73%201076.63%20C%20816.46%201074.58%20767.106%201062.62%20739.594%201054.49%20C%20720.412%201047.49%20667.685%201021.82%20693.562%20994.701%20C%20719.931%20967.063%20783.012%20954.678%20820.647%20950.458%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23191712%27%20d%3D%27M%20998.105%20857.468%20C%201003.56%20857.366%201009.57%20857.748%201015.01%20858.282%20C%201050.79%20861.487%201083.77%20878.982%201106.49%20906.811%20C%201129.34%20934.247%201140.01%20969.823%201136.01%201005.3%20C%201132.81%201036.35%201115.48%201071.04%201091.13%201090.65%20C%201064.89%201092.83%201029.3%201093.36%201003.25%201092.47%20C%20981.568%201091.77%20929.106%201089.76%20907.99%201086.04%20C%20906.503%201084.94%20905.062%201083.78%20903.671%201082.57%20C%20881.207%201062.75%20866.727%201028.25%20865.514%20998.701%20C%20862.218%20918.437%20920.095%20861.863%20998.105%20857.468%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23191712%27%20d%3D%27M%201079.02%20520.56%20C%201158.52%20516.176%201226.57%20576.973%201231.13%20656.462%20C%201235.69%20735.951%201175.04%20804.131%201095.56%20808.869%20C%201015.83%20813.621%20947.393%20752.743%20942.818%20673.003%20C%20938.244%20593.263%20999.274%20524.956%201079.02%20520.56%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23191712%27%20d%3D%27M%201143.94%20175.161%20C%201224.07%20167.173%201295.55%20225.561%201303.71%20305.677%20C%201311.88%20385.793%201253.65%20457.397%201173.55%20465.736%20C%201093.2%20474.101%201021.33%20415.65%201013.14%20335.285%20C%201004.95%20254.92%201063.56%20183.174%201143.94%20175.161%20z%27%2F%3E%3C%2Fsvg%3E" />
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%27537%20167%20983%201514%27%20fill%3D%27none%27%20role%3D%27img%27%20aria-label%3D%27Payd%20Protocol%27%3E%3Cpath%20fill%3D%27%23eeebe3%27%20d%3D%27M%20694.76%201078.07%20C%20709.247%201084.45%20718.723%201091.15%20735.455%201097.11%20C%20775.705%201111.43%20815.303%201119.35%20857.592%201125.32%20C%201000.02%201145.43%201157.05%201141.82%201296.37%201103.1%20C%201319.48%201096.68%201334.06%201087.26%201354.52%201078.25%20L%201355.51%201077.82%20C%201362.01%201088.33%201371.98%201110.06%201377.89%201121.91%20L%201414.97%201195.26%20L%201452.63%201270.37%20C%201465.87%201296.3%201480.55%201320.6%201488.38%201348.87%20C%201519.69%201462.03%201466.7%201575.17%201370.93%201638.01%20C%201347.45%201652.3%201322.16%201663.38%201295.73%201670.97%20C%201278.38%201675.65%201260.61%201678.58%201242.67%201679.72%20C%201217.27%201681.27%201183.73%201680.38%201157.74%201680.51%20L%20974.461%201680.4%20L%20867.319%201680.32%20C%20841.647%201680.33%20812.103%201681.21%20787.025%201677.79%20C%20755.558%201673.5%20717.324%201659.96%20689.587%201644.18%20C%20627.342%201608.71%20581.59%201550.13%20562.255%201481.15%20C%20536.508%201385.81%20565.436%201332.18%20607.26%201251.23%20L%20643.011%201180.55%20C%20658.477%201150.06%20677.954%201107.44%20694.76%201078.07%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23eeebe3%27%20d%3D%27M%201175.63%20945.34%20C%201218.98%20945.997%201284.62%20958.193%201325.48%20974.061%20C%201337.83%20979.261%201356.94%20989.72%201361.49%201002.93%20C%201371.06%201030.71%201330.46%201046.82%201310.74%201054.16%20C%201259.96%201071.91%201208.85%201075.14%201156.37%201082.65%20C%201158.99%201078.64%201161.41%201074.5%201163.62%201070.25%20C%201183.91%201031.82%201188.23%20986.935%201175.63%20945.34%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23eeebe3%27%20d%3D%27M%20820.647%20950.458%20L%20823.082%20950.205%20C%20826.891%20951.948%20823.457%20961.111%20822.775%20964.953%20C%20821.413%20973.07%20820.688%20981.282%20820.607%20989.512%20C%20820.321%201022.49%20828.977%201048.37%20844.73%201076.63%20C%20816.46%201074.58%20767.106%201062.62%20739.594%201054.49%20C%20720.412%201047.49%20667.685%201021.82%20693.562%20994.701%20C%20719.931%20967.063%20783.012%20954.678%20820.647%20950.458%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23ccff00%27%20d%3D%27M%20998.105%20857.468%20C%201003.56%20857.366%201009.57%20857.748%201015.01%20858.282%20C%201050.79%20861.487%201083.77%20878.982%201106.49%20906.811%20C%201129.34%20934.247%201140.01%20969.823%201136.01%201005.3%20C%201132.81%201036.35%201115.48%201071.04%201091.13%201090.65%20C%201064.89%201092.83%201029.3%201093.36%201003.25%201092.47%20C%20981.568%201091.77%20929.106%201089.76%20907.99%201086.04%20C%20906.503%201084.94%20905.062%201083.78%20903.671%201082.57%20C%20881.207%201062.75%20866.727%201028.25%20865.514%20998.701%20C%20862.218%20918.437%20920.095%20861.863%20998.105%20857.468%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23ccff00%27%20d%3D%27M%201079.02%20520.56%20C%201158.52%20516.176%201226.57%20576.973%201231.13%20656.462%20C%201235.69%20735.951%201175.04%20804.131%201095.56%20808.869%20C%201015.83%20813.621%20947.393%20752.743%20942.818%20673.003%20C%20938.244%20593.263%20999.274%20524.956%201079.02%20520.56%20z%27%2F%3E%20%20%3Cpath%20fill%3D%27%23ccff00%27%20d%3D%27M%201143.94%20175.161%20C%201224.07%20167.173%201295.55%20225.561%201303.71%20305.677%20C%201311.88%20385.793%201253.65%20457.397%201173.55%20465.736%20C%201093.2%20474.101%201021.33%20415.65%201013.14%20335.285%20C%201004.95%20254.92%201063.56%20183.174%201143.94%20175.161%20z%27%2F%3E%3C%2Fsvg%3E" />
+    <style>
+      /*
+        Same system as the shop window at paydprotocol.eth: same tokens, same radii,
+        same lime eyebrows, same button. Two sites under two names still have to
+        look like one product — a visitor who clicks "open the app" should not
+        feel they landed somewhere else.
+
+        No remote font. The page is served from IPFS and must issue NO request
+        to a third party: a <link> to Google Fonts would betray every visitor
+        and add a network dependency to a page that has none. The design rests
+        on system stacks, and buys its character from scale and rhythm.
+
+        #ccff00 only works on a dark ground — 1.1:1 on cream against 15.8:1
+        here — so there is one theme and it is dark.
+      */
+      :root {
+        color-scheme: dark;
+        --bg: #14130f; --surface: #191813; --raised: #201e18;
+        --fg: #eeebe3; --mut: #97917f; --dim: #6b675c;
+        --line: #2c2a24; --hair: #211f1a;
+        --ok: #ccff00; --warn: #d2a24a; --bad: #e2857a; --accent: #ccff00;
+        /* the circled ticker in the mark — a positive accent, deliberately not --bad */
+        --pen: #d9614f;
+      }
+
+      /* --- ONE LAUNCH, taken from `Payd Payd.dc.html`, styles included.
+             A first version had been built from the file STRIPPED of its
+             `style` attributes -- but this design has no stylesheet, its whole
+             layout lives in them. --- */
+      .lhead { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem;
+        flex-wrap: wrap; padding: 2.25rem 0 1.5rem; border-bottom: 1px solid var(--hair); }
+      .lhead .ttl { display: flex; align-items: baseline; gap: .75rem; margin-top: .5rem; }
+      .lhead h1 { font: 600 clamp(1.75rem,4vw,2.5rem)/1.1 var(--sans); letter-spacing: -.025em; margin: 0; }
+      .lhead .sub { color: var(--mut); margin: .5rem 0 0; font-size: .875rem; max-width: 34rem; }
+      .lhead .addrs { font: .75rem/1.7 var(--mono); color: var(--dim); text-align: right; }
+      .lhead .addrs a { color: var(--dim); text-decoration: none; display: block; }
+      .lhead .addrs a:hover { color: var(--ok); }
+      a.back { border: 0; background: transparent; padding: 0; color: var(--mut);
+        font: .75rem var(--mono); cursor: pointer; text-decoration: none; }
+      a.back:hover { color: var(--ok); }
+      #hook-pill { font: .6875rem var(--mono); padding: .2rem .55rem; border-radius: 6px;
+        border: 1px solid var(--line); color: var(--mut); }
+      #hook-pill.ok { border-color: rgba(204,255,0,.45); color: var(--ok); }
+      #hook-pill.warn { border-color: var(--warn); color: var(--warn); }
+      #hook-pill.bad { border-color: var(--bad); color: var(--bad); }
+
+      .gauges { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,20rem),1fr));
+        gap: .75rem; margin-top: 1.5rem; }
+      .gauge { border: 1px solid var(--line); border-radius: 14px; background: var(--surface);
+        overflow: hidden; display: flex; flex-direction: column; }
+      .gauge .body { flex: 1; padding: 1.375rem 1.5rem 1.25rem; }
+      .gauge .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+      .gauge .eyebrow { font: 500 .6875rem var(--mono); letter-spacing: .16em; text-transform: uppercase;
+        color: var(--ok); }
+      .gauge .top .r { font: .75rem var(--mono); color: var(--dim); }
+      .gauge .row { display: flex; align-items: flex-end; gap: 2rem; flex-wrap: wrap; margin-top: 1.125rem; }
+      .gauge .row .cell { display: flex; flex-direction: column; gap: .2rem; }
+      .gauge .row .k { font: 500 .6875rem var(--mono); letter-spacing: .1em; text-transform: uppercase;
+        color: var(--dim); }
+      .gauge .row .v { font: 500 2rem/1 var(--mono); font-variant-numeric: tabular-nums;
+        letter-spacing: -.02em; }
+      .gauge .row .v.big { font: 600 2rem/1 var(--sans); color: var(--ok); }
+      .gauge .row .v.sm { font: 500 1.25rem var(--mono); }
+      .gauge .row .sep { width: 1px; align-self: stretch; background: var(--hair); }
+      .gauge .bar { height: 2px; background: var(--hair); }
+      .gauge .bar i { display: block; height: 100%; background: var(--ok); }
+
+      .rule2 { display: flex; align-items: center; gap: .75rem; margin: 2.5rem 0 1rem; }
+      .rule2 h2 { font: 500 .6875rem/1 var(--mono); letter-spacing: .16em; text-transform: uppercase;
+        color: var(--ok); margin: 0; }
+      .rule2 .fill { flex: 1; height: 1px; background: var(--hair); }
+      .rule2 .hint { font: .75rem var(--mono); color: var(--dim); }
+      .panel2 { border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+        padding: 1.25rem 1.375rem 1.375rem; }
+      #fee-split { display: flex; height: 40px; border-radius: 8px; overflow: hidden;
+        border: 1px solid var(--line); }
+      #fee-split i { display: flex; align-items: center; justify-content: center; color: var(--bg);
+        font: 500 .75rem var(--mono); font-style: normal; overflow: hidden; white-space: nowrap; }
+      #fee-legend { border-collapse: collapse; width: 100%; font-size: .8125rem; margin-top: .875rem; }
+      #fee-legend td { padding: .2rem 0; color: var(--mut); }
+      #fee-legend td:last-child { text-align: right; font-family: var(--mono);
+        font-variant-numeric: tabular-nums; color: var(--fg); }
+      #fee-legend tr.total td { border-top: 1px solid var(--hair); padding-top: .45rem;
+        font: 500 .6875rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+      #fee-legend .n { color: var(--dim); font-size: .78125rem; display: block; }
+
+      /* "Your position", the basket, and the connect prompt. */
+      .pos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,13rem),1fr));
+        gap: .75rem; }
+      .pos .card2 { border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+        padding: 1.125rem 1.25rem; }
+      .pos .card2 .k { font: 500 .6875rem var(--mono); letter-spacing: .1em; text-transform: uppercase;
+        color: var(--dim); }
+      .pos .card2 .v { font: 500 1.625rem var(--mono); font-variant-numeric: tabular-nums;
+        letter-spacing: -.02em; margin-top: .35rem; }
+      .pos .card2 .v.hl { color: var(--ok); }
+      .pos .card2 .n { font-size: .78125rem; color: var(--mut); margin-top: .35rem; text-wrap: pretty; }
+      .noconn { border: 1px dashed var(--line); border-radius: 12px; background: var(--surface);
+        padding: 2.25rem 1.5rem; display: flex; flex-direction: column; align-items: center;
+        gap: .75rem; text-align: center; }
+      .noconn p { margin: 0; font-size: .9375rem; color: var(--mut); max-width: 34rem; text-wrap: pretty; }
+      .noconn button { font: 500 .875rem var(--sans); padding: .5625rem 1.125rem;
+        border: 1px solid var(--ok); border-radius: 8px; background: var(--ok); color: var(--bg);
+        cursor: pointer; }
+      #rotation { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,13rem),1fr));
+        gap: .5rem; }
+      .mini2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(6.5rem,1fr)); gap: .75rem; }
+      /* The shares table, at the design's paddings. */
+      #claims th, #claims td, .claimt th, .claimt td { padding: .7rem .75rem; }
+      .claimt th:first-child, .claimt td:first-child { padding: .7rem .75rem .7rem 0; }
+      .claimt th:last-child, .claimt td:last-child { padding: .7rem 0 .7rem .75rem; }
+      .claimside { padding: .75rem 1.25rem; }
+      .claimside .big2 { font: 500 1.625rem var(--mono); font-variant-numeric: tabular-nums; }
+      .barmini { height: 4px; border-radius: 1px; background: var(--hair); }
+      .barmini i { display: block; height: 100%; background: var(--ok); border-radius: 1px; }
+      #rotation .cell2 { border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+        padding: .8rem .75rem; }
+      #rotation .cell2 .top { display: flex; justify-content: space-between; align-items: baseline; }
+      #rotation .cell2 .s { font: 500 .8125rem var(--sans); }
+      #rotation .cell2 .w { font: 500 .7rem var(--mono); color: var(--dim); }
+      #rotation .cell2 .bw { margin-top: 1rem; }
+      .lhead .sub, .rule2 .hint { max-width: 22rem; }
+      #epochs td, #epochs th { font: .75rem/1.45 var(--mono); }
+      .claimside .lab { font-size: 1rem; }
+      /* The two gauges side by side: they read together -- "how much time is
+         left" and "where is the curve" answer the same question. Stacked, the
+         second fell below the fold. */
+      .dot-sq { display: inline-block; width: .55rem; height: .55rem; border-radius: 2px;
+        margin-right: .45rem; }
+      :root {
+        --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        --mono: ui-monospace, SFMono-Regular, Menlo, "Cascadia Mono", monospace;
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0; padding: 0 clamp(1.25rem, 4vw, 3rem) 4rem; background: var(--bg); color: var(--fg);
+        font: 400 14px/1.55 var(--sans); -webkit-font-smoothing: antialiased;
+        background-image:
+          radial-gradient(60rem 32rem at 12% -6%, rgba(204,255,0,.055), transparent 62%),
+          radial-gradient(46rem 28rem at 96% 3%, rgba(204,255,0,.028), transparent 60%);
+        background-repeat: no-repeat;
+      }
+      main { max-width: 74rem; margin: 0 auto; }
+      a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(204,255,0,.28); }
+      a:hover { color: var(--fg); border-bottom-color: var(--fg); }
+      .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+      .ok { color: var(--ok); } .warn { color: var(--warn); } .bad { color: var(--bad); }
+      .muted { color: var(--mut); }
+
+      /* header — the shop window's lockup, kept sticky so the tabs follow */
+      .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem;
+             padding: 1.25rem 0 1.125rem; flex-wrap: wrap; }
+      .brand { display: flex; flex-direction: column; gap: .35rem; max-width: 40rem; }
+      .lockup { display: flex; align-items: center; gap: .5625rem; }
+      .mark { flex-shrink: 0; color: var(--fg); width: 22px; height: 34px; }
+      h1 { font-size: 1.125rem; font-weight: 600; letter-spacing: -.015em; margin: 0; }
+      h1 span { font: .75rem var(--mono); font-weight: 400; color: var(--mut); }
+      h1 i { font: 500 .58em/1 var(--mono); font-style: normal; text-transform: uppercase; margin-left: .3em;
+             letter-spacing: .385em; color: var(--accent); }
+      .sub { color: var(--mut); font-size: .8125rem; margin: 0; text-wrap: pretty; }
+      .links { display: flex; gap: .875rem; flex-wrap: wrap; font-family: var(--mono); font-size: .75rem; margin-top: .15rem; }
+      /* addresses, not calls to action: muted until hovered */
+      .links a { color: var(--mut); border-bottom-color: var(--hair); }
+      .links a:hover { color: var(--accent); border-bottom-color: rgba(204,255,0,.4); }
+      .actions { display: flex; align-items: center; gap: .625rem; flex-wrap: wrap; }
+      .chip { display: flex; align-items: center; gap: .45rem; padding: .45rem .75rem; border: 1px solid var(--line);
+              border-radius: 8px; background: var(--surface); font: .75rem var(--mono); color: var(--mut); }
+      .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
+      .dot.off { background: var(--bad); }
+
+      button { font: 500 .875rem var(--sans); letter-spacing: -.01em; padding: .5625rem 1rem;
+               border: 1px solid var(--line); border-radius: 8px; background: transparent;
+               color: var(--fg); cursor: pointer; }
+      button:hover:not(:disabled) { background: var(--surface); border-color: var(--mut); }
+      button:disabled { opacity: .4; cursor: default; }
+      button.primary { background: var(--accent); color: #14130f; border-color: var(--accent); }
+      button.primary:hover:not(:disabled) { background: #dbff3d; border-color: #dbff3d; }
+
+      /* tabs */
+      nav { display: flex; gap: .25rem; margin: 0; border-bottom: 1px solid var(--hair);
+            position: sticky; top: 0; z-index: 10; background: rgba(20,19,15,.86); backdrop-filter: blur(12px); }
+      nav button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; padding: .75rem .75rem;
+                   color: var(--mut); font-size: .875rem; background: transparent; }
+      nav button:hover { color: var(--fg); background: transparent; }
+      nav button[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent); font-weight: 500; }
+
+      /* section rhythm — same eyebrow as the shop window */
+      .rule { display: flex; align-items: center; gap: .75rem; margin: clamp(2.25rem, 4vw, 3.25rem) 0 .875rem; }
+      .rule h2 { font: 500 .6875rem/1 var(--mono); letter-spacing: .16em; text-transform: uppercase;
+                 color: var(--accent); margin: 0; }
+      .rule .fill { flex: 1; height: 1px; background: var(--hair); }
+      .rule .hint { font: .75rem var(--mono); color: var(--dim); }
+
+      .card { border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+              padding: 1rem 1.125rem 1.125rem; }
+      .k { font: 500 .6875rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+      .v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 1.25rem;
+           letter-spacing: -.015em; margin-top: .25rem; }
+      .note { font-size: .78125rem; color: var(--mut); text-wrap: pretty; }
+      .grid { display: grid; gap: .625rem; }
+      .g5 { grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+      .g4 { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+      .g10 { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .5rem; }
+      @media (max-width: 52rem) { .g10 { grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr)); } }
+
+      /* current epoch */
+      .epoch { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); overflow: hidden; }
+      .epoch .row { display: flex; align-items: center; gap: 2.5rem; padding: 1.5rem 1.625rem 1.375rem; flex-wrap: wrap; }
+      .epoch .big { font-family: var(--mono); font-size: 2rem; font-weight: 500; letter-spacing: -.03em;
+                    font-variant-numeric: tabular-nums; }
+      .epoch .big.sym { font-family: var(--sans); font-weight: 600; color: var(--accent); letter-spacing: -.02em; }
+      .epoch .sep { width: 1px; align-self: stretch; background: var(--hair); }
+      .epoch .right { margin-left: auto; text-align: right; display: flex; flex-direction: column; gap: .2rem; }
+      .bar { height: 3px; background: var(--hair); }
+      .bar > i { display: block; height: 100%; background: var(--accent); }
+      .stack { display: flex; flex-direction: column; gap: .15rem; }
+
+      /* rotation chips — the shop window's ticker chips */
+      .rot { display: flex; flex-direction: column; align-items: center; gap: .1rem; padding: .625rem .25rem;
+             border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+      .rot.now { border-color: var(--accent); background: rgba(204,255,0,.07); }
+      .rot b { font-size: .875rem; font-weight: 600; letter-spacing: -.01em; }
+      .rot.now b { color: var(--accent); }
+      .rot span { font-family: var(--mono); font-size: .6875rem; color: var(--dim); }
+
+      /* root */
+      .two { display: grid; grid-template-columns: 1.55fr 1fr; gap: .625rem; }
+      @media (max-width: 60rem) { .two { grid-template-columns: 1fr; } }
+      .meter { flex: 1; height: 6px; border-radius: 3px; background: var(--raised); border: 1px solid var(--hair); overflow: hidden; }
+      .meter > i { display: block; height: 100%; background: var(--warn); }
+      .tags { display: flex; gap: .5rem; flex-wrap: wrap; font: .75rem var(--mono); color: var(--mut); }
+      .tags span { padding: .2rem .5rem; border: 1px solid var(--line); border-radius: 6px; }
+      .digest { font-family: var(--mono); font-size: .75rem; word-break: break-all; }
+      .steps { display: flex; flex-direction: column; }
+      .step { display: flex; gap: .75rem; }
+      .step .gut { display: flex; flex-direction: column; align-items: center; align-self: stretch; }
+      .step .pip { width: 9px; height: 9px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+      .step .line { width: 1px; flex: 1; background: var(--hair); margin: 3px 0; }
+      .step .txt { display: flex; flex-direction: column; gap: .05rem; padding-bottom: .875rem; }
+      .step .txt b { font-size: .8125rem; font-weight: 500; }
+
+      /* tables */
+      table { width: 100%; border-collapse: collapse; font-size: .8125rem; }
+      th { text-align: left; font: 500 .6875rem var(--mono); letter-spacing: .1em; text-transform: uppercase;
+           color: var(--dim); padding: .625rem .75rem; border-bottom: 1px solid var(--line); }
+      td { padding: .625rem .75rem; border-bottom: 1px solid var(--hair); font-variant-numeric: tabular-nums; }
+      th:first-child, td:first-child { padding-left: 0; }
+      th:last-child, td:last-child { padding-right: 0; text-align: right; }
+      td.num, th.num { text-align: right; }
+      .pill { font: .6875rem var(--mono); padding: .15rem .5rem; border-radius: 6px; border: 1px solid var(--line);
+              color: var(--mut); }
+      .pill.ok { border-color: rgba(204,255,0,.45); color: var(--ok); }
+      .pill.warn { border-color: var(--warn); color: var(--warn); }
+      /* Was missing: without it "fees lost" showed in the base `.pill`'s
+         neutral grey -- the one state that has to raise an alarm was the one
+         without a colour. */
+      .pill.bad { border-color: var(--bad); color: var(--bad); }
+
+      /* claim panel */
+    th.pick, td.pick { width: 1.75rem; padding-right: 0; }
+    td.pick input, th.pick input { cursor: pointer; margin: 0; }
+    tr.off td:not(.pick) { opacity: .45; }
+    #claim-cost { text-align: right; max-width: 24rem; line-height: 1.45; }
+    #claim-cost.warn { color: var(--warn); }
+      .panel { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); overflow: hidden; }
+      .panel table { font-size: .8125rem; }
+      .panel th, .panel td { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .panel th:first-child, .panel td:first-child { padding-left: 1.25rem; }
+      .panel th:last-child, .panel td:last-child { padding-right: 1.25rem; }
+      .summary { display: flex; align-items: center; gap: 1.25rem; padding: 1.125rem 1.25rem; background: var(--raised); flex-wrap: wrap; }
+      .summary .grow { flex: 1; }
+      .aside { margin-top: .625rem; padding-left: .8125rem; border-left: 2px solid var(--line);
+               color: var(--mut); font-size: .78125rem; text-wrap: pretty; }
+      .aside strong { color: var(--fg); font-weight: 500; }
+      #log { white-space: pre-wrap; color: var(--mut); font: .78125rem var(--mono); margin-top: .625rem; }
+
+      /* value flow */
+      .flow { display: flex; height: 36px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+      .flow > i { display: flex; align-items: center; justify-content: center; min-width: 0; color: #14130f;
+                  font: 500 .75rem var(--mono); font-style: normal; }
+      .legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .875rem; margin-top: .875rem; }
+      .legend > div { display: flex; gap: .5625rem; align-items: flex-start; }
+      .legend .sq { width: 9px; height: 9px; border-radius: 2px; margin-top: 5px; flex-shrink: 0; }
+
+      /* docs */
+      .docs { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: clamp(2rem, 4vw, 3.25rem); align-items: start; }
+      @media (max-width: 60rem) { .docs { grid-template-columns: 1fr; gap: 1.5rem; } .toc { display: none; } }
+      .toc { position: sticky; top: 4rem; display: flex; flex-direction: column; gap: .5rem; font-size: .8125rem; }
+      .toc a { border: 0; color: var(--mut); }
+      .toc a:hover { color: var(--accent); }
+      .doc { max-width: 44rem; font-size: .9375rem; line-height: 1.66; }
+      .doc h3 { font: 500 .6875rem var(--mono); letter-spacing: .16em; text-transform: uppercase;
+                color: var(--accent); margin: 2.5rem 0 .875rem; }
+      .doc h3:first-child { margin-top: 0; }
+      .doc p { margin: 0 0 .875rem; text-wrap: pretty; color: var(--mut); }
+      .doc p strong, .doc p em { color: var(--fg); }
+      .doc pre { padding: .9375rem 1.0625rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+                 font-family: var(--mono); font-size: .78125rem; line-height: 1.7; overflow-x: auto; margin: 0 0 .875rem; }
+      .doc code { font-family: var(--mono); font-size: .85em; color: var(--fg); }
+      .callout { padding: .9375rem 1.0625rem; border: 1px solid var(--line); border-left: 2px solid var(--warn);
+                 border-radius: 10px; background: var(--surface); color: var(--mut); font-size: .875rem; text-wrap: pretty; }
+      .risk { padding-left: .8125rem; border-left: 2px solid var(--pen); margin-bottom: .875rem; }
+      .risk b { font-weight: 500; color: var(--fg); }
+
+      footer { display: flex; justify-content: space-between; gap: 1.5rem; margin-top: 3rem; padding-top: 1.25rem;
+               border-top: 1px solid var(--hair); font: .75rem/1.7 var(--mono); color: var(--dim); flex-wrap: wrap; }
+      footer a { color: var(--mut); border: 0; }
+      footer a:hover { color: var(--accent); }
+      [hidden] { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="top">
+        <div class="brand">
+          <!-- The mark sits BESIDE the h1, never inside it: main.ts rewrites the
+               heading's innerHTML once the token symbol comes back from chain. -->
+          <div class="lockup">
+            <svg class="mark" viewBox="537 167 983 1514" width="34" height="52" fill="none" aria-hidden="true">
+              <path fill="currentColor" d="M 694.76 1078.07 C 709.247 1084.45 718.723 1091.15 735.455 1097.11 C 775.705 1111.43 815.303 1119.35 857.592 1125.32 C 1000.02 1145.43 1157.05 1141.82 1296.37 1103.1 C 1319.48 1096.68 1334.06 1087.26 1354.52 1078.25 L 1355.51 1077.82 C 1362.01 1088.33 1371.98 1110.06 1377.89 1121.91 L 1414.97 1195.26 L 1452.63 1270.37 C 1465.87 1296.3 1480.55 1320.6 1488.38 1348.87 C 1519.69 1462.03 1466.7 1575.17 1370.93 1638.01 C 1347.45 1652.3 1322.16 1663.38 1295.73 1670.97 C 1278.38 1675.65 1260.61 1678.58 1242.67 1679.72 C 1217.27 1681.27 1183.73 1680.38 1157.74 1680.51 L 974.461 1680.4 L 867.319 1680.32 C 841.647 1680.33 812.103 1681.21 787.025 1677.79 C 755.558 1673.5 717.324 1659.96 689.587 1644.18 C 627.342 1608.71 581.59 1550.13 562.255 1481.15 C 536.508 1385.81 565.436 1332.18 607.26 1251.23 L 643.011 1180.55 C 658.477 1150.06 677.954 1107.44 694.76 1078.07 z"/>
+              <path fill="currentColor" d="M 1175.63 945.34 C 1218.98 945.997 1284.62 958.193 1325.48 974.061 C 1337.83 979.261 1356.94 989.72 1361.49 1002.93 C 1371.06 1030.71 1330.46 1046.82 1310.74 1054.16 C 1259.96 1071.91 1208.85 1075.14 1156.37 1082.65 C 1158.99 1078.64 1161.41 1074.5 1163.62 1070.25 C 1183.91 1031.82 1188.23 986.935 1175.63 945.34 z"/>
+              <path fill="currentColor" d="M 820.647 950.458 L 823.082 950.205 C 826.891 951.948 823.457 961.111 822.775 964.953 C 821.413 973.07 820.688 981.282 820.607 989.512 C 820.321 1022.49 828.977 1048.37 844.73 1076.63 C 816.46 1074.58 767.106 1062.62 739.594 1054.49 C 720.412 1047.49 667.685 1021.82 693.562 994.701 C 719.931 967.063 783.012 954.678 820.647 950.458 z"/>
+              <path fill="var(--accent)" d="M 998.105 857.468 C 1003.56 857.366 1009.57 857.748 1015.01 858.282 C 1050.79 861.487 1083.77 878.982 1106.49 906.811 C 1129.34 934.247 1140.01 969.823 1136.01 1005.3 C 1132.81 1036.35 1115.48 1071.04 1091.13 1090.65 C 1064.89 1092.83 1029.3 1093.36 1003.25 1092.47 C 981.568 1091.77 929.106 1089.76 907.99 1086.04 C 906.503 1084.94 905.062 1083.78 903.671 1082.57 C 881.207 1062.75 866.727 1028.25 865.514 998.701 C 862.218 918.437 920.095 861.863 998.105 857.468 z"/>
+              <path fill="var(--accent)" d="M 1079.02 520.56 C 1158.52 516.176 1226.57 576.973 1231.13 656.462 C 1235.69 735.951 1175.04 804.131 1095.56 808.869 C 1015.83 813.621 947.393 752.743 942.818 673.003 C 938.244 593.263 999.274 524.956 1079.02 520.56 z"/>
+              <path fill="var(--accent)" d="M 1143.94 175.161 C 1224.07 167.173 1295.55 225.561 1303.71 305.677 C 1311.88 385.793 1253.65 457.397 1173.55 465.736 C 1093.2 474.101 1021.33 415.65 1013.14 335.285 C 1004.95 254.92 1063.56 183.174 1143.94 175.161 z"/>
+            </svg>
+            <h1 id="title">Payd <i>Protocol</i> <span>$PAYD</span></h1>
+          </div>
+          <p class="sub" id="subtitle">Trading fees become real stock, paid to holders every 30 minutes.</p>
+        </div>
+        <div class="actions">
+          <div class="chip"><span class="dot" id="net-dot"></span><span>Robinhood Chain</span></div>
+          <button id="connect">Connect</button>
+          <span class="mono" id="account"></span>
+        </div>
+      </div>
+
+      <nav role="tablist">
+        <button role="tab" data-view="app" aria-selected="true">App</button>
+        <button role="tab" data-view="stats" aria-selected="false">Protocol stats</button>
+        <button role="tab" data-view="docs" aria-selected="false">Docs</button>
+      </nav>
+
+      <!-- ------------------------------------------------------------ app -->
+      <section id="view-app">
+        <!-- THE LAUNCH's header: back link, ticker, state, one-line summary,
+             and the addresses on the right. The back link did not exist -- you
+             landed on a launch page with no path to the others. `from` and not
+             `registry`: the latter switches main.ts into index MODE and would
+             replace the page instead of putting a link on it. -->
+        <div class="lhead">
+          <div>
+            <a class="back" id="back-index" hidden>&larr; all launches</a>
+            <div class="ttl">
+              <h1 id="launch-title">—</h1>
+              <span id="hook-pill" hidden></span>
+            </div>
+            <p class="sub" id="launch-sub"></p>
+          </div>
+          <div class="addrs" id="addresses"></div>
+        </div>
+
+        <div class="gauges">
+          <div class="gauge">
+            <div class="body">
+              <div class="top"><span class="eyebrow">Current epoch</span>
+                <span class="r" id="epoch-n"></span></div>
+              <div class="row" id="epoch"></div>
+            </div>
+            <div class="bar"><i id="epoch-bar" style="width:0"></i></div>
+          </div>
+
+          <div class="gauge">
+            <div class="body">
+              <div class="top"><span class="eyebrow">Graduation</span>
+                <span class="r" id="grad-n"></span></div>
+              <div class="row" id="graduation"></div>
+            </div>
+            <div class="bar"><i id="graduation-bar" style="width:0"></i></div>
+          </div>
+        </div>
+
+        <div class="rule">
+          <h2>Where this launch's fees go</h2><span class="fill"></span>
+          <span class="hint">fixed at creation, never raisable</span>
+        </div>
+        <div class="card">
+          <div class="split" id="fee-split"></div>
+          <table class="legend" id="fee-legend"></table>
+        </div>
+
+        <div class="rule">
+          <h2>The basket</h2><span class="fill"></span>
+          <span class="hint" id="rotation-hint"></span>
+        </div>
+        <div id="rotation"></div>
+
+        <div class="rule">
+          <h2>Vault</h2><span class="fill"></span>
+          <span class="hint">anyone can call every step</span>
+        </div>
+        <div class="grid g5" id="vault"></div>
+
+        <div class="rule">
+          <h2>Next payout</h2><span class="fill"></span>
+          <span class="hint">one purchase buys the whole basket — your share follows</span>
+        </div>
+        <div class="panel claimside" id="next-payout"></div>
+
+        <div class="rule">
+          <h2>Are you in?</h2><span class="fill"></span>
+          <span class="hint">the bar falls on its own as fees come in</span>
+        </div>
+        <div class="panel claimside" id="eligibility"></div>
+
+        <div class="rule">
+          <h2>Your stocks</h2><span class="fill"></span>
+          <span class="hint mono" id="claim-account"></span>
+        </div>
+        <div class="panel">
+          <table class="claimt">
+            <thead>
+              <tr>
+                <th class="pick"><input type="checkbox" id="claim-all" checked></th>
+                <th>Stock</th>
+                <th class="num">In your wallet</th>
+                <th class="num">Waiting for you</th>
+                <th class="num">Earned in total</th>
+              </tr>
+            </thead>
+            <tbody id="claims"></tbody>
+          </table>
+          <div class="summary">
+            <div class="stack"><span class="k">Selected</span><span class="v" id="claim-count">—</span></div>
+            <div class="stack"><span class="k">Covered through</span><span class="v" id="claim-epochs">—</span></div>
+            <div class="grow"></div>
+            <span class="hint" id="claim-cost"></span>
+            <button id="claim" class="primary" disabled>Collect now</button>
+          </div>
+        </div>
+        <div class="rule" style="margin-top:2rem">
+          <h2>How it works</h2><span class="fill"></span>
+          <span class="hint">everything below is verifiable on-chain by anyone</span>
+        </div>
+        <!-- `grid`, not `flow`: `.flow` is the 36 px value-flow bar further down, and
+             reusing its name here clipped every card to that height. -->
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(210px,1fr))">
+          <div class="card">
+            <div class="k">1 — Fees arrive</div>
+            <!-- These figures were HARD-CODED (5 %, 4 %, 4.70 %). They hold
+                 for ONE launch setting only: the creator tax is chosen by the
+                 creator at Pons, and the split of the curve fee belongs to Pons.
+                 A page that engraves 4.70 % is true of one token and false of
+                 every other. They now come from `economics()`. -->
+            <p class="note" id="doc-fees">Every trade on the token pays the curve fee plus the tax the
+            creator set at launch. Part of it reaches the vault — the tax in full, plus the share of
+            the curve fee Pons does not keep. Anyone can trigger the collection.</p>
+          </div>
+          <div class="card">
+            <div class="k">2 — The whole basket is bought</div>
+            <p class="note">A purchase covers <strong>every epoch since the last one</strong> and buys
+            <strong>all the stocks at once</strong>, each by its weight. The price floor comes from a
+            30-minute on-chain TWAP, tightened by Chainlink when the feed is fresh — and a leg that
+            cannot be bought is skipped rather than reverting the rest.</p>
+          </div>
+          <div class="card">
+            <div class="k">3 — Shares are computed</div>
+            <p class="note">Your share is <strong>pro-rata to what you hold</strong>, weighted by
+            <strong>how long you hold it</strong> across the whole epoch — the area under your
+            balance, not a photograph. Nobody picks an instant, because no instant is picked.</p>
+          </div>
+          <div class="card">
+            <div class="k">4 — Stocks reach you</div>
+            <p class="note">Shares <strong>accumulate</strong>. Once yours are worth about
+            <strong>$20</strong>, they are sent to your wallet automatically, at most every 24 h.
+            Below that they keep adding up — or you collect them whenever you want.</p>
+          </div>
+        </div>
+
+        <div class="two" style="margin-top:1rem">
+          <div class="card">
+            <div class="k" style="margin-bottom:.75rem">Why $20 and not every epoch</div>
+            <p class="note" style="margin:0">A transfer costs gas whatever it carries. Delivering a
+            $0.20 share would burn half of it. Waiting until it is worth about $20 means
+            <strong>you keep 99 % of it</strong> instead of 90 %. Nothing is withheld — only batched.
+            If gas ever gets so expensive that $20 would leave you less than 95 %, the threshold rises
+            instead of your share shrinking.</p>
+          </div>
+          <div class="card">
+            <div class="k" style="margin-bottom:.75rem">What you have to trust</div>
+            <p class="note" style="margin:0">One address publishes the shares, and it takes effect
+            immediately — that is what makes payouts instant. It <strong>cannot invent money</strong>:
+            the contract never pays out more than it received, and never pays the same share twice.
+            Its exposure is shown above as <em>at risk right now</em>. Anyone can recompute a published
+            root from chain data alone and prove a discrepancy.</p>
+          </div>
+        </div>
+
+        <details style="margin-top:1.5rem">
+          <summary style="cursor:pointer;font-size:.8125rem;color:var(--mut)">Settlement details</summary>
+          <div class="two" style="margin-top:1rem">
+            <div class="card" id="root"></div>
+            <div class="card">
+              <div class="k" style="margin-bottom:.875rem">Root lifecycle</div>
+              <div class="steps" id="root-steps"></div>
+            </div>
+          </div>
+        </details>
+
+        <p class="aside">
+          Amounts are <strong>cumulative</strong>: one claim settles the whole history, one transfer
+          per stock, no matter how much time has passed. Replaying an old proof pays nothing.
+          Epoch data is fetched from a gateway and then <strong>checked against the digest published
+          on-chain</strong> — a gateway serving anything else is rejected.
+        </p>
+        <div id="log"></div>
+
+        <div class="rule"><h2>Recent epochs</h2><span class="fill"></span></div>
+        <table>
+          <thead>
+            <tr>
+              <th>Epoch</th><th>Stock</th>
+              <th class="num">ETH spent</th><th class="num">Stock funded</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="epochs"></tbody>
+        </table>
+      </section>
+
+      <!-- ---------------------------------------------------------- stats -->
+      <section id="view-stats" hidden>
+        <div class="rule"><h2>Headline</h2><span class="fill"></span><span class="hint" id="stats-source"></span></div>
+        <div class="grid g5" id="stats-hero"></div>
+
+        <div class="rule">
+          <h2>Where the money goes</h2><span class="fill"></span>
+          <span class="hint">immutable constants, no setter</span>
+        </div>
+        <div class="card">
+          <p class="note" style="margin:0 0 .75rem">
+            Split of everything the vault collects. These are fractions of what
+            <em>arrives</em>, not points of volume: if the effective fee rate moves, the three
+            lines shrink proportionally and none is privileged.
+          </p>
+          <div class="flow" id="flow"></div>
+          <div class="legend" id="flow-legend"></div>
+        </div>
+
+        <div class="rule">
+          <h2>The basket, stock by stock</h2><span class="fill"></span>
+          <span class="hint">weights changeable by timelock only</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Stock</th><th class="num">Weight</th><th class="num">Pool</th>
+              <th>Price floor</th>
+              <th class="num">Bought</th><th class="num">Distributed</th>
+              <th class="num">Claimed</th><th>Next buy</th>
+            </tr>
+          </thead>
+          <tbody id="stats-stocks"></tbody>
+        </table>
+
+        <div class="two" style="margin-top:2.125rem">
+          <div>
+            <div class="rule" style="margin-top:0"><h2>The active root</h2><span class="fill"></span></div>
+            <div class="card"><div class="grid g4" id="stats-root"></div></div>
+          </div>
+          <div>
+            <div class="rule" style="margin-top:0"><h2>Eligibility</h2><span class="fill"></span></div>
+            <div class="card">
+              <div class="grid g4" id="stats-elig"></div>
+              <p class="note" style="margin:.875rem 0 0; padding-top:.875rem; border-top:1px solid var(--hair)">
+                The threshold is expressed as the <strong>value of the share</strong>, not as a
+                percentage of supply, and its denominator is the ETH collected since genesis. It
+                falls on its own as fees come in, and never rises again. The rule is a pure
+                function in <code>offchain/src/eligibility.ts</code> — anyone replays it.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rule">
+          <h2>Parameters</h2><span class="fill"></span>
+          <span class="hint">read from the deployed contracts, not hardcoded here</span>
+        </div>
+        <div class="grid g4" id="stats-params"></div>
+      </section>
+
+      <!-- ----------------------------------------------------------- docs -->
+      <section id="view-docs" hidden>
+        <div class="docs" style="margin-top:2.125rem">
+          <div class="toc">
+            <a href="#d1">The cycle</a>
+            <a href="#d2">Who is owed what</a>
+            <a href="#d3">Receiving your shares</a>
+            <a href="#d4">Verify for yourself</a>
+            <a href="#d5">What this page verifies</a>
+            <a href="#d6">The keys</a>
+            <a href="#d7">Risks</a>
+          </div>
+
+          <div class="doc">
+            <h3 id="d1">1 — The cycle</h3>
+            <p>
+              An epoch lasts <strong id="doc-epoch-len">30 minutes</strong>. A purchase covers
+              <strong>every epoch that has closed since the last one</strong> — a window — and buys
+              <strong>the whole basket at once</strong>, each line by its weight.
+              So a holder receives a slice of the basket, not whatever a wheel happened to land on.
+            </p>
+            <p>
+              Every step below is callable by <strong>anyone</strong> — except
+              <code>publishRoot</code>, see §4 — and refunds its own gas at the real cost, priced at
+              <code>block.basefee</code>, which the caller does not choose.
+            </p>
+            <pre>harvest()                     collect the creator fees, split platform / rewards / creator
+buyBasket(minOuts[])          buy the WHOLE basket for every epoch since the last purchase,
+                              each leg above the 30-min TWAP floor
+publishRoot(...)              publish the cumulative root + data CID (keeper only)
+claim() / distribute(...)     settle, one transfer per distinct stock
+collect(...)                  the same, across several launches in one transaction</pre>
+            <div class="callout">
+              A failed leg blocks nothing: that leg is <strong>skipped</strong>, its share of the
+              money waits in the vault for the next purchase, and the other legs go through. A
+              failed transfer never burns a right — nothing is marked as paid until a transfer has
+              actually succeeded, so the share stays claimable.
+            </div>
+
+            <h3 id="d2">2 — Who is owed what</h3>
+            <p>
+              An epoch's snapshot is the <strong>time-weighted average of balances over the whole
+              epoch</strong> — the integral of your balance divided by the epoch's length, not a
+              sample. Hold for the full period and you weigh what you hold; hold for a second and
+              you weigh a second. The period is two immutables and a subtraction, so nobody picks
+              any part of it, and there is no seed to commit and no draw to trust.
+            </p>
+            <p>
+              A threshold drops shares that are not worth their place in the tree. It is expressed
+              as the value of the share, never as a percentage of supply — a fixed percentage is
+              too permissive at launch and too restrictive later:
+            </p>
+            <pre>eligible if  balance / candidateSupply * quoteCumulative &gt;= MIN_SHARE_WEI</pre>
+            <p>
+              The denominator is the ETH collected <strong>since genesis</strong>, not the epoch's.
+              The threshold therefore does not depend on how time is sliced, and changing the epoch
+              length never silently redefines who is owed what.
+            </p>
+            <p class="note">
+              Excluded from the snapshot: the Uniswap pool, the bonding curve, the vault, the
+              distributor, the zero address, and a timelock-managed list of addresses. An exclusion
+              takes effect at the <em>next</em> epoch and is dated in the log, so two honest
+              verifiers never disagree about which set applied. A share once earned is earned for
+              good.
+            </p>
+
+            <h3 id="d3">3 — Receiving your shares</h3>
+            <p>
+              <strong>Airdrop.</strong> Pushed without asking, as soon as the share is worth at
+              least ten times its delivery cost. The pusher is refunded only against the push root,
+              so pushing dust is never profitable — and never drains the reserve.
+            </p>
+            <p>
+              <strong>Claim.</strong> No threshold, no condition, from the moment a root is
+              published. The threshold decides who gets delivered for free, never who is owed.
+            </p>
+            <p>
+              Either way, amounts are cumulative: each new root replaces the last and carries the
+              whole history. One claim settles everything, with one transfer per distinct stock —
+              never one per epoch. A holder away for a month is served in as many transfers as the
+              basket has lines — five today — and that number never grows.
+            </p>
+
+            <h3 id="d4">4 — Verify for yourself</h3>
+            <p>
+              Roots are published by a <strong>single address, the keeper</strong>, and take effect
+              immediately — that is what makes payouts fast. There is no bond and no challenge
+              window: the guarantee is not that someone would object in time, it is that the
+              contract caps what a wrong root can do. It can never pay out more than was funded,
+              never pay the same share twice, and never take back what was already delivered. The
+              exact exposure at any instant is public: <code>quoteAtRisk()</code>.
+            </p>
+            <p>
+              Before every publication the keeper runs five checks — conservation, monotonicity,
+              population, provenance, and a full recomputation from a second independent node — and
+              refuses to publish if any of them fails. Anyone can redo that recomputation:
+            </p>
+            <pre>DISTRIBUTOR=0x… FEE_VAULT=0x… pnpm --filter offchain dispute &lt;rootId&gt;</pre>
+            <p>
+              It runs <strong>read-only, with no key at all</strong>, against the public RPC — the
+              snapshot replays <code>Transfer</code> events instead of querying historical state, so
+              no archive node is needed. A divergence is a reproducible proof anyone else can
+              reproduce in turn.
+            </p>
+
+            <h3 id="d5">5 — What this page verifies</h3>
+            <p>
+              <span class="pill ok">yes</span> <strong>The integrity of the published data.</strong>
+              The contract publishes the sha256 of the canonical JSON. This page fetches the file
+              through a gateway, recomputes the hash and compares. A hostile gateway can only make
+              the page unusable — never falsify an amount or an address.
+            </p>
+            <p>
+              <span class="pill">no</span> <strong>The computation itself.</strong> Replaying the
+              transfer history in a browser would be slow and brittle. That is what
+              <code>dispute.ts</code> is for — and that distinction is what to know, rather than
+              believing the page “verifies everything”.
+            </p>
+
+            <h3 id="d6">6 — The keys</h3>
+            <p>
+              One single authority: a timelock whose proposals come from a Safe multisig and whose
+              execution is open to anyone once the delay has passed — so nobody can hold a decision
+              already made hostage.
+            </p>
+            <p>
+              <span class="pill warn">can</span> reweight the basket or replace a stock · set the
+              payout rate per purchase, within bounds · size the gas reserve, within bounds · change
+              the snapshot exclusion list · rotate the keeper key.
+            </p>
+            <p>
+              <span class="pill ok">cannot</span> withdraw funds or change where they go — no
+              privileged withdrawal exists, the only <code>withdraw()</code> refunds a caller
+              their own failed payment · freeze distribution — the payout floor prevents it by
+              construction.
+            </p>
+
+            <h3 id="d7">7 — Risks, unvarnished</h3>
+            <div class="risk">
+              <b>A stock can be paused, or our address blocklisted.</b>
+              <p class="note" style="margin:0">
+                Robinhood stock tokens are conditionally transferable. If the distributor is blocked
+                on one stock, that stock can no longer leave — irreducible at the token level. The
+                other lines keep going, and the right stays written in the root.
+              </p>
+            </div>
+            <div class="risk">
+              <b>The eligibility threshold drops the smallest shares.</b>
+              <p class="note" style="margin:0">
+                Below the threshold a holder is not in that epoch's tree, and their weight is
+                redistributed to the others. There is no retroactive catch-up: the loss is bounded
+                by the threshold itself, by construction.
+              </p>
+            </div>
+            <div class="risk">
+              <b>Changing where the fees are sent takes six days.</b>
+              <p class="note" style="margin:0">
+                Pons imposes three days of timelock, then a three-day execution window. Replacing
+                the vault is not an instant operation — which is exactly why it is the simplest
+                contract in the system.
+              </p>
+            </div>
+            <div class="risk">
+              <b>The minimum holding period is short.</b>
+              <p class="note" style="margin:0">
+                Time-weighting means a minute held is paid as a minute — it makes sniping
+                worthless, but long-term alignment is not what this design buys.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <span style="max-width:44rem; text-wrap:pretty">
+          This page verifies the integrity of the published data, not the computation. No backend,
+          no analytics, no third-party request — served as static files from IPFS.
+        </span>
+        <span class="links">
+          <!-- Keep in sync with front/src/config.ts. The ENS name is the real
+               address; .eth.limo is the gateway for browsers without ENS. -->
+          <a href="https://paydprotocol.eth.limo" rel="noopener">paydprotocol.eth</a>
+          <a href="https://x.com/PaydRH" rel="noopener">X</a>
+        </span>
+        <span class="mono" id="foot-block"></span>
+      </footer>
+    </main>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

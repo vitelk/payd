@@ -1,0 +1,35 @@
+{
+  "name": "offchain",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "snapshot": "tsx --env-file-if-exists=../.env src/snapshot.ts",
+    "merkle": "tsx --env-file-if-exists=../.env src/merkle.ts",
+    "check": "tsx --env-file-if-exists=../.env src/check.ts",
+    "value": "tsx --env-file-if-exists=../.env src/value.ts",
+    "card": "tsx --env-file-if-exists=../.env src/card.ts",
+    "keeper": "tsx --env-file-if-exists=../.env src/keeper.ts",
+    "dispute": "tsx --env-file-if-exists=../.env src/dispute.ts",
+    "telegram": "tsx --env-file-if-exists=../.env src/telegram.ts",
+    "discord": "tsx --env-file-if-exists=../.env src/discord.ts",
+    "typecheck": "tsc --noEmit",
+    "selfcheck": "tsx --env-file-if-exists=../.env src/selfcheck.ts",
+    "rehearsal": "tsx --env-file-if-exists=../.env src/rehearsal.ts",
+    "devgateway": "tsx --env-file-if-exists=../.env src/devgateway.ts",
+    "publish:site": "tsx --env-file-if-exists=../.env src/publish-site.ts",
+    "test": "tsx src/exclusions.test.ts && tsx src/eligibility.test.ts && tsx src/determinism.test.ts && tsx src/preflight.test.ts && tsx src/epoch.test.ts && tsx src/logs.test.ts && tsx src/checkpoint.test.ts && tsx src/value.test.ts && tsx src/telegram.test.ts && tsx src/discord.test.ts && tsx src/abis.test.ts && tsx src/pushfloor.test.ts && tsx src/buy.test.ts && tsx src/dispute.test.ts && tsx src/cosign.test.ts && tsx src/cosign.multivault.test.ts && tsx src/watch.test.ts && tsx src/publish.test.ts && tsx src/cursor.audit2.test.ts && tsx src/custody.test.ts && tsx src/dashboard.test.ts",
+    "cosign": "tsx --env-file-if-exists=../.env src/cosign.ts",
+    "watch": "tsx --env-file-if-exists=../.env src/watch.ts",
+    "custody": "tsx --env-file-if-exists=../.env src/custody.ts",
+    "dashboard": "tsx --env-file-if-exists=../.env src/dashboard.ts"
+  },
+  "dependencies": {
+    "viem": "^2.21.0",
+    "@openzeppelin/merkle-tree": "^1.0.7"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "@types/node": "^22.7.0"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "payd",
+  "private": true,
+  "packageManager": "pnpm@10.15.0",
+  "scripts": {
+    "test:fork": "forge test --fork-url $RPC_URL_FALLBACK -vvv",
+    "build": "forge build"
+  }
+}

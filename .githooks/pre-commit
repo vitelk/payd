@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# OPSEC gate. Blocks the regressions that are cheap to prevent and expensive to
+# undo once pushed. Runs on STAGED files; `--all` scans every tracked file, which
+# is what CI should call.
+#
+#   git config core.hooksPath .githooks     # once, per clone
+#   .githooks/pre-commit --all              # in CI
+#
+# Escape hatch: `git commit --no-verify`. If you use it, write down why in
+# DECISIONS.md -- a bypass nobody recorded is the bypass that becomes the habit.
+#
+# DESIGN NOTE, and it is the whole reason this file is shaped as it is: a gate
+# that cries wolf is a gate that gets bypassed. An earlier version flagged every
+# 64-hex literal as a private key and hit 12 bytes32 constants, a Yul mask table
+# and an epoch artifact -- all of them legitimate. The secret check below only
+# looks at what an ACCIDENT looks like: a key file staged, or a key-shaped
+# assignment with a real value. It has no false positives on this tree.
+set -uo pipefail
+fail=0
+say() { echo "  x $*"; fail=1; }
+CAP=8   # never print more than this many hits per check
+
+if [ "${1:-}" = "--all" ]; then files=$(git ls-files); else
+  files=$(git diff --cached --name-only --diff-filter=ACM); fi
+[ -z "$files" ] && exit 0
+code=$(echo "$files" | grep -vE '^(lib|out|cache)/' || true)
+# Only prose surfaces get the vocabulary check: contract source is read by
+# engineers, the shop window is read by buyers, and that is the difference.
+prose=$(echo "$files" | grep -E '^(README|BRAND|SECURITY)\.md$|^site/|^soon/|^sdk/README\.md$|^docs/HOW_IT_WORKS\.md$|^front/src/.*\.ts$' || true)
+
+# **The denylist is NOT in this file, and that is the point.** A tracked hook
+# listing the names it blocks publishes them to everyone who reads the
+# repository -- it would be a file whose whole job is to leak the secret it
+# guards. The personal patterns live in `.githooks/identity.local`, gitignored,
+# one extended-regex per line, `#` for comments. Everything below works without
+# it; only the personal half goes quiet, and it says so.
+LOCAL=.githooks/identity.local
+if [ -f "$LOCAL" ]; then
+  DENY=$(grep -vE '^\s*(#|$)' "$LOCAL" | paste -sd'|' -)
+else
+  DENY=''
+fi
+
+echo "== identity of the commit"
+email=$(git config user.email); name=$(git config user.name)
+case "$email" in *@gmail.com|*@icloud.com|*@outlook.com|*@yahoo.*|*@proton.me|*@protonmail.*)
+  say "author email '$email' is a personal provider -- use the forge's noreply address";; esac
+if [ -n "$DENY" ]; then
+  printf '%s\n' "$email" "$name" | grep -qiE "$DENY" && say "the commit author matches the local denylist"
+else
+  echo "  ! $LOCAL is missing -- the personal denylist is NOT loaded"
+fi
+[ "$fail" -eq 0 ] && echo "  ok  $name <$email>"
+
+echo "== identity, paths and places in content"
+for pat in '/Users/[A-Za-z0-9._-]+|/home/[a-z][A-Za-z0-9._-]*|C:\\\\Users:absolute path' \
+           '\b(CET|CEST|EST|PST|heure de)\b:a local timezone -- state times in UTC'; do
+  re=${pat%:*}; label=${pat##*:}
+  hits=$(grep -rnIiE "$re" $code 2>/dev/null | grep -v '\.githooks/' | head -$CAP)
+  [ -n "$hits" ] && { say "$label:"; echo "$hits" | sed 's/^/      /'; }
+done
+if [ -n "$DENY" ]; then
+  hits=$(grep -rnIiE "$DENY" $code 2>/dev/null | grep -v '\.githooks/' | head -$CAP)
+  [ -n "$hits" ] && { say "content matches the local denylist:"; echo "$hits" | sed 's/^/      /'; }
+fi
+
+echo "== secrets"
+# 1. A key file staged at all.
+bad=$(echo "$files" | grep -E '(^|/)\.env($|\.)|\.pem$|\.p12$|(^|/)keystore|id_rsa|id_ed25519' | grep -v '\.env\.example$' | head -$CAP)
+[ -n "$bad" ] && { say "key material staged:"; echo "$bad" | sed 's/^/      /'; }
+# 2. A key-shaped assignment carrying a real value (placeholders and <...> pass).
+hits=$(grep -rnIE '(PRIVATE_KEY|SECRET_KEY|MNEMONIC|SEED_PHRASE|API_KEY|WEBHOOK_URL|BOT_TOKEN)[[:space:]]*[:=][[:space:]]*["'"'"']?[A-Za-z0-9/_+-]{16,}' $code 2>/dev/null \
+  | grep -viE '<[^>]*>|process\.env|vm\.env|envAddress|envUint|envString|example|placeholder|xxx|\.\.\.' | head -$CAP)
+[ -n "$hits" ] && { say "a secret appears to carry a real value:"; echo "$hits" | sed 's/^/      /'; }
+# 3. A 64-hex literal right after the word "key".
+hits=$(grep -rnIiE 'key[^=:]{0,20}[:=][[:space:]]*["'"'"']?0x[a-f0-9]{64}' $code 2>/dev/null | head -$CAP)
+[ -n "$hits" ] && { say "a 64-hex literal is assigned to something called a key:"; echo "$hits" | sed 's/^/      /'; }
+
+echo "== image metadata"
+imgs=$(echo "$files" | grep -iE '\.(png|jpe?g|tiff?|webp|heic|pdf)$' || true)
+if [ -n "$imgs" ]; then
+  if command -v exiftool >/dev/null 2>&1; then
+    for f in $imgs; do
+      [ -f "$f" ] || continue
+      m=$(exiftool -s -G -GPS:all -EXIF:Artist -EXIF:Software -XMP:Creator -EXIF:DateTimeOriginal "$f" 2>/dev/null | head -5)
+      [ -n "$m" ] && { say "$f carries metadata -- strip it with: exiftool -all= '$f'"; echo "$m" | sed 's/^/      /'; }
+    done
+  else
+    echo "  ! exiftool not installed -- image metadata unchecked (brew install exiftool)"
+  fi
+else echo "  ok  no images staged"; fi
+
+echo "== vocabulary (prose surfaces only)"
+# Tier 1: no legitimate use here. Tier 2: allowed when the sentence DENIES them.
+HARD='APY|APR|passive income|risk-free|guaranteed return|get rich|to the moon|dividends?|revenue share|same promise|we stopped'
+SOFT='promise|earns?|earned|earning|yields?|invest(ment|or)?s?'
+for f in $prose; do
+  [ -f "$f" ] || continue
+  h=$(grep -nIiE "\b($HARD)\b" "$f" 2>/dev/null | head -$CAP)
+  [ -n "$h" ] && { say "forbidden vocabulary in $f:"; echo "$h" | sed 's/^/      /'; }
+  grep -nIiE "\b($SOFT)\b" "$f" 2>/dev/null \
+    | grep -vE 'Promise[<(.]|: Promise|=> Promise' \
+    | grep -viE '\b(no|not|never|cannot|nothing|without|neither)\b[^.]*\b('"$SOFT"')\b' \
+    | head -$CAP | sed "s|^|  ! review: $f:|"
+done
+
+echo
+if [ "$fail" -ne 0 ]; then
+  echo "BLOCKED. Fix the lines marked x. Lines marked ! are advisory."
+  echo "Deliberate exception: git commit --no-verify, then record it in DECISIONS.md."
+  exit 1
+fi
+echo "OK. Lines marked ! are advisory -- read them before a release or a post."

@@ -1,0 +1,50 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>payd-vault — demo</title>
+<!-- Looking at the card, with and without a chain.
+
+     `pnpm --filter @payd/sdk exec vite`
+
+     With NO argument it runs against the app's fixture world
+     (`front/src/mock.ts`) through the `client` option: the same eight reads the
+     real card makes, answered in memory. That is what forwarding a client is
+     for — the card used to need a deployment to be looked at, and pointed at
+     the v1 vault it showed an error message and nothing else.
+
+     One fixture world, not two: the app's is already written, already covers a
+     launch in every state, and serves the epoch JSON through the real sha256
+     check, so `Check my share` and `Collect` work here too.
+
+       ?vault=0x…   a REAL vault on Robinhood Chain, over the public RPC
+       ?rpc=…       another endpoint, alongside ?vault -->
+<body style="background:#141416;font-family:system-ui;padding:3rem;display:flex;gap:2rem;flex-wrap:wrap">
+<div id="a" style="max-width:24rem;flex:1"></div>
+<div id="b" style="max-width:24rem;flex:1;--payd-accent:#0b5cff"></div>
+<script type="module">
+  import { mount } from "./src/index.ts";
+
+  /** VAULTS[0] of the fixture: launched and collecting, 3.29 % of volume to
+   *  holders, a five-line basket. `mock.ts` answers its Distributor reads at
+   *  the same address, exactly as it does for the app. */
+  const FIXTURE_VAULT = "0x017a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a";
+
+  const q = new URLSearchParams(location.search);
+  const vault = q.get("vault");
+  let opts;
+
+  if (vault) {
+    opts = { vault, rpc: q.get("rpc") ?? undefined };
+  } else {
+    // The fixture path is the DEFAULT because nothing is deployed yet. The day
+    // it is, `?vault=` is the check that matters and it goes over the real RPC.
+    const [{ install }, { pub }] = await Promise.all([
+      import("../front/src/mock.ts"),
+      import("../front/src/chain.ts"),
+    ]);
+    install();
+    opts = { vault: FIXTURE_VAULT, client: pub };
+  }
+
+  mount(document.getElementById("a"), { ...opts });
+  mount(document.getElementById("b"), { ...opts, theme: "light" });
+</script>

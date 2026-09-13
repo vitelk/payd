@@ -1,0 +1,94 @@
+[profile.default]
+src = "contracts"
+test = "test"
+script = "script"
+out = "out"
+libs = ["lib"]
+solc = "0.8.26"
+optimizer = true
+optimizer_runs = 200
+# **`via_ir` is not a taste setting: it is what makes `FeeVault` deployable.**
+# Measured 2026-09-09, in runtime bytes:
+#
+#     without via_ir   26 152   +1 576 above the EIP-170 cap (24 576)
+#     with via_ir      24 679     +103
+#     + dead code removed        23 357     -1 219, with margin
+#
+# Re-measured 2026-09-10, after the payout-mode stamp (ARCHITECTURE.md S46):
+#     23 699, i.e. 877 bytes of margin. The margin is what to re-read after a
+#     change to FeeVault -- `forge build --sizes` -- not the total.
+#
+# Re-measured 2026-09-11 (T-SIZE-01): 23 775 runtime, 801 bytes of margin. CI
+# now GATES on that number instead of printing it -- the FeeVault size gate in
+# .github/workflows/ci.yml fires at 24 000, i.e. 225 bytes above today.
+#
+# Re-measured 2026-09-11 again, after the audit fixes (docs/AUDIT_FIXES.md):
+# 23 911 runtime, 665 bytes of margin, 89 under the gate. T-ALLOC-01 spent
+# 155 of them on asking the factory whether a basket line's pool exists, and
+# T-RISK-01 a further 136 on carrying a skipped leg's quote with the pivot it
+# left behind. 89 bytes is not a budget: the next change to this contract has to
+# find its own trim first, and docs/AUDIT_FIXES.md 2.3 records where the last
+# one came from -- separating the accounting quote from the pricing one, which
+# was 96 bytes cheaper than blending them AND the correct behaviour.
+#
+# Re-measured 2026-09-12, after the co-signature and the second audit pass:
+# **23 985 runtime, 591 bytes of margin, 15 under the gate.** The co-signature
+# spent 74 of the 89 and neither this comment nor CLAUDE.md followed it, which
+# is why both now carry the date they were measured on. The fixes of
+# docs/AUDIT_FIXES_2.md changed Distributor (+109) and Payd (+184) and left this
+# contract alone on purpose: 15 bytes is not a budget.
+#
+# The chain is Arbitrum Nitro (ArbOS 116), where the cap applies to the
+# COMPRESSED size -- so 26 KB might have squeezed through. But of 89 addresses
+# read on this chain not one exceeds 24 576, and a deployment that fails is
+# discovered at the worst possible moment. Staying under the Ethereum limit is
+# free here.
+via_ir = true
+evm_version = "cancun"
+# `./docs` for the recon guards (T-RECON-01), `./contracts` for the vendored-
+# library guard (T-HYG-02): `test/VendoredLibraries.t.sol` hashes the four files
+# copied from Uniswap and fails if one of them is edited. READ only, both.
+fs_permissions = [{ access = "read", path = "./docs" }, { access = "read", path = "./contracts" }]
+
+[rpc_endpoints]
+robinhood = "${RPC_URL}"
+
+[fmt]
+line_length = 120
+
+# The fork suite's fuzz and invariant budget. There was no [fuzz] and no
+# [invariant] section here at all until 2026-09-11, so every plain `testFuzz`
+# ran at Foundry's default. The three fork campaigns keep their inline
+# `forge-config` overrides (test/Invariants.t.sol, test/DevPathInvariants.t.sol,
+# test/TreasuryInvariants.t.sol): 256x64 against a live RPC at 60 CU/s would
+# not finish. Raise those only once the on-disk cache is hitting, which is what
+# [profile.ci]'s pin below buys.
+[fuzz]
+runs = 2000
+
+[invariant]
+runs = 256
+depth = 64
+fail_on_revert = false
+
+[profile.deep.fuzz]
+runs = 10000
+
+[profile.deep.invariant]
+runs = 1024
+depth = 128
+
+# CI pins the fork. Before this, every run read `latest` — there was no
+# --fork-block-number, no fork_block_number here and no vm.createSelectFork in
+# test/ — which made `test_EveryListedQuoteCanLeaveTheTreasuryAsEth` report 7
+# unsweepable currencies in one run and 0 three minutes later. A real stranding
+# regression was indistinguishable from noise. Pinning also makes forge's
+# on-disk RPC cache hit, which is most of the 20.6 minutes.
+#
+# Block 60310000, 2026-09-11 (timestamp 1789135116, ~1 h behind head at the
+# time of pinning). Bump it deliberately, never as a side effect.
+#
+# The three live measurements are meant to float and do not run under this
+# profile — see .github/workflows/ci.yml, job `live-measurements`.
+[profile.ci]
+fork_block_number = 60310000

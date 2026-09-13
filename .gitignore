@@ -1,0 +1,126 @@
+# foundry
+out/
+cache/
+broadcast/
+
+# node
+node_modules/
+.next/
+dist/
+*.tsbuildinfo
+
+# secrets
+.env
+.env.*
+!.env.example
+
+# os
+.DS_Store
+foundry.lock
+
+# epoch artifacts produced by the keeper
+offchain/data/
+front/dist/
+test/_Debug.t.sol
+public/
+
+# Operational runbooks. Deliberately NOT in the public repository: they name the
+# Safe's signers, carry environment variables and describe key hygiene, which
+# published is a targeting package rather than documentation.
+# A GLOB, not a list of names. The list was the bug: it named nine files, and
+# `docs/LAUNCH_2026_09_12_human.md` and `docs/LAUNCH_2026_12_09.md` were written
+# afterwards, matched none of them, and were tracked for publication — one of
+# them citing `OPSEC.md` §5quater by section. A new runbook is written under a
+# new name every time; the rule has to match the class, not the filenames that
+# existed the day it was typed.
+docs/LAUNCH*
+docs/RELAUNCH.md
+docs/relaunch-runbook.html
+docs/PAYD_RUNBOOK.md
+docs/DEPLOY_HOSTS.md
+docs/REHEARSAL.md
+docs/WEB_READINESS.md
+
+# A runbook does not stop being one because it is executable. `fly-secrets.sh`
+# reads `.env` and stages both hosts' configuration: it names the two Fly apps,
+# the private address the keeper reaches the co-signer on, and which variable
+# holds which key. That is `docs/DEPLOY_HOSTS.md` in shell, and it is withheld
+# for the same reason. It is an operator's tool — nothing public depends on it,
+# and nothing about what the contracts do is verified by reading it.
+script/fly-secrets.sh
+
+# The internal audit and review record. Eight audit documents and three review
+# briefs, ~4 465 lines. They are NOT withheld because they are embarrassing —
+# they are the best engineering in the repository. They are withheld because
+# three of them are written in the present tense about doors that are still
+# open: `AUDIT_FIXES_3.md` §4 "What is deliberately still open", `AUDIT_FIXES_2.md`
+# §4 and its "Two findings in the same file that are NOT fixed", and
+# `AUDIT_EXECUTION_2.md` §1.4, which spells out a single-key publish path with
+# the contract line numbers next to it. Published on launch day that is a map,
+# not a credential. `REVIEW_3_SEALED.md` is withheld for a different reason that
+# is written at the top of the file itself: it is handed to a reviewer only
+# after their own list exists, and a public copy can never be sealed again.
+#
+# Nothing public depends on them. SECURITY.md states that no audit has been
+# done, which stays true, and `docs/README.md` already tells a reader that the
+# planning documents are deliberately absent. Re-open the question after the
+# residuals close, and if they are published then, publish them as a snapshot
+# with the open sections resolved rather than as these files.
+docs/AUDIT_PLAN.md
+docs/AUDIT_PLAN_2.md
+docs/AUDIT_EXECUTION.md
+docs/AUDIT_EXECUTION_2.md
+docs/AUDIT_FIXES.md
+docs/AUDIT_FIXES_2.md
+docs/AUDIT_FIXES_3.md
+docs/AUDIT_PAYD.md
+docs/REVIEW_3.md
+docs/REVIEW_3_AI.md
+docs/REVIEW_3_SEALED.md
+
+# Internal planning and strategy. Not secret, but not product documentation
+# either: PLAN.md carries deliberation and options that were never shipped, and a
+# published ROADMAP reads as a set of commitments made by an identifiable team —
+# which is the one thing a protocol's documentation should never do. BRAND.md is
+# the naming ledger. All three stay on the maintainers' disks.
+PLAN.md
+ROADMAP.md
+docs/ROADMAP.md
+BRAND.md
+ESTIMATIONS.md
+LAUNCH_2026-09-12.md
+
+# The assistant's working file. Its ENGINEERING rules live in the repository as
+# docs/CONVENTIONS.md; what stays here is the part addressed to a collaborator
+# rather than to the code.
+CLAUDE.md
+
+
+# v1 production artifacts. They carry real holder addresses and belong on a
+# disk, not in a public repository.
+offchain/final-artifact-*.json
+
+# The personal denylist the pre-commit hook reads. Never committed: a tracked
+# file listing the names it blocks would publish them.
+.githooks/identity.local
+
+# The three files that carry the wallets, the accepted third-party links, the
+# dated reasoning behind each structuring choice, and the list to run before
+# anything becomes public. None of them is a secret; all of them are a targeting
+# package if published together.
+OPSEC.md
+DECISIONS.md
+PREFLIGHT.md
+
+# Local tooling and scratch work. Nothing here is part of the product, and
+# nothing here needs to be read to verify what the contracts do.
+.private/
+
+# Editor and agent configuration. `squash-publish.sh` publishes `SRC^{tree}`
+# VERBATIM, so anything committed here would ship in the public repository —
+# tooling choices included. Nothing in it is part of the product.
+.claude/
+
+# Coverage output. The CI job publishes it as an artifact; it does not belong
+# in the tree.
+lcov.info

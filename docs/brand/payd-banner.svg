@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500" role="img" aria-label="Payd Protocol — the fee plugin for Pons launches; trading fees become real assets for holders">
+  <!--
+    Laid out for the X mobile app, not for the 1500x500 preview.
+
+    The app crops ~120 px off EACH side (a 3:1 image shown in a ~2.5:1 window,
+    scaled to fill) and then draws its own chrome on top: the status bar over
+    the first 160 px of height, a round back button around x 175-275, and the
+    search / more buttons around x 1090-1330 — both at y 225-325. The first
+    version put the wordmark at x=88 and the ENS name at x=1420, so the app cut
+    a letter off each end and dropped the back button on the slogan.
+
+    Hence three rules, and the empty left margin is one of them, not an accident:
+      - nothing outside x 160-1340, ever;
+      - nothing that matters inside the two button zones at y 225-325;
+      - the bottom band y > 330 stays clear of x < 380: measured on the real
+        web profile, the avatar is a 286 px circle centred at (213, 472), so it
+        swallows anything starting at x=312 down there — and its white ring
+        eats another 30 px on top. Measured twice against the real profile: the
+        bottom band starts at x=440, not a pixel less.
+
+    The fourth rule comes from the OTHER surface: the web profile draws this
+    same image in a ~600 px column, a 0.40 scale, so the two mono lines sized
+    for the phone (15 and 16 px) rendered at 6 px there. They are 22 and 20 px
+    now — the largest that still ends inside x=1340. See BRAND.md.
+  -->
+  <rect width="1500" height="500" fill="#faf8f4"/>
+
+  <!-- wordmark. y=200 and not higher: above it sits the phone's status bar. -->
+  <text x="440" y="200" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif"
+        font-size="64" font-weight="600" letter-spacing="-0.9" fill="#191712">Payd<tspan dx="16" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="21" font-weight="500" letter-spacing="8" fill="#4a6300">PROTOCOL</tspan><tspan
+        dx="22" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="26" font-weight="400"
+        letter-spacing="0" fill="#6d685c">$PAYD</tspan></text>
+
+  <text x="1340" y="200" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, monospace"
+        font-size="18" fill="#6d685c">paydprotocol.eth</text>
+
+  <!-- slogan -->
+  <text x="440" y="300" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif"
+        font-size="44" font-weight="600" letter-spacing="-0.5" fill="#191712">The fee plugin for Pons.</text>
+
+  <text x="442" y="346" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="22"
+        letter-spacing="1.2" fill="#6d685c">YOUR TRADING FEES BUY YOUR HOLDERS REAL ASSETS &#183; EVERY 30 MIN</text>
+
+  <!-- The basket, one line instead of two columns. Two columns needed the full
+       width and landed under the app's buttons; a strip fits between them. -->
+  <path d="M440 392 H1340" stroke="#efeade" stroke-width="1"/>
+  <text x="442" y="436" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="600"
+        letter-spacing="-0.4" fill="#191712">Trading fees in.<tspan dx="12" fill="#191712">Real assets out.</tspan></text>
+
+  <text x="442" y="474" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="20"
+        letter-spacing="0.6" fill="#6d685c">NVDA &#183; AAPL &#183; TSLA &#183; QQQ &#183; SPCX &#183; GLD &#183; USO &#183; GME &#183; 47 listed</text>
+
+</svg>

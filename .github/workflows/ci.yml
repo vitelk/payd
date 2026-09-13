@@ -1,0 +1,244 @@
+# CI — what must be true on every push.
+#
+# The fork tests hit the REAL Robinhood Chain RPC. That is deliberate and it is
+# the rule in docs/CONVENTIONS.md: a test that only passes thanks to a `vm.mockCall` on
+# Pons or Uniswap proves nothing. CI therefore depends on a node's availability,
+# and a network failure must read as such, not as a regression — which is why
+# the fork suite runs against the ARCHIVE endpoint and not the public one. See
+# the `forge test` step below.
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  # 05:17 UTC daily — the live-measurement and coverage jobs only.
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+env:
+  RPC_URL: https://rpc.mainnet.chain.robinhood.com
+  # The archive endpoint. Load-bearing for the fork suite — see the step.
+  RPC_URL_FALLBACK: ${{ secrets.RPC_URL_FALLBACK }}
+
+jobs:
+  contracts:
+    name: contracts (fork)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: recursive }
+      # PINNED at 1.7.1. Do not unpin: it was TRIED on 2026-09-10 (5e54157 and
+      # 12857f7, both reverted) and 1.8.1 breaks the suite in four unrelated
+      # ways. Keep this paragraph rather than rediscovering them.
+      #
+      # The original reason to pin IS gone. It pinned because 1.8.1 could not
+      # resolve `blockhash` 129 blocks past the fork point, which `revealSeed`
+      # needed — 27 failures, all SeedUnavailable. The seed, the anchor and the
+      # reveal left with the draw (ARCHITECTURE.md §S38), `grep -rn blockhash
+      # contracts/ test/` is empty, and the run below confirmed it: zero
+      # SeedUnavailable. That hypothesis was right and it was not enough.
+      #
+      # What 1.8.1 actually does, measured on 12857f7 — 146 passed, 8 failed,
+      # and 154 collected where 1.7.1 collects 197:
+      #
+      #   the gas refund computes 0    test_PushIsPermissionlessAndProfitable
+      #                                ("not profitable: 0 <= 20495204118000"),
+      #                                and two more refund assertions at 0 <= 0
+      #   the reentrancy guard         test_TheReentrancyGuardRefusesAReentrant-
+      #     stops firing              Call, and the FeeVault twin
+      #   clone addresses move         setUp() "unexpected vault address", which
+      #                                aborts test/FeeVault.t.sol after ONE test
+      #                                — that abort is the missing 43
+      #   pool depth reads differ      test_EveryQuoteRouteCarriesEnoughDepth
+      #
+      # `forge fmt --check` and `forge build` both PASS on 1.8.1, so the gate is
+      # not the compiler. FeeVault stays at 23,699 runtime bytes and 877 of
+      # margin on both, as expected with solc pinned at 0.8.26.
+      #
+      # Note that 1.8.1 also reformats: its formatter indents struct literals
+      # inside chained calls one level deeper. So unpinning is not a one-line
+      # change, it drags a reformat of 4 files and everyone's local toolchain
+      # with it. That was 12857f7, reverted with the rest.
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: "1.7.1"
+      - name: forge fmt --check
+        run: forge fmt --check
+      # T-SIZE-01. This step printed the sizes and gated NOTHING until
+      # 2026-09-11. FeeVault is the contract that decides: 23 775 runtime bytes
+      # measured that day, 801 below the 24 576 cap, and CLAUDE.md had recorded
+      # 23 493 for a tree that no longer produced it. The gate fires at 24 000,
+      # i.e. 225 bytes above today's reading — close enough to catch a drift,
+      # far enough not to fire on the current tree. Raising it is a decision,
+      # not a fix.
+      #
+      # The gate is NOT the one-liner AUDIT_PLAN.md §6.4 proposes
+      # (`awk '/FeeVault/ && $3+0 > 24000 ...'`). Against the real table that
+      # line can never fire, and a gate that cannot fire is worse than none:
+      # `--sizes` prints pipe-delimited columns, so on default field splitting
+      # $3 is the literal "|", and the size carries a thousands comma that
+      # `+0` would truncate to 23 anyway. It also matches `FeeVaultForkTest`.
+      # Hence -F'|', the trimmed name compared exactly, the comma stripped, and
+      # an END clause that fails if FeeVault is absent from the table at all —
+      # a silent no-match being the same failure mode.
+      - name: forge build --sizes (FeeVault size gate)
+        run: |
+          forge build --sizes | tee /tmp/sizes.txt
+          awk -F'|' '
+            { name = $2; gsub(/^[ \t]+|[ \t]+$/, "", name) }
+            name == "FeeVault" {
+              size = $3; gsub(/[ ,]/, "", size); found = 1
+              print "FeeVault runtime size: " size " / 24576"
+              if (size + 0 > 24000) {
+                print "::error::FeeVault is within 576 bytes of the EIP-170 cap"
+                exit 1
+              }
+            }
+            END { if (!found) { print "::error::FeeVault is not in the --sizes table"; exit 1 } }
+          ' /tmp/sizes.txt
+      # Includes the invariant campaign (test/Invariants.t.sol), which chains
+      # random calls against real stock tokens. It takes a few minutes: that is
+      # the price of a campaign that really exercises the cycle.
+      #
+      # RUNS ON `$RPC_URL_FALLBACK`, THE ARCHIVE ENDPOINT — NOT ON `$RPC_URL`.
+      # This step ran on the public node until 2026-09-10 and could not pass on
+      # it. Neither PUBLIC Robinhood endpoint is an archive node: against those,
+      # forge's on-disk RPC cache never hits, every run refetches the whole
+      # working set, and the node rate-limits and prunes underneath a run in
+      # progress. Both failure modes were observed on this branch within the
+      # hour, and both read like contract bugs when they are a node:
+      #
+      #   429 Too Many Requests (Cloudflare)     runs 34503537768, 34499403145
+      #   -32000: metadata is not found, <block>  run  34494858680
+      #
+      # The first names accounts, the second names storage slots. On the archive
+      # endpoint: 197/197 green in 625 s, measured the same day.
+      #
+      # THE PARAGRAPH ABOVE USED TO SAY "so the fork cannot be pinned with
+      # --fork-block-number". That reason expired the moment this step moved to
+      # `$RPC_URL_FALLBACK`, which the two lines under it call the archive
+      # endpoint — an archive node is exactly what serves a pinned block. It
+      # went on costing: unpinned, `test_EveryListedQuoteCanLeaveTheTreasuryAsEth`
+      # reported 7 unsweepable currencies inside one run and swept 40/40 three
+      # minutes later, so a genuine stranding regression was indistinguishable
+      # from noise. The block is pinned in foundry.toml's [profile.ci]
+      # (T-CI-01), which is why this step now sets FOUNDRY_PROFILE=ci, and
+      # pinning is also what makes the on-disk cache hit — most of the 20.6 min.
+      #
+      # Three tests are MEANT to float and are excluded here; they run against
+      # `latest` in the `live-measurements` job below.
+      #
+      # `-j 1` and the throttle are both load-bearing, not caution, and they
+      # stay on the archive node too. Run in parallel, the eight suites race
+      # each other for the same cold state and burst into the rate limit;
+      # serialising is FASTER, because the suites then share one warm in-process
+      # cache instead of fighting over a cold one. Measured on the public node:
+      # parallel + 60 CU/s = 7 failures in 8 min; `-j 1` + 60 CU/s = 85/85 in
+      # 4-5 min, twice back to back, zero 429.
+      #
+      # Stays at 60. It was lowered to 30 on 2026-09-05 chasing 27
+      # SeedUnavailable failures, and that was the wrong culprit: the count was
+      # identical at both settings, and a rate limit does not give you the same
+      # number twice. It was the Foundry version — see the pin above.
+      - name: forge test (fork, invariants included)
+        run: |
+          test -n "$RPC_URL_FALLBACK" || {
+            echo "::error::RPC_URL_FALLBACK is empty. The fork suite needs the ARCHIVE endpoint; the public node prunes and rate-limits (see this step's comment). Set the repository secret."
+            exit 1
+          }
+          FOUNDRY_PROFILE=ci forge test --fork-url "$RPC_URL_FALLBACK" \
+            --compute-units-per-second 60 -j 1 -vv \
+            --no-match-test 'EveryQuoteRouteCarriesEnoughDepth|EveryListedQuoteCanLeaveTheTreasuryAsEth|EveryListedStockHasALiveThirtyMinuteTwap'
+
+  live-measurements:
+    name: live measurements (latest, unpinned)
+    # These four read the chain as it is NOW: pool depth, TWAP liveness,
+    # sweepability. They are supposed to move, and a failure here is a signal
+    # about the chain, not about this commit — which is why they are a separate
+    # job on a schedule rather than a gate on every push. `continue-on-error`
+    # keeps a drifted pool from blocking a merge; read the run, do not ignore it.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: recursive }
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: "1.7.1"
+      - name: forge test (live measurements, latest)
+        run: |
+          test -n "$RPC_URL_FALLBACK" || {
+            echo "::error::RPC_URL_FALLBACK is empty. The fork suite needs the ARCHIVE endpoint; the public node prunes and rate-limits. Set the repository secret."
+            exit 1
+          }
+          forge test --fork-url "$RPC_URL_FALLBACK" --compute-units-per-second 60 -j 1 -vv \
+            --match-test 'EveryQuoteRouteCarriesEnoughDepth|EveryListedQuoteCanLeaveTheTreasuryAsEth|EveryListedStockHasALiveThirtyMinuteTwap|EveryQuoteRouteHasALiveThirtyMinuteTwap'
+
+  coverage:
+    name: coverage (--ir-minimum)
+    # Plain `forge coverage` CANNOT compile this tree: it disables the optimizer
+    # and viaIR, and test/QuoteUniverse.t.sol:334 then hits stack-too-deep.
+    # --ir-minimum completes, at the cost of inaccurate source maps and of
+    # test_PushIsPermissionlessAndProfitable failing on unoptimised gas (the
+    # refund covers ~95.4 % of the caller's cost without the optimiser — a real
+    # finding about how thin that margin is, not a coverage problem). Hence
+    # `continue-on-error`: this job reports, it does not gate.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: recursive }
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: "1.7.1"
+      - name: forge coverage
+        run: |
+          test -n "$RPC_URL_FALLBACK" || { echo "::error::RPC_URL_FALLBACK is empty."; exit 1; }
+          FOUNDRY_PROFILE=ci forge coverage --fork-url "$RPC_URL_FALLBACK" \
+            --compute-units-per-second 60 -j 1 --ir-minimum --report lcov
+      - uses: actions/upload-artifact@v4
+        with: { name: lcov, path: lcov.info }
+
+  offchain:
+    name: offchain
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10.15.0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: typecheck
+        run: pnpm --filter offchain typecheck && pnpm --filter front typecheck
+      - name: eligibility + determinism
+        run: pnpm --filter offchain test
+      - name: CID (204 vectors)
+        run: pnpm --filter front test
+      - name: front build
+        run: pnpm --filter front build
+
+  cross-determinism:
+    name: determinism — two independent runs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10.15.0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      # The in-process test already shuffles input order. Here we additionally
+      # check that two distinct PROCESSES produce the same result: that catches
+      # what the test cannot see — a dependency on object hash order, on a PRNG
+      # seed, on a locale, on a cache path.
+      - name: two runs, same output
+        run: |
+          pnpm --filter offchain exec tsx src/determinism.test.ts > /tmp/run1.txt 2>&1
+          pnpm --filter offchain exec tsx src/determinism.test.ts > /tmp/run2.txt 2>&1
+          diff /tmp/run1.txt /tmp/run2.txt || { echo "::error::the two runs diverge"; exit 1; }
+          cat /tmp/run1.txt

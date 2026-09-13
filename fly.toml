@@ -1,0 +1,51 @@
+# Payd keeper — worker, no public service. Nothing ever calls in; it only calls
+# out to the RPC and to Filebase. See docs/LAUNCH.md §3.
+#
+#   fly auth login
+#   fly apps create payd-keeper
+#   fly volumes create keeper_data --size 1 --region iad
+#   fly secrets set KEEPER_PRIVATE_KEY=… REGISTRY=… RPC_URL=… \
+#                   RPC_URL_FALLBACK=… IPFS_API_URL=… IPFS_API_KEY=…
+#   fly deploy
+#
+# **`REGISTRY`, and it replaces the pair that used to be here.** The keeper reads
+# `vaults()` off the registry and walks every launch behind it; `DISTRIBUTOR` and
+# `FEE_VAULT` named ONE of each and are v1's. They are not merely obsolete —
+# `keeper.ts` calls `requireEnv("REGISTRY")` at module load, so a deploy from the
+# old line does not run with stale targets, it crash-loops before the first tick.
+#
+# **`RPC_URL_FALLBACK` is not optional either, and its absence is silent.**
+# `crossCheck` — the fifth preflight check, the recomputation of the same root
+# from a second node — begins with `if (!hasFallbackRpc) return { ok: true,
+# detail: "no fallback RPC configured, check skipped" }`. Leave it out and the
+# keeper publishes on four checks, reports them all green, and the only trace is
+# that detail string. `ROADMAP.md` phase 0 asks for five INCLUDING the
+# recomputation; this variable is what makes that true rather than assumed.
+
+# **`payd-protocol-keeper`, and `payd-keeper` is V1's.** They are different
+# deployments with different secrets: the old one still carries `DISTRIBUTOR` and
+# `FEE_VAULT` and has never been given a `REGISTRY`. Deploying this repo at that
+# name would put platform code on a v1 app and crash-loop it.
+app = "payd-protocol-keeper"
+# The keeper polls a 30-minute epoch, so latency to the RPC is irrelevant and the
+# region is a free choice. It is therefore chosen NOT to be one: a region is a
+# city, a city in a public file is a location, and this file is public. `iad` is
+# where most RPC infrastructure sits and says nothing about who runs this.
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+# 512 MB, not 256: buildCumulative holds the whole table plus two Merkle trees
+# in memory — ~150 MB at 1 000 holders. 256 would give way exactly when the
+# project is working.
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+# Without a persistent disk, pruneArtifacts lists an empty directory on restart
+# and unpins nothing any more; previous-root.json, the preflight's monotonicity
+# reference, is lost too.
+[[mounts]]
+  source = "keeper_data"
+  destination = "/app/data"

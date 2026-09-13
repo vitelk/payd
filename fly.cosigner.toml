@@ -1,0 +1,74 @@
+# Payd co-signer — the SECOND key on a root, and the whole point of it is that
+# it does not live where the keeper lives.
+#
+#   fly apps create payd-protocol-cosigner
+#   fly secrets set -a payd-protocol-cosigner \
+#       COSIGNER_PRIVATE_KEY=… REGISTRY=… RPC_URL=… COSIGNER_FROM_BLOCK=…
+#
+# **`REGISTRY`, and it replaces the DISTRIBUTOR/FEE_VAULT pair that used to be
+# here.** `Payd._create` stamps this key into every new Distributor at birth, so
+# a third-party launch names it without anybody touching this app. Pinning one
+# pair covered $PAYD and left every later launch with a second key that signs
+# but never heartbeats — `setCoSigner` primes `coSignerHeartbeat`, so such a
+# vault requires the co-signature for CO_SIGNER_GRACE and then silently stops.
+# `cosign.ts` now walks `vaults()`, exactly as the keeper does.
+#   fly deploy -c fly.cosigner.toml
+#
+# **A separate app, not a second process in the keeper's.** Fly would happily run
+# both from one `fly.toml`, and that is exactly what must not happen: one app is
+# one secret store, one machine and one blast radius. `custody verify` refuses a
+# pair of attestations that come from the same host — see offchain/src/custody.ts,
+# "catches co-location by an honest operator" — and a co-signer sharing the
+# keeper's machine adds a signature to the same keyring rather than a second
+# authority. FLOWS.md §7.c is the accepted risk when both keys are held at once;
+# this file exists so that they are not.
+#
+# **No `[http_service]`, on purpose.** The keeper reaches this process over Fly's
+# private 6PN network at `http://payd-protocol-cosigner.internal:8787`, which is
+# the value to give the keeper as `COSIGNER_URL`. Nothing is published to the
+# internet: an endpoint that hands out signatures has no business having a public
+# address. `cosign.ts` calls `.listen(port)` with no host, so Node binds every
+# interface including the 6PN one — that is what makes `.internal` resolve.
+app = "payd-protocol-cosigner"
+
+# **A different region from the keeper's `iad`.** Same reasoning as fly.toml —
+# a region is a city and a city in a public file is a location — but here the
+# choice also has to be DIFFERENT, which is the substance of "another host
+# against another node" in docs/LAUNCH_NIGHT.md. Give it a different RPC endpoint
+# too, in `RPC_URL`: two machines reading the same node still see one view of the
+# chain, and a co-signer that cannot disagree is not a check.
+primary_region = "lhr"
+
+[build]
+  dockerfile = "Dockerfile"
+
+# The image's CMD runs the keeper. This overrides it for this app, from the very
+# same image: one build, one bytecode, two roles. Nothing about the co-signer's
+# behaviour is a separate artefact that could drift from what was reviewed.
+[processes]
+  cosigner = "offchain/node_modules/.bin/tsx offchain/src/cosign.ts"
+
+# 256 MB is enough and 512 is not needed here: the co-signer holds no Merkle
+# tree. It reads a request, recomputes the digest and signs — the keeper is the
+# one that builds tables in memory.
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+  processes = ["cosigner"]
+
+# No [[mounts]]. `cosign.ts` writes nothing to disk: its cursor lives in memory
+# and restarts from `COSIGNER_FROM_BLOCK`. Set that to the deployment block —
+# from 0 the log scan asks for more than the node will return and the cursor
+# stops advancing, which offchain/src/cursor.audit2.test.ts demonstrates on
+# purpose: "the cursor is NOT advancing. This range will be re-read, and until
+# it is a root put on the record inside it is unpoliced."
+#
+# Robinhood Chain, 2026-09-12: the platform was deployed in block 61344425.
+
+# Restart rather than stay down. A co-signer that is not answering is not a
+# visible failure: with a co-signer named, `publishRoot` needs its signature, so
+# the vault simply publishes nothing until CO_SIGNER_GRACE (3 h) lifts the
+# requirement and the platform quietly becomes single-key again.
+[[restart]]
+  policy = "always"
+  processes = ["cosigner"]
