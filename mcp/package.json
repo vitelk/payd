@@ -1,0 +1,40 @@
+{
+  "name": "@paydprotocol/mcp",
+  "version": "0.1.0",
+  "description": "Keyless MCP server for Payd on Robinhood Chain: read launches, baskets and holder shares, and prepare unsigned transactions for your own wallet.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "payd-mcp": "dist/server.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "build": "esbuild src/server.ts --bundle --platform=node --format=esm --target=node20 --packages=external --outfile=dist/server.js",
+    "prepublishOnly": "pnpm typecheck && pnpm test && pnpm build",
+    "test": "tsx src/tools.test.ts && tsx src/prepare.test.ts",
+    "typecheck": "tsc --noEmit",
+    "errors": "node gen-errors.mjs",
+    "e2e": "tsx src/fork.e2e.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "viem": "^2.56.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "esbuild": "0.25.12",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.3"
+  }
+}

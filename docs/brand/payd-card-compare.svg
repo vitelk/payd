@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img"
+     aria-label="Where the creator fee goes: Payd pays every holder in tokenised equities on a time-weighted snapshot, 10 percent platform fee capped at 15 percent in the bytecode, five payout shapes, no owner and no admin withdrawal. Pear pays holders too, takes 20 percent, snapshots whoever holds when a round fires, one payout shape, names no contract. Pump.fun sends the fee to the creator's wallet.">
+  <rect width="1200" height="630" fill="#14130f"/>
+
+  <!-- the mark, from docs/brand/payd-mark-dark.svg, height 112, ink top-left at (64,40) -->
+  <g transform="translate(24.28,27.65) scale(0.073976)">
+    <path fill="#eeebe3" d="M 694.76 1078.07 C 709.247 1084.45 718.723 1091.15 735.455 1097.11 C 775.705 1111.43 815.303 1119.35 857.592 1125.32 C 1000.02 1145.43 1157.05 1141.82 1296.37 1103.1 C 1319.48 1096.68 1334.06 1087.26 1354.52 1078.25 L 1355.51 1077.82 C 1362.01 1088.33 1371.98 1110.06 1377.89 1121.91 L 1414.97 1195.26 L 1452.63 1270.37 C 1465.87 1296.3 1480.55 1320.6 1488.38 1348.87 C 1519.69 1462.03 1466.7 1575.17 1370.93 1638.01 C 1347.45 1652.3 1322.16 1663.38 1295.73 1670.97 C 1278.38 1675.65 1260.61 1678.58 1242.67 1679.72 C 1217.27 1681.27 1183.73 1680.38 1157.74 1680.51 L 974.461 1680.4 L 867.319 1680.32 C 841.647 1680.33 812.103 1681.21 787.025 1677.79 C 755.558 1673.5 717.324 1659.96 689.587 1644.18 C 627.342 1608.71 581.59 1550.13 562.255 1481.15 C 536.508 1385.81 565.436 1332.18 607.26 1251.23 L 643.011 1180.55 C 658.477 1150.06 677.954 1107.44 694.76 1078.07 z"/>
+    <path fill="#eeebe3" d="M 1175.63 945.34 C 1218.98 945.997 1284.62 958.193 1325.48 974.061 C 1337.83 979.261 1356.94 989.72 1361.49 1002.93 C 1371.06 1030.71 1330.46 1046.82 1310.74 1054.16 C 1259.96 1071.91 1208.85 1075.14 1156.37 1082.65 C 1158.99 1078.64 1161.41 1074.5 1163.62 1070.25 C 1183.91 1031.82 1188.23 986.935 1175.63 945.34 z"/>
+    <path fill="#eeebe3" d="M 820.647 950.458 L 823.082 950.205 C 826.891 951.948 823.457 961.111 822.775 964.953 C 821.413 973.07 820.688 981.282 820.607 989.512 C 820.321 1022.49 828.977 1048.37 844.73 1076.63 C 816.46 1074.58 767.106 1062.62 739.594 1054.49 C 720.412 1047.49 667.685 1021.82 693.562 994.701 C 719.931 967.063 783.012 954.678 820.647 950.458 z"/>
+    <path fill="#ccff00" d="M 998.105 857.468 C 1003.56 857.366 1009.57 857.748 1015.01 858.282 C 1050.79 861.487 1083.77 878.982 1106.49 906.811 C 1129.34 934.247 1140.01 969.823 1136.01 1005.3 C 1132.81 1036.35 1115.48 1071.04 1091.13 1090.65 C 1064.89 1092.83 1029.3 1093.36 1003.25 1092.47 C 981.568 1091.77 929.106 1089.76 907.99 1086.04 C 906.503 1084.94 905.062 1083.78 903.671 1082.57 C 881.207 1062.75 866.727 1028.25 865.514 998.701 C 862.218 918.437 920.095 861.863 998.105 857.468 z"/>
+    <path fill="#ccff00" d="M 1079.02 520.56 C 1158.52 516.176 1226.57 576.973 1231.13 656.462 C 1235.69 735.951 1175.04 804.131 1095.56 808.869 C 1015.83 813.621 947.393 752.743 942.818 673.003 C 938.244 593.263 999.274 524.956 1079.02 520.56 z"/>
+    <path fill="#ccff00" d="M 1143.94 175.161 C 1224.07 167.173 1295.55 225.561 1303.71 305.677 C 1311.88 385.793 1253.65 457.397 1173.55 465.736 C 1093.2 474.101 1021.33 415.65 1013.14 335.285 C 1004.95 254.92 1063.56 183.174 1143.94 175.161 z"/>
+  </g>
+
+  <text x="164" y="116" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="52" font-weight="600"
+        letter-spacing="-0.8" fill="#eeebe3">Payd<tspan dx="14" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="17"
+        font-weight="500" letter-spacing="6.5" fill="#ccff00">PROTOCOL</tspan></text>
+
+    <text x="64" y="192" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="38" font-weight="600"
+        letter-spacing="-0.6" fill="#eeebe3">Where the fee<tspan dx="12" fill="#ccff00">actually goes.</tspan></text>
+  <text x="64" y="222" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="14" letter-spacing="1.3" fill="#97917f">ROBINHOOD CHAIN &#183; EVERY LAUNCH THAT TURNS ITS OWN FEE INTO ASSETS FOR ITS HOLDERS</text>
+
+  <rect x="304" y="240" width="212" height="350" fill="#1b1a15"/>
+  <text x="320" y="268" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="20" font-weight="500" letter-spacing="1.5" fill="#ccff00">PAYD</text>
+  <text x="530" y="268" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="20" font-weight="500" letter-spacing="1.5" fill="#97917f">PEAR</text>
+  <text x="740" y="268" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="20" font-weight="500" letter-spacing="1.5" fill="#97917f">FLAP</text>
+  <text x="950" y="268" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="20" font-weight="500" letter-spacing="1.5" fill="#97917f">TORO</text>
+  <path d="M64 282 H1136" stroke="#2c2a24" stroke-width="1"/>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#eeebe3">
+    <text x="64" y="318" font-size="16" fill="#97917f">Where the fee comes from</text>
+    <text x="320" y="318">The Pons creator fee —</text>
+    <text x="320" y="338">the token is untaxed.</text>
+    <text x="530" y="318">The Pons creator fee.</text>
+    <text x="740" y="318">A buy/sell tax written</text>
+    <text x="740" y="338">into the token.</text>
+    <text x="950" y="318">A 3 % trade tax.</text>
+
+    <text x="64" y="378" font-size="16" fill="#97917f">Platform take</text>
+    <text x="320" y="378">10 %, and the bytecode</text>
+    <text x="320" y="398">cannot go past 15 %.</text>
+    <text x="530" y="378">20 %, to $PEAR</text>
+    <text x="530" y="398">holders.</text>
+    <text x="740" y="378">6 % of the tax, per</text>
+    <text x="740" y="398">the vault spec.</text>
+    <text x="950" y="378">1 % trade fee; a fifth</text>
+    <text x="950" y="398">of it burns $TORO.</text>
+
+    <text x="64" y="438" font-size="16" fill="#97917f">How a share is counted</text>
+    <text x="320" y="438">Time held, integrated</text>
+    <text x="320" y="458">over a 30-min epoch.</text>
+    <text x="530" y="438">Whoever holds when</text>
+    <text x="530" y="458">a round fires.</text>
+    <text x="740" y="438">Balance above a minimum,</text>
+    <text x="740" y="458">plus an anti-farm delay.</text>
+    <text x="950" y="438">Balance through the</text>
+    <text x="950" y="458">distribution period.</text>
+
+    <text x="64" y="498" font-size="16" fill="#97917f">Who can change the vault</text>
+    <text x="320" y="498">Nobody. Immutable clone,</text>
+    <text x="320" y="518">no proxy, no owner.</text>
+    <text x="530" y="498">Not stated anywhere</text>
+    <text x="530" y="518">on the site.</text>
+    <text x="740" y="498">The Flap Guardian, via</text>
+    <text x="740" y="518">a beacon upgrade.</text>
+    <text x="950" y="498">Nobody: the splits are</text>
+    <text x="950" y="518">constants, no setter.</text>
+
+    <text x="64" y="558" font-size="16" fill="#97917f">Payout shapes</text>
+    <text x="320" y="558">Five, all live, picked</text>
+    <text x="320" y="578">at launch.</text>
+    <text x="530" y="558">One.</text>
+    <text x="740" y="558">Any vault — anyone</text>
+    <text x="740" y="578">can deploy one.</text>
+    <text x="950" y="558">Four sleeves, the</text>
+    <text x="950" y="578">holder picks.</text>
+
+  </g>
+
+  <path d="M64 600 H1136" stroke="#2c2a24" stroke-width="1"/>
+
+  <text x="64" y="622" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="16" fill="#ccff00">paydprotocol.eth</text>
+  <text x="1136" y="622" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13"
+        letter-spacing="1.1" fill="#97917f">EACH COLUMN READ FROM ITS OWN SITE OR DOCS, 27 SEP 2026</text>
+</svg>

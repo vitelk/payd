@@ -1,0 +1,5 @@
+packages:
+  - "offchain"
+  - "front"
+  - "sdk"
+  - "mcp"

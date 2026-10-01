@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img"
+     aria-label="Who can replace the code after your launch. On the left, PonsVault: every vault points at one shared beacon, so the beacon's owner replaces the code inside all of them at once, and renouncing that power is possible but not done. On the right, Payd: each vault is an immutable clone of a fixed implementation with no proxy and no owner, so nobody can replace its code, Payd included. The only exit is migrate, one vault at a time, under a 48-hour timelock, refusing a destination of another mode.">
+  <rect width="1200" height="630" fill="#14130f"/>
+
+  <!-- the mark, from docs/brand/payd-mark-dark.svg, height 112, ink top-left at (64,40) -->
+  <g transform="translate(24.28,27.65) scale(0.073976)">
+    <path fill="#eeebe3" d="M 694.76 1078.07 C 709.247 1084.45 718.723 1091.15 735.455 1097.11 C 775.705 1111.43 815.303 1119.35 857.592 1125.32 C 1000.02 1145.43 1157.05 1141.82 1296.37 1103.1 C 1319.48 1096.68 1334.06 1087.26 1354.52 1078.25 L 1355.51 1077.82 C 1362.01 1088.33 1371.98 1110.06 1377.89 1121.91 L 1414.97 1195.26 L 1452.63 1270.37 C 1465.87 1296.3 1480.55 1320.6 1488.38 1348.87 C 1519.69 1462.03 1466.7 1575.17 1370.93 1638.01 C 1347.45 1652.3 1322.16 1663.38 1295.73 1670.97 C 1278.38 1675.65 1260.61 1678.58 1242.67 1679.72 C 1217.27 1681.27 1183.73 1680.38 1157.74 1680.51 L 974.461 1680.4 L 867.319 1680.32 C 841.647 1680.33 812.103 1681.21 787.025 1677.79 C 755.558 1673.5 717.324 1659.96 689.587 1644.18 C 627.342 1608.71 581.59 1550.13 562.255 1481.15 C 536.508 1385.81 565.436 1332.18 607.26 1251.23 L 643.011 1180.55 C 658.477 1150.06 677.954 1107.44 694.76 1078.07 z"/>
+    <path fill="#eeebe3" d="M 1175.63 945.34 C 1218.98 945.997 1284.62 958.193 1325.48 974.061 C 1337.83 979.261 1356.94 989.72 1361.49 1002.93 C 1371.06 1030.71 1330.46 1046.82 1310.74 1054.16 C 1259.96 1071.91 1208.85 1075.14 1156.37 1082.65 C 1158.99 1078.64 1161.41 1074.5 1163.62 1070.25 C 1183.91 1031.82 1188.23 986.935 1175.63 945.34 z"/>
+    <path fill="#eeebe3" d="M 820.647 950.458 L 823.082 950.205 C 826.891 951.948 823.457 961.111 822.775 964.953 C 821.413 973.07 820.688 981.282 820.607 989.512 C 820.321 1022.49 828.977 1048.37 844.73 1076.63 C 816.46 1074.58 767.106 1062.62 739.594 1054.49 C 720.412 1047.49 667.685 1021.82 693.562 994.701 C 719.931 967.063 783.012 954.678 820.647 950.458 z"/>
+    <path fill="#ccff00" d="M 998.105 857.468 C 1003.56 857.366 1009.57 857.748 1015.01 858.282 C 1050.79 861.487 1083.77 878.982 1106.49 906.811 C 1129.34 934.247 1140.01 969.823 1136.01 1005.3 C 1132.81 1036.35 1115.48 1071.04 1091.13 1090.65 C 1064.89 1092.83 1029.3 1093.36 1003.25 1092.47 C 981.568 1091.77 929.106 1089.76 907.99 1086.04 C 906.503 1084.94 905.062 1083.78 903.671 1082.57 C 881.207 1062.75 866.727 1028.25 865.514 998.701 C 862.218 918.437 920.095 861.863 998.105 857.468 z"/>
+    <path fill="#ccff00" d="M 1079.02 520.56 C 1158.52 516.176 1226.57 576.973 1231.13 656.462 C 1235.69 735.951 1175.04 804.131 1095.56 808.869 C 1015.83 813.621 947.393 752.743 942.818 673.003 C 938.244 593.263 999.274 524.956 1079.02 520.56 z"/>
+    <path fill="#ccff00" d="M 1143.94 175.161 C 1224.07 167.173 1295.55 225.561 1303.71 305.677 C 1311.88 385.793 1253.65 457.397 1173.55 465.736 C 1093.2 474.101 1021.33 415.65 1013.14 335.285 C 1004.95 254.92 1063.56 183.174 1143.94 175.161 z"/>
+  </g>
+
+  <text x="164" y="116" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="52" font-weight="600"
+        letter-spacing="-0.8" fill="#eeebe3">Payd<tspan dx="14" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="17"
+        font-weight="500" letter-spacing="6.5" fill="#ccff00">PROTOCOL</tspan></text>
+
+  <text x="64" y="192" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="38" font-weight="600"
+        letter-spacing="-0.6" fill="#eeebe3">One key, or<tspan dx="12" fill="#ccff00">no key at all.</tspan></text>
+  <text x="64" y="218" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="14" letter-spacing="1.3" fill="#97917f">WHO CAN REPLACE THE CODE AFTER YOUR LAUNCH</text>
+
+  <rect x="64" y="252" width="516" height="300" fill="#1b1a15"/>
+  <text x="88" y="290" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="16" letter-spacing="1.2" fill="#97917f">PONSVAULT &#8212; A SHARED BEACON</text>
+  <rect x="238" y="324" width="168" height="44" fill="none" stroke="#97917f" stroke-width="2"/>
+  <text x="322" y="352" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="15" letter-spacing="1.2" fill="#97917f">BEACON OWNER</text>
+  <path d="M 322 368 L 322 396 L 164 396 L 164 424" fill="none" stroke="#97917f" stroke-width="1.5"/>
+  <path d="M 158 416 L 164 424 L 170 416" fill="none" stroke="#97917f" stroke-width="1.5"/>
+  <path d="M 322 368 L 322 396 L 284 396 L 284 424" fill="none" stroke="#97917f" stroke-width="1.5"/>
+  <path d="M 278 416 L 284 424 L 290 416" fill="none" stroke="#97917f" stroke-width="1.5"/>
+  <path d="M 322 368 L 322 396 L 404 396 L 404 424" fill="none" stroke="#97917f" stroke-width="1.5"/>
+  <path d="M 398 416 L 404 424 L 410 416" fill="none" stroke="#97917f" stroke-width="1.5"/>
+  <path d="M 322 368 L 322 396 L 524 396 L 524 424" fill="none" stroke="#97917f" stroke-width="1.5"/>
+  <path d="M 518 416 L 524 424 L 530 416" fill="none" stroke="#97917f" stroke-width="1.5"/>
+  <rect x="124" y="424" width="80" height="54" fill="none" stroke="#97917f" stroke-width="2"/>
+  <text x="164" y="457" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13" letter-spacing="1" fill="#eeebe3">VAULT</text>
+  <rect x="244" y="424" width="80" height="54" fill="none" stroke="#97917f" stroke-width="2"/>
+  <text x="284" y="457" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13" letter-spacing="1" fill="#eeebe3">VAULT</text>
+  <rect x="364" y="424" width="80" height="54" fill="none" stroke="#97917f" stroke-width="2"/>
+  <text x="404" y="457" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13" letter-spacing="1" fill="#eeebe3">VAULT</text>
+  <rect x="484" y="424" width="80" height="54" fill="none" stroke="#97917f" stroke-width="2"/>
+  <text x="524" y="457" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13" letter-spacing="1" fill="#eeebe3">VAULT</text>
+  <text x="88" y="522" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#97917f">One owner replaces the code inside every live</text>
+  <text x="88" y="542" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#97917f">vault at once. Renouncing it is possible, not done.</text>
+
+  <rect x="620" y="252" width="516" height="300" fill="#1b1a15"/>
+  <text x="644" y="290" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="16" letter-spacing="1.2" fill="#ccff00">PAYD &#8212; IMMUTABLE CLONES</text>
+  <rect x="794" y="324" width="168" height="44" fill="none" stroke="#2c2a24" stroke-width="2" stroke-dasharray="6 6"/>
+  <text x="878" y="352" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="15" letter-spacing="1.2" fill="#2c2a24">NO OWNER</text>
+  <text x="878" y="404" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13" letter-spacing="1.2" fill="#ccff00">NOTHING POINTS AT THEM</text>
+  <rect x="680" y="424" width="80" height="54" fill="none" stroke="#ccff00" stroke-width="2"/>
+  <text x="720" y="457" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13" letter-spacing="1" fill="#eeebe3">VAULT</text>
+  <rect x="800" y="424" width="80" height="54" fill="none" stroke="#ccff00" stroke-width="2"/>
+  <text x="840" y="457" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13" letter-spacing="1" fill="#eeebe3">VAULT</text>
+  <rect x="920" y="424" width="80" height="54" fill="none" stroke="#ccff00" stroke-width="2"/>
+  <text x="960" y="457" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13" letter-spacing="1" fill="#eeebe3">VAULT</text>
+  <rect x="1040" y="424" width="80" height="54" fill="none" stroke="#ccff00" stroke-width="2"/>
+  <text x="1080" y="457" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13" letter-spacing="1" fill="#eeebe3">VAULT</text>
+  <text x="644" y="522" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#eeebe3">Each vault is its own bytecode, for ever. Nobody</text>
+  <text x="644" y="542" font-family="ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="15" fill="#eeebe3">can replace it — us included. That is the trade.</text>
+
+  <path d="M64 600 H1136" stroke="#2c2a24" stroke-width="1"/>
+  <text x="64" y="622" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="16" fill="#ccff00">paydprotocol.eth</text>
+  <text x="1136" y="622" text-anchor="end" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="13"
+        letter-spacing="1.1" fill="#97917f">EVERY PONSVAULT LINE READ ON PONSVAULT.COM/DOCS, 28 SEP 2026</text>
+</svg>

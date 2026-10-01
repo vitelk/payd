@@ -1,0 +1,112 @@
+# foundry
+out/
+cache/
+broadcast/
+
+# node
+node_modules/
+.next/
+dist/
+*.tsbuildinfo
+
+# secrets
+.env
+.env.*
+!.env.example
+
+# os
+.DS_Store
+foundry.lock
+
+# epoch artifacts produced by the keeper
+offchain/data/
+front/dist/
+test/_Debug.t.sol
+public/
+
+# Operational runbooks, and this is a GLOB rather than a list of names: a new
+# one is written under a new name every time, and a list only ever matches the
+# files that existed the day it was typed.
+docs/LAUNCH*
+docs/RELAUNCH.md
+docs/relaunch-runbook.html
+docs/PAYD_RUNBOOK.md
+docs/DEPLOY_HOSTS.md
+docs/REHEARSAL.md
+docs/WEB_READINESS.md
+
+# A runbook does not stop being one because it is executable. Nothing public
+# depends on it, and nothing about what the contracts do is verified by reading
+# it.
+script/fly-secrets.sh
+
+# Transaction bundles staged for the Safe's builder. One-off operational
+# artifacts: the operation they describe is on-chain once it is executed, and
+# the file is of no use to anybody afterwards.
+*-tx.json
+
+# The internal audit and review record. Not withheld because it is embarrassing
+# — it is the best engineering in the repository. See docs/README.md for why it
+# is not here and what stands in its place.
+docs/AUDIT_PLAN.md
+docs/AUDIT_PLAN_2.md
+docs/AUDIT_EXECUTION.md
+docs/AUDIT_EXECUTION_2.md
+docs/AUDIT_FIXES.md
+docs/AUDIT_FIXES_2.md
+docs/AUDIT_FIXES_3.md
+docs/AUDIT_PAYD.md
+docs/REVIEW_3.md
+docs/REVIEW_3_AI.md
+docs/REVIEW_3_SEALED.md
+
+# Internal planning and strategy. Not secret, and not product documentation
+# either: they carry deliberation and options that were never shipped, and a
+# published roadmap reads as a set of commitments made by an identifiable team.
+PLAN.md
+ROADMAP.md
+docs/ROADMAP.md
+docs/*_PLAN.md
+BRAND.md
+ESTIMATIONS.md
+LAUNCH_2026-09-12.md
+
+# The assistant's working file. Its ENGINEERING rules live in the repository as
+# docs/CONVENTIONS.md; what stays here is the part addressed to a collaborator
+# rather than to the code.
+CLAUDE.md
+
+
+# v1 production artifacts. They carry real holder addresses and belong on a
+# disk, not in a public repository.
+offchain/final-artifact-*.json
+
+# The personal denylist the pre-commit hook reads. Never committed: a tracked
+# file listing the names it blocks would publish them.
+.githooks/identity.local
+
+# The operational and decision record. None of it is a secret; all of it is a
+# targeting package if published together.
+OPSEC.md
+DECISIONS.md
+PREFLIGHT.md
+
+# Local tooling and scratch work. Nothing here is part of the product, and
+# nothing here needs to be read to verify what the contracts do.
+.private/
+
+# Editor and agent configuration. The publication script ships the tree
+# VERBATIM, so anything committed here would ship with it — tooling choices
+# included. Nothing in it is part of the product.
+.claude/
+
+# Coverage output. The CI job publishes it as an artifact; it does not belong
+# in the tree.
+lcov.info
+
+# Built by `pnpm --filter front build:ticker` into a source directory, because
+# `site/` is hand-written and has no build folder of its own. Generated, not source.
+site/ticker.js
+
+# A French design export, kept on disk and out of the public squash (2026-10-01).
+/Payd Redesign.pdf

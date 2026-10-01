@@ -1,0 +1,24 @@
+{
+  "name": "front",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx src/config.test.ts && tsx src/yield.test.ts && tsx src/v4.test.ts && tsx src/cid.test.ts && tsx src/merkle.test.ts && tsx src/curve.test.ts && tsx src/spark.test.ts && tsx src/basket.test.ts && tsx src/launchlog.test.ts && tsx src/quotes.test.ts && tsx src/num.test.ts && tsx src/route.test.ts && tsx src/modes.test.ts && tsx src/portfolio.test.ts && tsx src/backing.test.ts && tsx src/lottery.test.ts && tsx src/render.test.ts && tsx src/logs.test.ts && tsx src/abi.test.ts && tsx src/symbols.test.ts && tsx src/legs.test.ts && tsx src/wallet.test.ts && tsx src/atomic.test.ts && tsx src/cards.test.ts && tsx src/cardreads.test.ts",
+    "listings": "tsx listings.mjs",
+    "build:ticker": "vite build --config vite.ticker.config.ts && node check-ticker.mjs"
+  },
+  "dependencies": {
+    "@walletconnect/ethereum-provider": "^2.25.0",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@openzeppelin/merkle-tree": "^1.0.8",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vite": "^6.0.0"
+  }
+}

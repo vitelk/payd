@@ -1,0 +1,26 @@
+node_modules
+dist
+cache
+out
+broadcast
+data
+.env
+.git
+lib
+docs
+test
+script
+
+# `contracts` and `front` are NOT ignored, and the reason is one line in the build
+# stage: `abis.test.ts` scans contracts/, contracts/interfaces, contracts/libraries,
+# offchain/src AND front/src
+# to assert that every name the off-chain code references is still declared
+# on-chain, and which of the two TypeScript packages references it. It is the
+# check that catches an ABI the contracts have moved on from, it runs inside
+# `pnpm test`, and `pnpm test` gates the image.
+#
+# Excluding it did not skip the check — it made the build fail, first on
+# `ENOENT scandir /app/contracts`, then `"/contracts": not found` once the COPY
+# was added, then the same pair for front/src. Both reach the BUILD stage only:
+# the runtime stage copies node_modules, offchain and the root manifest, so
+# neither a .sol nor a line of the front ships in the image the keeper runs.

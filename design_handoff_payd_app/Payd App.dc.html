@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  :root { --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; --mono: ui-monospace, SFMono-Regular, Menlo, "Cascadia Mono", monospace; }
+  .pd { color-scheme: dark; --bg:#14130f; --surface:#191813; --raised:#201e18; --sunk:#121109; --fg:#eeebe3; --mut:#97917f; --dim:#6b675c; --line:#2c2a24; --hair:#211f1a; --edge:#3a372e; --ok:#ccff00; --warn:#d2a24a; --bad:#e2857a; --pen:#d9614f; --on:#14130f; --okring: rgba(204,255,0,.22); --oktint: rgba(204,255,0,.15); --okhover:#dbff3d;
+    --veil: rgba(14,13,10,.55); }
+  .pd[data-theme="light"] { color-scheme: light; --bg:#faf8f4; --surface:#f2efe8; --raised:#e9e5db; --sunk:#f5f2ec; --fg:#191712; --mut:#6d685c; --dim:#7b7567; --line:#efeade; --hair:#ece8df; --edge:#d6d0c2; --ok:#4a6300; --warn:#8a5f12; --bad:#b0463a; --pen:#b5432f; --on:#faf8f4; --okring: rgba(74,99,0,.32); --oktint: rgba(74,99,0,.12); --okhover:#3d5200;
+    --veil: rgba(25,23,18,.35); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #14130f; font: 400 14px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+  .pd { background: var(--bg); color: var(--fg); min-height: 100vh; padding: 0 clamp(1rem, 4vw, 3rem) 4rem; }
+  .pd a { color: var(--ok); text-decoration: none; border-bottom: 1px solid var(--okring); }
+  .pd a:hover { color: var(--fg); border-bottom-color: var(--fg); }
+  .pd input::placeholder { color: var(--dim); }
+  .pd input, .pd select, .pd button { font-family: var(--sans); }
+  .pd-app { container-type: inline-size; container-name: app; }
+  .pd-vchip { display: none !important; }
+  .pd-bar { display: none !important; }
+  @container app (max-width: 900px) {
+    .pd-frame { grid-template-columns: minmax(0,1fr) !important; }
+    .pd-rail { display: none !important; }
+    .pd-view { padding: 1.25rem 1rem 10rem !important; }
+    .pd-top { padding: .75rem 1rem !important; gap: .6rem !important; }
+    .pd-title, .pd-grow { display: none !important; }
+    .pd-vchip { display: flex !important; flex: 1; }
+    .pd-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; margin: 0 !important; padding: .35rem .5rem 1.25rem; background: var(--bg); border-top: 1px solid var(--hair); }
+    .pd-nav button { flex: 1; min-height: 44px; padding: .55rem .15rem !important; border-radius: 8px !important; text-align: center; font: 500 .625rem/1.2 var(--sans) !important; box-shadow: none !important; }
+    .pd-nav button[aria-selected="true"] { background: var(--raised) !important; }
+    .pd-bar { display: flex !important; position: fixed; left: 1rem; right: 1rem; bottom: 4.6rem; z-index: 30; }
+    .pd-kpis { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    .pd-steps { grid-template-columns: minmax(0,1fr) !important; }
+    .pd-cols { flex-direction: column; align-items: stretch !important; }
+    .pd-right { position: static !important; }
+    .pd-cells { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+    .pd-tbl thead { display: none; }
+    .pd-tbl tr.row { display: grid; grid-template-columns: 1fr auto; gap: .1rem .75rem; padding: .8rem 1rem; }
+    .pd-tbl tr.row td { display: block; border: 0 !important; padding: 0 !important; text-align: left !important; }
+    .pd-tbl tr.row td.c-yours { grid-column: 2; grid-row: 1 / span 2; text-align: right !important; align-self: center; }
+    .pd-tbl tr.row td.c-status, .pd-tbl tr.row td.c-rate { font: .75rem var(--mono) !important; color: var(--dim); }
+    .pd-tbl tr.row td.c-chev { display: none; }
+    .pd-tbl tr.more td { padding: 0 1rem 1rem !important; }
+  }
+</style>
+</helmet>
+<div class="pd" data-theme="{{ theme }}">
+<main class="pd-app" style="max-width: {{ maxW }}; margin: 0 auto; padding: 0;">
+  <div style="border-radius: 18px; background: var(--bg); overflow: hidden; position: relative;">
+    <!-- ================= header ================= -->
+    <div class="pd-top" style="display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; padding: 1rem 1.75rem;">
+      <div style="display: flex; align-items: center; gap: .5625rem; flex-shrink: 0;">
+        <svg viewBox="537 167 983 1514" width="15" height="23" fill="none" aria-hidden="true" style="flex-shrink: 0; color: var(--fg); width: 15px; height: 23px;">
+          <path fill="currentColor" d="M 694.76 1078.07 C 709.247 1084.45 718.723 1091.15 735.455 1097.11 C 775.705 1111.43 815.303 1119.35 857.592 1125.32 C 1000.02 1145.43 1157.05 1141.82 1296.37 1103.1 C 1319.48 1096.68 1334.06 1087.26 1354.52 1078.25 L 1355.51 1077.82 C 1362.01 1088.33 1371.98 1110.06 1377.89 1121.91 L 1414.97 1195.26 L 1452.63 1270.37 C 1465.87 1296.3 1480.55 1320.6 1488.38 1348.87 C 1519.69 1462.03 1466.7 1575.17 1370.93 1638.01 C 1347.45 1652.3 1322.16 1663.38 1295.73 1670.97 C 1278.38 1675.65 1260.61 1678.58 1242.67 1679.72 C 1217.27 1681.27 1183.73 1680.38 1157.74 1680.51 L 974.461 1680.4 L 867.319 1680.32 C 841.647 1680.33 812.103 1681.21 787.025 1677.79 C 755.558 1673.5 717.324 1659.96 689.587 1644.18 C 627.342 1608.71 581.59 1550.13 562.255 1481.15 C 536.508 1385.81 565.436 1332.18 607.26 1251.23 L 643.011 1180.55 C 658.477 1150.06 677.954 1107.44 694.76 1078.07 z"></path>
+          <path fill="currentColor" d="M 1175.63 945.34 C 1218.98 945.997 1284.62 958.193 1325.48 974.061 C 1337.83 979.261 1356.94 989.72 1361.49 1002.93 C 1371.06 1030.71 1330.46 1046.82 1310.74 1054.16 C 1259.96 1071.91 1208.85 1075.14 1156.37 1082.65 C 1158.99 1078.64 1161.41 1074.5 1163.62 1070.25 C 1183.91 1031.82 1188.23 986.935 1175.63 945.34 z"></path>
+          <path fill="currentColor" d="M 820.647 950.458 L 823.082 950.205 C 826.891 951.948 823.457 961.111 822.775 964.953 C 821.413 973.07 820.688 981.282 820.607 989.512 C 820.321 1022.49 828.977 1048.37 844.73 1076.63 C 816.46 1074.58 767.106 1062.62 739.594 1054.49 C 720.412 1047.49 667.685 1021.82 693.562 994.701 C 719.931 967.063 783.012 954.678 820.647 950.458 z"></path>
+          <path fill="var(--ok)" d="M 998.105 857.468 C 1003.56 857.366 1009.57 857.748 1015.01 858.282 C 1050.79 861.487 1083.77 878.982 1106.49 906.811 C 1129.34 934.247 1140.01 969.823 1136.01 1005.3 C 1132.81 1036.35 1115.48 1071.04 1091.13 1090.65 C 1064.89 1092.83 1029.3 1093.36 1003.25 1092.47 C 981.568 1091.77 929.106 1089.76 907.99 1086.04 C 906.503 1084.94 905.062 1083.78 903.671 1082.57 C 881.207 1062.75 866.727 1028.25 865.514 998.701 C 862.218 918.437 920.095 861.863 998.105 857.468 z"></path>
+          <path fill="var(--ok)" d="M 1079.02 520.56 C 1158.52 516.176 1226.57 576.973 1231.13 656.462 C 1235.69 735.951 1175.04 804.131 1095.56 808.869 C 1015.83 813.621 947.393 752.743 942.818 673.003 C 938.244 593.263 999.274 524.956 1079.02 520.56 z"></path>
+          <path fill="var(--ok)" d="M 1143.94 175.161 C 1224.07 167.173 1295.55 225.561 1303.71 305.677 C 1311.88 385.793 1253.65 457.397 1173.55 465.736 C 1093.2 474.101 1021.33 415.65 1013.14 335.285 C 1004.95 254.92 1063.56 183.174 1143.94 175.161 z"></path>
+        </svg>
+        <h1 class="pd-title" style="font: 600 1rem/1 var(--sans); letter-spacing: -.015em; margin: 0;">Payd <i style="font: 500 .58em/1 var(--mono); font-style: normal; text-transform: uppercase; margin-left: .3em; letter-spacing: .385em; color: var(--ok);">Protocol</i></h1>
+      </div>
+      <nav class="pd-nav" role="tablist" style="display: flex; gap: .25rem; margin: 0 0 0 1rem; flex-shrink: 0;">
+        <button role="tab" aria-selected="{{ isIndex }}" onClick="{{ goIndex }}" style="border: 0; border-radius: 0; padding: .8rem .55rem; background: transparent; color: {{ tabIndex }}; font: 500 .8125rem/1 var(--sans); cursor: pointer; box-shadow: {{ tabIndexLine }};" style-hover="color: var(--fg);">Tokens</button>
+        <button role="tab" aria-selected="{{ isApp }}" onClick="{{ goApp }}" style="border: 0; border-radius: 0; padding: .8rem .55rem; background: transparent; color: {{ tabApp }}; font: 500 .8125rem/1 var(--sans); cursor: pointer; box-shadow: {{ tabAppLine }};" style-hover="color: var(--fg);">$PAYD</button>
+        <button role="tab" aria-selected="{{ isStats }}" onClick="{{ goStats }}" style="border: 0; border-radius: 0; padding: .8rem .55rem; background: transparent; color: {{ tabStats }}; font: 500 .8125rem/1 var(--sans); cursor: pointer; box-shadow: {{ tabStatsLine }};" style-hover="color: var(--fg);">Stats</button>
+        <button role="tab" aria-selected="{{ isTreasury }}" onClick="{{ goTreasury }}" style="border: 0; border-radius: 0; padding: .8rem .55rem; background: transparent; color: {{ tabTreasury }}; font: 500 .8125rem/1 var(--sans); cursor: pointer; box-shadow: {{ tabTreasuryLine }};" style-hover="color: var(--fg);">Treasury</button>
+        <button role="tab" aria-selected="{{ isCreate }}" onClick="{{ goCreate }}" style="border: 0; border-radius: 0; padding: .8rem .55rem; background: transparent; color: {{ tabCreate }}; font: 500 .8125rem/1 var(--sans); cursor: pointer; box-shadow: {{ tabCreateLine }};" style-hover="color: var(--fg);">Launch</button>
+        <button role="tab" aria-selected="{{ isDocs }}" onClick="{{ goDocs }}" style="border: 0; border-radius: 0; padding: .8rem .55rem; background: transparent; color: {{ tabDocs }}; font: 500 .8125rem/1 var(--sans); cursor: pointer; box-shadow: {{ tabDocsLine }};" style-hover="color: var(--fg);">Docs</button>
+      </nav>
+      <sc-if value="{{ hasRail }}" hint-placeholder-val="{{ true }}">
+      <button class="pd-vchip" type="button" onClick="{{ toggleSheet }}" style="display: none; align-items: center; gap: .55rem; padding: .5rem .75rem; min-width: 0; min-height: 44px; border: 0; border-radius: 10px; background: var(--raised); color: var(--fg); cursor: pointer;">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex-shrink: 0;"></span>
+        <span style="font: 500 .8125rem var(--sans); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ chipName }}</span>
+        <span style="font: .6875rem var(--mono); color: var(--dim);">+7</span>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" style="flex-shrink: 0; stroke: var(--mut);"><path d="M2 4l3 3 3-3" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+      </sc-if>
+      <span class="pd-grow" style="flex: 1;"></span>
+      <sc-if value="{{ showCollectAll }}" hint-placeholder-val="{{ false }}">
+      <button class="pd-collect" type="button" style="display: flex; align-items: center; gap: .5rem; flex-shrink: 0; background: var(--ok); color: var(--on); border: 0; border-radius: 10px; padding: .55rem .9rem .55rem 1rem; font: 600 .8125rem var(--sans); cursor: pointer;" style-hover="background: var(--okhover);">Collect everything <span style="padding: .15rem .4rem; border-radius: 5px; background: rgba(0,0,0,.14); font: 500 .75rem var(--mono);">3 held</span></button>
+      </sc-if>
+      <span style="position: relative; display: inline-flex; flex-shrink: 0;">
+        <button type="button" onClick="{{ toggleMenu }}" aria-haspopup="menu" aria-expanded="{{ menuOpen }}" style="display: flex; align-items: center; gap: .5rem; padding: .55rem .9rem; min-height: 40px; border: 0; border-radius: 10px; background: var(--raised); font: 500 .8125rem var(--sans); color: var(--fg); cursor: pointer;" style-hover="background: var(--surface);"><span style="width: 6px; height: 6px; border-radius: 50%; background: {{ netDot }}; flex-shrink: 0;"></span>{{ connectLabel }}</button>
+        <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+        <div role="menu" style="position: absolute; top: calc(100% + .35rem); right: 0; z-index: 30; min-width: 15rem; padding: .3rem; border: 1px solid var(--hair); border-radius: 10px; background: var(--raised); box-shadow: 0 10px 30px rgba(0,0,0,.35); display: flex; flex-direction: column; gap: .1rem;">
+          <sc-for list="{{ walletRows }}" as="w" hint-placeholder-count="2">
+            <button type="button" role="menuitem" onClick="{{ w.run }}" style="display: flex; align-items: center; gap: .55rem; width: 100%; min-height: 40px; padding: .5rem .55rem; border: 0; border-radius: 9px; background: none; font: .8125rem var(--sans); color: var(--fg); text-align: left; cursor: pointer;" style-hover="background: var(--surface);"><span style="width: 18px; height: 18px; border-radius: 4px; background: var(--edge); flex-shrink: 0;"></span>{{ w.name }}</button>
+          </sc-for>
+          <div style="height: 1px; background: var(--hair); margin: .2rem .3rem;"></div>
+          <label style="display: flex; align-items: center; gap: .5rem; padding: .45rem .55rem; border-radius: 9px; background: var(--surface);">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.2" stroke="var(--dim)" stroke-width="1.4"></circle><path d="M9.2 9.2 12.5 12.5" stroke="var(--dim)" stroke-width="1.4" stroke-linecap="round"></path></svg>
+            <input spellcheck="false" placeholder="or look at an address 0x…" aria-label="Check an address" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--fg); font: .8125rem var(--mono);">
+          </label>
+        </div>
+        </sc-if>
+      </span>
+    </div>
+    <div style="height: 1px; background: var(--hair);"></div>
+
+    <sc-if value="{{ wrongNet }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Notice: wrong network" style="display: flex; align-items: center; gap: .75rem 1rem; flex-wrap: wrap; padding: .7rem 1.75rem; background: var(--surface); border-bottom: 1px solid var(--hair); font-size: .8125rem; color: var(--mut);">
+      <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--bad); flex-shrink: 0;"></span>
+      <span style="flex: 1; min-width: 12rem; text-wrap: pretty;"><b style="color: var(--fg); font-weight: 500;">Your wallet is on another network.</b> Everything here still reads; nothing can be signed until it is on Robinhood Chain.</span>
+      <button type="button" style="font: 500 .8125rem var(--sans); padding: .5rem .9rem; min-height: 36px; border: 0; border-radius: 8px; background: var(--ok); color: var(--on); cursor: pointer;">Switch to Robinhood Chain</button>
+    </div>
+    </sc-if>
+
+    <div class="pd-frame" style="display: grid; grid-template-columns: {{ frameCols }};">
+      <!-- ================= rail ================= -->
+      <sc-if value="{{ hasRail }}" hint-placeholder-val="{{ true }}">
+      <aside class="pd-rail" style="background: var(--sunk); padding: 1.25rem 1rem; min-height: 34rem; display: flex; flex-direction: column; gap: 1rem;">
+        <label style="display: flex; align-items: center; gap: .5rem; padding: .5rem .7rem; min-width: 0; border-radius: 10px; background: var(--surface);">
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true" style="flex-shrink: 0;"><circle cx="6" cy="6" r="4.2" stroke="var(--dim)" stroke-width="1.4"></circle><path d="M9.2 9.2 12.5 12.5" stroke="var(--dim)" stroke-width="1.4" stroke-linecap="round"></path></svg>
+          <input spellcheck="false" autocomplete="off" placeholder="Filter" aria-label="Filter tokens" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--fg); font: .8125rem var(--sans);">
+        </label>
+        <sc-if value="{{ connected }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column;">
+          <span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); padding: .35rem .7rem .55rem;">Your positions · 3</span>
+          <sc-for list="{{ heldRows }}" as="r" hint-placeholder-count="3">
+            <a href="#" onClick="{{ goApp }}" style="display: flex; align-items: center; gap: .6rem; padding: .6rem .7rem; min-height: 40px; color: var(--fg); border-radius: 9px; border-bottom: 0; background: {{ r.railBg }};" style-hover="background: var(--raised); color: var(--fg);">
+              <span style="width: .6rem; height: .6rem; border-radius: 3px; flex-shrink: 0; background: {{ r.sq }};"></span>
+              <span style="flex: 1; min-width: 0; font: 500 .875rem/1 var(--sans); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.sym }}</span>
+              <span style="font: 500 .75rem var(--mono); color: var(--ok);">held</span>
+            </a>
+          </sc-for>
+        </div>
+        </sc-if>
+        <div style="display: flex; flex-direction: column;">
+          <span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); padding: .35rem .7rem .55rem;">All · 8</span>
+          <sc-for list="{{ restRows }}" as="r" hint-placeholder-count="5">
+            <a href="#" onClick="{{ goApp }}" style="display: flex; align-items: center; gap: .6rem; padding: .6rem .7rem; min-height: 40px; color: {{ r.rowInk }}; border-radius: 9px; border-bottom: 0; background: {{ r.railBg }};" style-hover="background: var(--raised);">
+              <span style="width: .6rem; height: .6rem; border-radius: 3px; flex-shrink: 0; background: {{ r.sq }};"></span>
+              <span style="flex: 1; min-width: 0; font: 500 .875rem/1 var(--sans); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ r.sym }}</span>
+              <span style="font: 500 .75rem var(--mono); color: var(--dim);">{{ r.railV }}</span>
+            </a>
+          </sc-for>
+        </div>
+        <div style="margin-top: auto; padding-top: 1rem;">
+          <div style="display: flex; align-items: center; gap: .45rem; padding: .45rem .7rem; border-radius: 10px; background: var(--surface); font: .75rem var(--mono); color: var(--mut);"><span style="width: 6px; height: 6px; border-radius: 50%; background: {{ netDot }}; flex-shrink: 0;"></span><span>Robinhood Chain</span></div>
+        </div>
+      </aside>
+      </sc-if>
+
+      <div class="pd-view" style="padding: 2rem 1.75rem 2.5rem; min-width: 0;">
+
+        <!-- ================= Tokens ================= -->
+        <sc-if value="{{ isIndex }}" hint-placeholder-val="{{ true }}">
+        <section data-screen-label="Tokens" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;">
+            <div>
+              <h1 style="font: 600 2.25rem/1.05 var(--sans); letter-spacing: -.03em; margin: 0;">Tokens</h1>
+              <p style="color: var(--mut); margin: .6rem 0 0; max-width: 34rem; text-wrap: pretty;">Every token here pays its holders in tokenised stock, bought with its own trading fees. Every figure is read from the chain when you open the page.</p>
+            </div>
+          </div>
+
+          <sc-if value="{{ connected }}" hint-placeholder-val="{{ false }}">
+          <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem; display: flex; align-items: center; gap: 1rem 2rem; flex-wrap: wrap; box-shadow: inset 0 0 0 1px var(--okring);">
+            <div style="display: flex; flex-direction: column; gap: .35rem; flex: 1 1 14rem;">
+              <div style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Your position</div>
+              <div style="font: 500 1.5rem/1 var(--mono); letter-spacing: -.03em;">3 <span style="font: 500 .875rem var(--sans); color: var(--mut); letter-spacing: 0;">tokens held</span></div>
+              <div style="font-size: .78125rem; color: var(--mut); text-wrap: pretty;">What each one owes you is read from its payout root when you press the button; the launches past the delivery floor settle in one transaction that refunds its own gas, the rest from your wallet.</div>
+            </div>
+            <button type="button" style="display: flex; align-items: center; gap: .5rem; background: var(--ok); color: var(--on); border: 0; border-radius: 10px; padding: .7rem 1.1rem; min-height: 44px; font: 600 .875rem var(--sans); cursor: pointer;" style-hover="background: var(--okhover);">Collect everything</button>
+          </div>
+          </sc-if>
+
+          <div style="display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;">
+            <div style="display: flex; gap: .2rem; padding: .2rem; border-radius: 10px; background: var(--surface);">
+              <button type="button" onClick="{{ showCards }}" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; cursor: pointer; background: {{ cardsBg }}; color: {{ cardsInk }};" style-hover="color: var(--fg);">Cards</button>
+              <button type="button" onClick="{{ showTable }}" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; cursor: pointer; background: {{ tableBg }}; color: {{ tableInk }};" style-hover="color: var(--fg);">Table</button>
+            </div>
+            <sc-if value="{{ connected }}" hint-placeholder-val="{{ false }}">
+            <label style="display: inline-flex; align-items: center; gap: .45rem; font: 500 .78125rem var(--sans); color: var(--mut); padding: .35rem .6rem; border-radius: 10px; background: var(--surface); min-height: 32px; cursor: pointer;"><input type="checkbox" checked="{{ onlyYours }}" onChange="{{ toggleYours }}" style="margin: 0; accent-color: var(--ok);"> Yours</label>
+            </sc-if>
+            <label style="display: inline-flex; align-items: center; gap: .45rem; font: 500 .78125rem var(--sans); color: var(--mut); padding: .35rem .6rem; border-radius: 10px; background: var(--surface); min-height: 32px; cursor: pointer;"><input type="checkbox" checked="{{ onlyLive }}" onChange="{{ toggleLive }}" style="margin: 0; accent-color: var(--ok);"> Live only</label>
+            <span style="flex: 1;"></span>
+            <span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Sort</span>
+            <div style="display: flex; gap: .2rem; padding: .2rem; border-radius: 10px; background: var(--surface);">
+              <sc-for list="{{ sorts }}" as="s" hint-placeholder-count="3">
+                <button type="button" onClick="{{ s.run }}" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; cursor: pointer; white-space: nowrap; background: {{ s.bg }}; color: {{ s.ink }};" style-hover="color: var(--fg);">{{ s.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+
+          <sc-if value="{{ cardsView }}" hint-placeholder-val="{{ true }}">
+          <div data-screen-label="Tokens grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); gap: .75rem;">
+            <a href="#" onClick="{{ goCreate }}" style="border-radius: 14px; background: var(--surface); padding: 1.125rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: .875rem; container-type: inline-size; box-shadow: inset 0 0 0 1px var(--okring); color: var(--fg); border-bottom: 0; min-height: 13rem;" style-hover="background: var(--raised); color: var(--fg);">
+              <span style="width: 40px; height: 40px; border-radius: 10px; background: var(--ok); color: var(--on); display: flex; align-items: center; justify-content: center; font: 500 1.5rem/1 var(--sans);">+</span>
+              <span style="font: 600 1.0625rem/1.2 var(--sans); letter-spacing: -.02em;">Launch a token</span>
+              <span style="font-size: .8125rem; color: var(--mut); text-wrap: pretty; flex: 1;">Pons launches it. Payd pays your holders in tokenised stock, from the first trade.</span>
+              <span style="display: inline-flex; align-self: flex-start; align-items: center; padding: .55rem .9rem; min-height: 40px; border-radius: 10px; background: var(--ok); color: var(--on); font: 600 .8125rem var(--sans);">Start</span>
+            </a>
+            <sc-for list="{{ cardRows }}" as="c" hint-placeholder-count="7">
+              <a href="#" onClick="{{ goApp }}" style="border-radius: 14px; background: var(--surface); padding: 1.125rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: .875rem; container-type: inline-size; color: var(--fg); border-bottom: 0; opacity: {{ c.opacity }}; box-shadow: inset 0 0 0 1px {{ c.ring }};" style-hover="background: var(--raised); color: var(--fg);">
+                <div style="display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;">
+                  <span style="width: 40px; height: 40px; border-radius: 10px; background: var(--raised); display: flex; align-items: center; justify-content: center; font: 600 .75rem var(--sans); color: var(--ok); flex-shrink: 0;">{{ c.fallback }}</span>
+                  <div style="display: flex; flex-direction: column; gap: .15rem; min-width: 0; flex: 1 1 8rem;">
+                    <div style="display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap;"><span style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.02em;">{{ c.sym }}</span><span style="font: .625rem var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--dim);">{{ c.modeTag }}</span></div>
+                    <span style="font: .75rem var(--mono); color: var(--dim);">{{ c.age }}</span>
+                  </div>
+                  <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}">
+                    <span style="font: 500 .625rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; padding: .36rem .5rem; border-radius: 6px; background: var(--raised); color: {{ c.pillInk }}; white-space: nowrap;">{{ c.badge }}</span>
+                  </sc-if>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: .3rem;">
+                  <span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Paid to holders</span>
+                  <span style="font: 500 clamp(1.25rem, 11cqw, 2rem)/1 var(--mono); letter-spacing: -.03em; overflow-wrap: anywhere; color: {{ c.figInk }};">{{ c.paid }}</span>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding-top: .75rem; border-top: 1px solid var(--hair);">
+                  <span style="font-size: .8125rem; color: var(--mut);">{{ c.secondaryK }}</span>
+                  <span style="font: 500 .875rem var(--mono); color: {{ c.secondaryInk }};">{{ c.secondaryV }}</span>
+                </div>
+              </a>
+            </sc-for>
+          </div>
+          </sc-if>
+          <sc-if value="{{ tableView }}" hint-placeholder-val="{{ false }}">
+          <div style="background: var(--surface); border-radius: 14px; overflow: hidden;">
+            <table class="pd-tbl" style="width: 100%; border-collapse: separate; border-spacing: 0; font-size: .8125rem;">
+              <thead><tr>
+                <th style="text-align: left; font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); border: 0; padding: .75rem 1.375rem .8rem; white-space: nowrap;">Token</th>
+                <th style="text-align: left; font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); border: 0; padding: .75rem 1.375rem .8rem; white-space: nowrap;">Fees</th>
+                <th style="text-align: right; font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); border: 0; padding: .75rem 1.375rem .8rem; white-space: nowrap;">To holders, of a trade</th>
+                <th style="text-align: right; font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); border: 0; padding: .75rem 1.375rem .8rem; white-space: nowrap;">{{ yoursHead }}</th>
+                <th style="border: 0; padding: .75rem .75rem .8rem; width: 1%;"></th>
+              </tr></thead>
+              <tbody>
+                <sc-for list="{{ tableRows }}" as="r" hint-placeholder-count="8">
+                <tr class="row" onClick="{{ r.toggle }}" style="cursor: pointer; background: {{ r.bg }};" style-hover="background: var(--raised);">
+                  <td class="c-vault" style="border: 0; border-top: 1px solid var(--hair); padding: 1rem 1.375rem; color: {{ r.rowInk }};"><span style="font: 600 1rem/1 var(--sans); letter-spacing: -.02em;">{{ r.sym }}</span><span style="font: .625rem var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--ok); margin-left: .5rem;">{{ r.heldChip }}</span><span style="font: .625rem var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--dim); margin-left: .5rem;">{{ r.mode }}</span></td>
+                  <td class="c-status" style="border: 0; border-top: 1px solid var(--hair); padding: 1rem 1.375rem;"><span style="display: inline-flex; align-items: center; gap: .45rem; font: 500 .75rem var(--sans); color: {{ r.pillInk }}; white-space: nowrap;"><span style="width: .5rem; height: .5rem; border-radius: 2px; background: {{ r.sq }};"></span>{{ r.status }}</span></td>
+                  <td class="c-rate" style="border: 0; border-top: 1px solid var(--hair); padding: 1rem 1.375rem; text-align: right; font: 500 .9375rem var(--mono); color: var(--fg);">{{ r.rate }}</td>
+                  <td class="c-yours" style="border: 0; border-top: 1px solid var(--hair); padding: 1rem 1.375rem; text-align: right; font: 500 .9375rem var(--mono); color: {{ r.yoursInk }};">{{ r.yours }}</td>
+                  <td class="c-chev" style="border: 0; border-top: 1px solid var(--hair); padding: 1rem .75rem 1rem 0; color: var(--dim);"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" style="stroke: currentColor; transform: {{ r.chev }};"><path d="M2 4l3 3 3-3" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></td>
+                </tr>
+                <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
+                <tr class="more"><td colSpan="5" style="border: 0; padding: 0 1.375rem 1.125rem; background: var(--raised);">
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: .75rem 1.5rem; padding-top: 1rem;">
+                    <div style="display: flex; flex-direction: column; gap: .2rem;"><span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Creator / platform</span><span style="font: 500 .9375rem var(--mono);">— / —</span></div>
+                    <div style="display: flex; flex-direction: column; gap: .2rem;"><span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Waiting to buy</span><span style="font: 500 .9375rem var(--mono);">— ETH</span></div>
+                    <div style="display: flex; flex-direction: column; gap: .2rem;"><span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Payout</span><span style="font-size: .8125rem; color: var(--mut);">{{ r.modeNote }}</span></div>
+                    <div style="display: flex; flex-direction: column; gap: .2rem;"><span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Status</span><span style="font-size: .8125rem; color: var(--mut);">{{ r.statusNote }}</span></div>
+                  </div>
+                  <div style="display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem;">
+                    <a href="#" onClick="{{ goApp }}" style="display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .85rem; min-height: 36px; border: 0; border-radius: 10px; background: var(--ok); color: var(--on); font: 600 .8125rem var(--sans);">Open {{ r.sym }}</a>
+                    <span style="display: inline-flex; align-items: center; padding: .5rem .7rem; border-radius: 10px; background: var(--surface); color: var(--mut); font: .8125rem var(--mono);">{{ r.addr }}</span>
+                  </div>
+                </td></tr>
+                </sc-if>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          </sc-if>
+          <sc-if value="{{ partial }}" hint-placeholder-val="{{ false }}">
+          <p style="font-size: .78125rem; color: var(--mut); margin: 0; display: flex; gap: .5rem; align-items: baseline;"><span style="width: .5rem; height: .5rem; border-radius: 2px; background: var(--warn); align-self: center; flex-shrink: 0;"></span>1 launch did not answer and is not in this list — <a href="#">read it again</a></p>
+          </sc-if>
+        </section>
+        </sc-if>
+
+        <!-- ================= $PAYD ================= -->
+        <sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="$PAYD" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem 2rem; flex-wrap: wrap;">
+            <div style="flex: 1 1 22rem; min-width: 0;">
+              <div style="display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap;">
+                <h1 style="font: 600 2.25rem/1.05 var(--sans); letter-spacing: -.03em; margin: 0;">$PAYD</h1>
+                <span style="font: 500 .625rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; padding: .36rem .5rem; border-radius: 6px; background: var(--raised); color: var(--mut);">— % a trade</span>
+                <span style="display: inline-flex; align-items: baseline; gap: .3rem .5rem; padding: .4rem .75rem; border-radius: 10px; background: var(--raised); box-shadow: inset 0 0 0 1px var(--okring);"><span style="font: 500 .5625rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--dim);">Epoch</span><span style="font: 500 .8125rem/1 var(--mono); color: var(--fg);">—</span><span style="font: 500 .5625rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--dim); margin-left: .3rem;">closes in</span><span style="font: 500 .8125rem/1 var(--mono); color: var(--ok);">—</span></span>
+              </div>
+              <p data-screen-label="status sentence" style="margin: .75rem 0 0; display: flex; align-items: baseline; gap: .55rem; font-size: .9375rem; color: var(--fg); text-wrap: pretty;"><span style="width: .55rem; height: .55rem; border-radius: 2px; background: {{ hookSq }}; flex-shrink: 0; align-self: center;"></span><span><b style="font-weight: 600; color: {{ hookInk }};">{{ hookLabel }}</b> <span style="color: var(--mut);">{{ hookNote }}</span></span></p>
+              <div style="display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin-top: .875rem;">
+                <button type="button" title="Copy the token's address" style="display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .7rem; min-height: 36px; border: 0; border-radius: 10px; background: var(--surface); color: var(--mut); font: .8125rem var(--mono); cursor: pointer;" style-hover="background: var(--raised); color: var(--fg);"><span>0xc8D2…CB3a</span>
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="4.5" y="4.5" width="8" height="8" rx="1.6" stroke="currentColor" stroke-width="1.3"></rect><path d="M9.5 4.5v-1a1.6 1.6 0 0 0-1.6-1.6H3.1A1.6 1.6 0 0 0 1.5 3.5v4.8a1.6 1.6 0 0 0 1.6 1.6h1" stroke="currentColor" stroke-width="1.3"></path></svg>
+                </button>
+                <a href="https://www.ponsfamily.com/launchpad/" rel="noopener" target="_blank" style="display: inline-flex; align-items: center; gap: .4rem; padding: .45rem .8rem; min-height: 36px; border: 0; border-radius: 10px; background: var(--raised); color: var(--fg); font: 600 .8125rem var(--sans);" style-hover="background: var(--surface); color: var(--fg);">Buy on Pons
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 9 9 3M4.2 3H9v4.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </a>
+                <a href="https://gmgn.ai/robinhood/token/0xc8d259fb" style="display: inline-flex; align-items: center; padding: .45rem .7rem; min-height: 36px; border: 0; border-radius: 10px; background: var(--surface); color: var(--mut); font: 500 .8125rem var(--sans);">gmgn</a>
+                <a href="https://fomo.family/tokens/robinhood/" style="display: inline-flex; align-items: center; padding: .45rem .7rem; min-height: 36px; border: 0; border-radius: 10px; background: var(--surface); color: var(--mut); font: 500 .8125rem var(--sans);">fomo</a>
+                <a href="https://axiom.trade/token/" style="display: inline-flex; align-items: center; padding: .45rem .7rem; min-height: 36px; border: 0; border-radius: 10px; background: var(--surface); color: var(--mut); font: 500 .8125rem var(--sans);">axiom</a>
+              </div>
+            </div>
+            <!-- the collect card: first viewport, every screen -->
+            <div data-screen-label="collect card" style="flex: 0 1 20rem; min-width: min(100%, 16rem); border-radius: 14px; background: var(--surface); padding: 1.125rem 1.25rem; display: flex; flex-direction: column; gap: .5rem; box-shadow: inset 0 0 0 1px {{ collectRing }};">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; gap: .75rem;"><span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Yours right now</span><span style="font: .6875rem var(--mono); color: var(--dim);">{{ yoursAcct }}</span></div>
+              <div style="font: 500 1.75rem/1 var(--mono); letter-spacing: -.03em; color: {{ yoursInk }};">{{ yoursFig }}</div>
+              <div style="font-size: .78125rem; color: var(--mut); text-wrap: pretty;">{{ yoursNote }}</div>
+              <button type="button" disabled="{{ collectDisabled }}" style="margin-top: .35rem; width: 100%; font: 600 .875rem var(--sans); padding: .7rem 1rem; min-height: 44px; border: 0; border-radius: 10px; background: {{ collectBg }}; color: {{ collectInk }}; cursor: pointer;">{{ collectLabel }}</button>
+            </div>
+          </div>
+
+          <div class="pd-kpis" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: .875rem;">
+            <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .35rem;"><div style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">To holders</div><div style="font: 500 clamp(.875rem, 13cqw, 1.75rem)/1 var(--mono); letter-spacing: -.03em;">—</div><div style="font-size: .78125rem; color: var(--mut);">of every trade, in stock</div></div>
+            <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .35rem;"><div style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Rewards reserve</div><div style="font: 500 clamp(.875rem, 13cqw, 1.75rem)/1 var(--mono); letter-spacing: -.03em; color: {{ zeroInk }};">{{ reserveFig }}</div><div style="font-size: .78125rem; color: var(--mut);">{{ reserveNote }}</div></div>
+            <sc-if value="{{ partial }}" hint-placeholder-val="{{ false }}">
+            <div data-screen-label="KPI: read failed" style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .35rem; box-shadow: inset 0 0 0 1px var(--edge);"><div style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Handed to holders</div><div style="font: 500 1rem/1.2 var(--sans); color: var(--mut);">could not read</div><div style="font-size: .78125rem; color: var(--mut);">the node did not answer <code style="font-family: var(--mono);">quoteSpent</code> · <a href="#">try again</a></div></div>
+            </sc-if>
+            <sc-if value="{{ notPartial }}" hint-placeholder-val="{{ true }}">
+            <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .35rem;"><div style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Handed to holders</div><div style="font: 500 clamp(.875rem, 13cqw, 1.75rem)/1 var(--mono); letter-spacing: -.03em; color: {{ zeroInk }};">{{ handedFig }}</div><div style="font-size: .78125rem; color: var(--mut);">ETH already turned into stock</div></div>
+            </sc-if>
+            <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .35rem;"><div style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">To harvest</div><div style="font: 500 clamp(.875rem, 13cqw, 1.75rem)/1 var(--mono); letter-spacing: -.03em; color: {{ zeroInk }};">{{ harvestFig }}</div><div style="font-size: .78125rem; color: var(--mut);">sitting at Pons, anyone can collect it</div></div>
+          </div>
+
+          <sc-if value="{{ unknownMode }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="unknown payout mode" style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .5rem; border-left: 2px solid var(--warn);">
+            <div style="font: 600 1rem var(--sans); letter-spacing: -.015em;">A payout mode this build does not know</div>
+            <p style="margin: 0; font-size: .8125rem; color: var(--mut); text-wrap: pretty;">The registry answers a mode id this version of the app cannot read, so it will not draw a claim table it cannot vouch for. The fees, the split and the address above are FeeVault reads and stay exact. <a href="https://robinhoodchain.blockscout.com">Open the payout on the explorer</a>, or reload once a newer build is pinned.</p>
+            <code style="font: .75rem var(--mono); color: var(--dim);">Payd.modeOf → 0x…</code>
+          </div>
+          </sc-if>
+
+          <div style="display: flex; align-items: baseline; gap: 1rem; margin: .5rem 0 0; flex-wrap: wrap;"><h2 style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.015em; margin: 0;">Where this launch's fees go</h2><span style="font: .75rem var(--mono); color: var(--dim);">fixed at creation, never raisable</span></div>
+          <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .75rem;">
+            <div style="display: flex; height: 44px; border-radius: 10px; overflow: hidden; background: var(--raised);"></div>
+            <div style="display: flex; align-items: baseline; gap: .4rem .875rem; flex-wrap: wrap; font-size: .78125rem;">
+              <span style="display: inline-flex; align-items: baseline; gap: .45rem; color: var(--mut);"><span style="width: .55rem; height: .55rem; border-radius: 2px; background: var(--ok); align-self: center;"></span>holders, in stock <span style="font: 500 .78125rem var(--mono); color: var(--fg);">—</span></span>
+              <span style="display: inline-flex; align-items: baseline; gap: .45rem; color: var(--mut);"><span style="width: .55rem; height: .55rem; border-radius: 2px; background: var(--mut); align-self: center;"></span>the creator <span style="font: 500 .78125rem var(--mono); color: var(--fg);">—</span></span>
+              <span style="display: inline-flex; align-items: baseline; gap: .45rem; color: var(--mut);"><span style="width: .55rem; height: .55rem; border-radius: 2px; background: var(--dim); align-self: center;"></span>the platform <span style="font: 500 .78125rem var(--mono); color: var(--fg);">—</span></span>
+              <span style="color: var(--dim); padding-left: .75rem; border-left: 1px solid var(--edge);">of a trade <span style="font: 500 .78125rem var(--mono); color: var(--mut);">—</span></span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: baseline; gap: 1rem; margin: .5rem 0 0; flex-wrap: wrap;"><h2 style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.015em; margin: 0;">The basket</h2><span style="font: .75rem var(--mono); color: var(--dim);">bought whole, every epoch, each by its weight</span></div>
+          <div style="display: flex; flex-wrap: wrap; gap: .375rem;">
+            <sc-for list="{{ basket }}" as="b" hint-placeholder-count="5">
+              <div style="position: relative; flex: 1 1 7rem; min-width: 0; display: flex; align-items: center; gap: .5rem; height: 2rem; padding: 0 .625rem; border-radius: 10px; background: var(--raised); overflow: hidden;">
+                <span style="position: absolute; inset: 0 auto 0 0; width: {{ b.w }}; background: var(--oktint);"></span>
+                <span style="position: relative; font: 500 .8125rem var(--sans); white-space: nowrap;">{{ b.sym }}</span>
+                <span style="position: relative; margin-left: auto; font: 500 .75rem var(--mono); color: var(--ok); white-space: nowrap;">{{ b.pct }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ knownMode }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; align-items: baseline; gap: 1rem; margin: .5rem 0 0; flex-wrap: wrap;"><h2 style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.015em; margin: 0;">Your stocks</h2><span style="font: .75rem var(--mono); color: var(--dim);">{{ stocksHint }}</span></div>
+          <div style="border-radius: 14px; background: var(--surface); overflow: hidden;">
+            <sc-if value="{{ connected }}" hint-placeholder-val="{{ true }}">
+            <div class="pd-cells" style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: .5rem; padding: 1.125rem 1.375rem;">
+              <sc-for list="{{ basket }}" as="b" hint-placeholder-count="5">
+                <div style="display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .2rem .5rem; padding: .6rem .7rem .7rem; border-radius: 10px; background: var(--bg); box-shadow: inset 0 0 0 1px {{ cellRing }};">
+                  <input type="checkbox" checked="{{ cellChecked }}" style="margin: 0; accent-color: var(--ok);">
+                  <span style="font: 600 .875rem/1 var(--sans); letter-spacing: -.01em;">{{ b.sym }}</span>
+                  <span style="font: 500 .875rem var(--mono); color: {{ cellInk }}; text-align: right;">{{ cellFig }}</span>
+                  <span style="grid-column: 1 / -1; height: 3px; border-radius: 2px; background: var(--hair);"></span>
+                  <span style="grid-column: 1 / -1; font: .6875rem var(--mono); color: var(--dim);">{{ cellNote }}</span>
+                </div>
+              </sc-for>
+            </div>
+            </sc-if>
+            <sc-if value="{{ notConnected }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 2rem 1.5rem; display: flex; flex-direction: column; align-items: center; gap: .75rem; text-align: center;">
+              <p style="margin: 0; font-size: .9375rem; color: var(--mut); max-width: 34rem; text-wrap: pretty;">Connect a wallet, or type any address in the Connect menu, to see what it is owed here. Looking costs nothing; only collecting needs a signature.</p>
+              <button type="button" onClick="{{ toggleMenu }}" style="font: 500 .875rem var(--sans); padding: .6rem 1.125rem; min-height: 44px; border: 0; border-radius: 8px; background: var(--ok); color: var(--on); cursor: pointer;">Connect</button>
+            </div>
+            </sc-if>
+            <div style="display: flex; align-items: center; gap: 1.25rem; padding: 1rem 1.375rem; background: var(--raised); flex-wrap: wrap;">
+              <div style="display: flex; flex-direction: column; gap: .15rem;"><span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Selected</span><span style="font: 500 1.125rem/1 var(--mono);">{{ selCount }}</span></div>
+              <div style="display: flex; flex-direction: column; gap: .15rem;"><span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Covered through</span><span style="font: 500 1.125rem/1 var(--mono);">—</span></div>
+              <div style="flex: 1;"></div>
+              <span style="font: .75rem var(--mono); color: var(--dim); text-align: right; max-width: 20rem;">one transfer per stock · gas refunded past the delivery floor</span>
+            </div>
+          </div>
+          </sc-if>
+
+          <div style="display: flex; gap: .2rem; padding: .2rem; border-radius: 10px; background: var(--surface); align-self: flex-start;">
+            <button type="button" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; cursor: pointer; background: var(--raised); color: var(--fg);">Simple</button>
+            <button type="button" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; cursor: pointer; background: transparent; color: var(--mut);">Advanced — epochs, pushes, addresses, how it works</button>
+          </div>
+        </section>
+        </sc-if>
+
+        <!-- ================= Launch ================= -->
+        <sc-if value="{{ isCreate }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="Launch" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div>
+            <h1 style="font: 600 2.25rem/1.05 var(--sans); letter-spacing: -.03em; margin: 0;">Launch a token</h1>
+            <p style="color: var(--mut); margin: .6rem 0 0; max-width: 36rem; text-wrap: pretty;">{{ launchIntro }}</p>
+          </div>
+
+          <!-- step cards -->
+          <sc-if value="{{ oneShot }}" hint-placeholder-val="{{ true }}">
+          <div data-screen-label="one transaction" style="border-radius: 14px; background: var(--surface); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem 1.5rem; flex-wrap: wrap; box-shadow: inset 0 0 0 1px var(--okring);">
+            <span style="font: 500 .6875rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ok);">01 · you, once</span>
+            <span style="font: 500 .9375rem var(--sans);">Create the payout, launch on Pons and point the fees at it</span>
+            <span style="flex: 1;"></span>
+            <code style="font: .7rem var(--mono); color: var(--dim);">{{ createCall }} · PonsV2.launchToken · FeeVault.bind</code>
+          </div>
+          </sc-if>
+          <sc-if value="{{ threeShot }}" hint-placeholder-val="{{ false }}">
+          <div class="pd-steps" data-screen-label="three signatures" style="display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: .875rem;">
+            <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+              <div style="border-radius: 14px; background: var(--surface); padding: .875rem 1rem; display: flex; flex-direction: column; gap: .35rem; box-shadow: inset 0 0 0 1px {{ s.ring }}; opacity: {{ s.opacity }};">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: .5rem;"><span style="font: 500 .6875rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: {{ s.tagInk }};">{{ s.tag }}</span><span style="font: .6875rem var(--mono); color: var(--dim);">{{ s.who }}</span></div>
+                <div style="font: 500 .875rem var(--sans);">{{ s.label }}</div>
+                <p style="margin: 0; font-size: .78125rem; line-height: 1.5; color: var(--mut);">{{ s.n }}</p>
+                <code style="font: .7rem var(--mono); color: var(--dim);">{{ s.call }}</code>
+              </div>
+            </sc-for>
+          </div>
+          </sc-if>
+
+          <div class="pd-cols" style="display: flex; gap: .875rem; align-items: flex-start; flex-wrap: wrap;">
+            <div style="flex: 1 1 24rem; min-width: 0; display: flex; flex-direction: column; gap: .875rem;">
+
+              <sc-if value="{{ stage1 }}" hint-placeholder-val="{{ true }}">
+              <!-- 1 · the token -->
+              <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem 1.375rem;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap;"><div style="font: 500 .875rem var(--sans);">The token</div><span style="font: .75rem var(--mono); color: var(--dim);">written into it for good</span></div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: .75rem; margin-top: .875rem;">
+                  <label style="display: block; font: .8125rem var(--sans); color: var(--mut);">Name<input value="{{ name }}" onInput="{{ setName }}" maxLength="64" placeholder="Payd Protocol" style="width: 100%; margin-top: .3rem; font: .9375rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .6rem .7rem; min-height: 44px; outline: 0;" style-focus="box-shadow: inset 0 0 0 1px var(--edge);"></label>
+                  <label style="display: block; font: .8125rem var(--sans); color: var(--mut);">Ticker<input value="{{ ticker }}" onInput="{{ setTicker }}" maxLength="16" placeholder="PAYD" style="width: 100%; margin-top: .3rem; font: .9375rem var(--mono); text-transform: uppercase; background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .6rem .7rem; min-height: 44px; outline: 0;" style-focus="box-shadow: inset 0 0 0 1px var(--edge);"></label>
+                </div>
+              </div>
+
+              <!-- 2 · the payout mode -->
+              <div data-screen-label="payout mode" style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem 1.375rem;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap;"><div style="font: 500 .875rem var(--sans);">How holders are paid <span style="color: var(--dim); font-weight: 400;">— the payout mode</span></div><span style="font: .75rem var(--mono); color: var(--dim);">the fee pipe is the same under all five</span></div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); gap: .4rem; margin-top: 1rem;">
+                  <sc-for list="{{ modes }}" as="m" hint-placeholder-count="5">
+                    <button type="button" onClick="{{ m.pick }}" aria-pressed="{{ m.on }}" style="display: flex; flex-direction: column; gap: .3rem; text-align: left; min-height: 44px; padding: .7rem .8rem; border: 0; border-radius: 9px; background: {{ m.bg }}; color: var(--fg); cursor: pointer; box-shadow: inset 0 0 0 1px {{ m.ring }};" style-hover="background: var(--raised);">
+                      <span style="display: flex; align-items: baseline; gap: .5rem;"><span style="font: 500 .875rem var(--sans); color: {{ m.ink }};">{{ m.name }}</span><span style="font: .625rem var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--ok);">{{ m.tag }}</span></span>
+                      <span style="font-size: .78125rem; line-height: 1.45; color: var(--mut); text-wrap: pretty;">{{ m.line }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ modeTontine }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--hair);">
+                  <span style="font: .8125rem var(--mono); color: var(--mut);">burnt</span><input type="number" value="0" min="0" max="50" style="width: 5rem; min-height: 44px; font: 500 1.125rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .6rem;"><span style="font: .8125rem var(--mono); color: var(--mut);">%</span>
+                  <span style="font: .8125rem var(--mono); color: var(--mut); margin-left: .5rem;">locked as liquidity</span><input type="number" value="0" min="0" max="50" style="width: 5rem; min-height: 44px; font: 500 1.125rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .6rem;"><span style="font: .8125rem var(--mono); color: var(--mut);">%</span>
+                </div>
+                <p style="margin: .6rem 0 0; font-size: .78125rem; line-height: 1.55; color: var(--mut); text-wrap: pretty;">Both come out of the holders' share, never yours or the platform's. A leg is off or at least 5 %, and the two together never exceed 50 %.</p>
+                </sc-if>
+                <sc-if value="{{ modeLottery }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--hair);">
+                  <span style="font: .8125rem var(--mono); color: var(--mut);">paid to the winner of each draw</span><input type="number" value="20" min="5" max="50" style="width: 5rem; min-height: 44px; font: 500 1.125rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .6rem;"><span style="font: .8125rem var(--mono); color: var(--mut);">% of the pot</span>
+                </div>
+                <p style="margin: .6rem 0 0; font-size: .78125rem; line-height: 1.55; color: var(--mut); text-wrap: pretty;">Between 5 % and 50 %. The draw comes from a public randomness beacon nobody here controls; holding longer buys more tickets.</p>
+                </sc-if>
+              </div>
+
+              <!-- 3 · the basket -->
+              <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem 1.375rem;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                  <div style="font: 500 .875rem var(--sans);">The basket <span style="color: var(--dim); font-weight: 400;">— what the fees buy</span></div>
+                  <span style="font: .75rem var(--mono); color: {{ basketInk }};">{{ basketSum }}</span>
+                </div>
+                <div style="font: .75rem var(--mono); color: var(--dim); margin-top: .3rem;">pick 2 to 8 · the split evens itself · pool tier and price feed come from the timelock's allowlist</div>
+                <div style="display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1rem;">
+                  <sc-for list="{{ listed }}" as="l" hint-placeholder-count="12">
+                    <button type="button" onClick="{{ l.toggle }}" aria-pressed="{{ l.on }}" style="display: inline-flex; align-items: baseline; gap: .45rem; min-height: 40px; padding: .5rem .8rem; border: 0; border-radius: 9px; background: {{ l.bg }}; color: {{ l.ink }}; font: 500 .875rem var(--sans); cursor: pointer; box-shadow: inset 0 0 0 1px {{ l.ring }};" style-hover="color: var(--fg);">{{ l.sym }}<span style="font: .65rem var(--mono); color: var(--dim);">{{ l.tier }}</span></button>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ hasPicks }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; flex-wrap: wrap; gap: .375rem; margin-top: 1rem;">
+                  <sc-for list="{{ picked }}" as="p" hint-placeholder-count="3">
+                    <div style="position: relative; flex: 1 1 7rem; min-width: 0; display: flex; align-items: center; gap: .5rem; height: 2rem; padding: 0 .625rem; border-radius: 10px; background: var(--raised); overflow: hidden;">
+                      <span style="position: absolute; inset: 0 auto 0 0; width: {{ p.w }}; background: var(--oktint);"></span>
+                      <span style="position: relative; font: 500 .8125rem var(--sans);">{{ p.sym }}</span>
+                      <span style="position: relative; margin-left: auto; font: 500 .75rem var(--mono); color: var(--ok);">{{ p.pct }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: .875rem; padding-top: .875rem; border-top: 1px solid var(--hair);">
+                  <span style="font: .75rem var(--mono); color: var(--dim);">each at least 10 % · adds up to exactly 100 %</span>
+                  <button type="button" onClick="{{ toggleWeights }}" style="font: 500 .75rem var(--sans); padding: .4rem .6rem; min-height: 32px; border: 0; border-radius: 6px; background: var(--raised); color: var(--mut); cursor: pointer;" style-hover="color: var(--fg);">{{ weightsLabel }}</button>
+                </div>
+                <sc-if value="{{ weightsOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="display: grid; gap: .4rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr)); margin-top: .75rem;">
+                  <sc-for list="{{ picked }}" as="p" hint-placeholder-count="3">
+                    <label style="display: flex; align-items: center; gap: .5rem; background: var(--bg); border-radius: 9px; padding: .45rem .6rem; font-size: .875rem;"><span style="font-weight: 500; flex: 1;">{{ p.sym }}</span><input type="number" value="{{ p.num }}" min="10" max="100" step="0.01" style="width: 4.5rem; min-height: 36px; font: .8125rem var(--mono); text-align: right; background: var(--raised); color: var(--fg); border: 0; border-radius: 6px; padding: .25rem .4rem;"><span style="font: .7rem var(--mono); color: var(--mut);">%</span></label>
+                  </sc-for>
+                  <p style="grid-column: 1 / -1; margin: .25rem 0 0; font: .75rem var(--mono); color: var(--dim);">editing a weight never re-evens the split; ticking a stock does</p>
+                </div>
+                </sc-if>
+                </sc-if>
+              </div>
+
+              <!-- 4 · set for you -->
+              <div data-screen-label="set for you" style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem .5rem;">
+                <div style="font: 500 .875rem var(--sans);">Set for you <span style="color: var(--dim); font-weight: 400;">— change any of it</span></div>
+                <div style="font: .75rem var(--mono); color: var(--dim); margin-top: .3rem;">all of it is fixed at birth; none of it has a settings page</div>
+                <div style="display: flex; flex-direction: column; margin-top: .5rem;">
+                  <sc-for list="{{ defaults }}" as="d" hint-placeholder-count="9">
+                    <div style="border-top: 1px solid var(--hair);">
+                      <button type="button" onClick="{{ d.toggle }}" aria-expanded="{{ d.open }}" style="display: flex; align-items: baseline; gap: .75rem; width: 100%; padding: .75rem 0; min-height: 44px; border: 0; background: none; color: var(--fg); text-align: left; cursor: pointer; font: .875rem var(--sans);">
+                        <span style="flex: 1; color: var(--mut);">{{ d.k }}</span>
+                        <span style="font: 500 .875rem var(--mono); color: {{ d.vInk }};">{{ d.v }}</span>
+                        <span style="font: .75rem var(--mono); color: var(--dim); min-width: 3.4rem; text-align: right;">{{ d.action }}</span>
+                      </button>
+                      <sc-if value="{{ d.open }}" hint-placeholder-val="{{ false }}">
+                      <div style="padding: 0 0 1rem; display: flex; flex-direction: column; gap: .6rem;">
+                        <div style="display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;">
+                          <sc-if value="{{ d.isNumber }}" hint-placeholder-val="{{ true }}"><input type="number" value="{{ d.num }}" min="{{ d.min }}" max="{{ d.max }}" step="{{ d.step }}" style="flex: 0 0 7rem; width: 7rem; min-height: 44px; font: 500 1.125rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .6rem;"><span style="font: .8125rem var(--mono); color: var(--mut);">{{ d.unit }}</span></sc-if>
+                          <sc-if value="{{ d.isRange }}" hint-placeholder-val="{{ false }}"><input type="range" value="{{ d.num }}" min="{{ d.min }}" max="{{ d.max }}" step="1" style="flex: 1; min-width: 9rem; accent-color: var(--ok);"></sc-if>
+                          <sc-if value="{{ d.isSelect }}" hint-placeholder-val="{{ false }}"><select style="flex: 1; min-height: 44px; font: .875rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .55rem;"><option>native ETH</option><option>USDG — 0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168</option></select></sc-if>
+                          <sc-if value="{{ d.isText }}" hint-placeholder-val="{{ false }}"><input type="text" placeholder="{{ d.placeholder }}" style="flex: 1; min-width: 12rem; min-height: 44px; font: .875rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .7rem;"></sc-if>
+                          <sc-if value="{{ d.isLegs }}" hint-placeholder-val="{{ false }}">
+                            <span style="font: .8125rem var(--mono); color: var(--mut);">burnt</span><input type="number" value="0" min="0" max="50" style="width: 5rem; min-height: 44px; font: 500 1.125rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .6rem;"><span style="font: .8125rem var(--mono); color: var(--mut);">%</span>
+                            <span style="font: .8125rem var(--mono); color: var(--mut); margin-left: .5rem;">locked as liquidity</span><input type="number" value="0" min="0" max="50" style="width: 5rem; min-height: 44px; font: 500 1.125rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .6rem;"><span style="font: .8125rem var(--mono); color: var(--mut);">%</span>
+                          </sc-if>
+                          <sc-if value="{{ d.isLinks }}" hint-placeholder-val="{{ false }}">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: .5rem; flex: 1;">
+                              <input type="text" placeholder="Website — https://paydprotocol.eth.limo/app/?token=…" style="min-height: 44px; font: .8125rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .7rem;">
+                              <input type="text" placeholder="X — https://x.com/…" style="min-height: 44px; font: .8125rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .7rem;">
+                              <input type="text" placeholder="Telegram — https://t.me/…" style="min-height: 44px; font: .8125rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .7rem;">
+                            </div>
+                          </sc-if>
+                        </div>
+                        <p style="margin: 0; font-size: .78125rem; line-height: 1.55; color: var(--mut); text-wrap: pretty; max-width: 40rem;">{{ d.note }}</p>
+                      </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ stageDone1 }}" hint-placeholder-val="{{ false }}">
+              <div style="border-radius: 14px; background: var(--surface); padding: 1rem 1.375rem; display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap;">
+                <span style="font: 500 .6875rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ok);">01 · done</span>
+                <span style="font-size: .875rem;">Payout prepared at <span style="font-family: var(--mono); color: var(--mut);">0x… (this session's)</span></span>
+                <span style="flex: 1;"></span>
+                <button type="button" onClick="{{ reopen1 }}" style="font: .75rem var(--mono); border: 0; background: none; color: var(--dim); cursor: pointer; padding: 0;" style-hover="color: var(--ok);">reopen · prepare another</button>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ stage2 }}" hint-placeholder-val="{{ false }}">
+              <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap;"><div style="font: 500 .875rem var(--sans);">02 · Launch on Pons</div><span style="font: .75rem var(--mono); color: var(--dim);">your second signature</span></div>
+                <div style="display: flex; flex-direction: column; gap: .45rem; margin-top: .875rem;">
+                  <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: .8125rem;"><span style="color: var(--mut);">Name · ticker</span><span style="font-family: var(--mono);">{{ nameShown }} · {{ tickerShown }}</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: .8125rem;"><span style="color: var(--mut);">Creator wallet</span><span style="font-family: var(--mono); color: var(--ok);">your payout contract</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: .8125rem;"><span style="color: var(--mut);">Pair token</span><span style="font-family: var(--mono);">native ETH</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: .8125rem;"><span style="color: var(--mut);">Creator tax</span><span style="font-family: var(--mono);">3 %</span></div>
+                </div>
+                <p style="margin: .875rem 0 0; font-size: .78125rem; color: var(--mut); text-wrap: pretty;">The three fields bind checks are filled from the payout you just created, so they cannot be mistyped. Everything else is what you set above.</p>
+                <details style="margin-top: 1rem;">
+                  <summary style="cursor: pointer; font-size: .8125rem; color: var(--mut);">Launching on Pons's own site instead? — every value, ready to copy</summary>
+                  <table style="border-collapse: collapse; width: 100%; margin: .6rem 0 0; font-size: .8125rem;">
+                    <tbody>
+                      <tr><td style="padding: .4rem .4rem .4rem 0; border-bottom: 1px solid var(--hair); color: var(--mut); white-space: nowrap; width: 1%;">Creator wallet</td><td style="padding: .4rem; border-bottom: 1px solid var(--hair); font-family: var(--mono); color: var(--ok); font-weight: 600; word-break: break-all;">0x… the payout's address</td></tr>
+                      <tr><td style="padding: .4rem .4rem .4rem 0; border-bottom: 1px solid var(--hair); color: var(--mut); white-space: nowrap;">Pair token</td><td style="padding: .4rem; border-bottom: 1px solid var(--hair); font-family: var(--mono);">native ETH</td></tr>
+                      <tr><td style="padding: .4rem .4rem .4rem 0; border-bottom: 1px solid var(--hair); color: var(--mut); white-space: nowrap;">Creator tax</td><td style="padding: .4rem; border-bottom: 1px solid var(--hair); font-family: var(--mono);">3 (percent)</td></tr>
+                      <tr><td style="padding: .4rem .4rem .4rem 0; color: var(--mut); white-space: nowrap;">Website</td><td style="padding: .4rem; font-family: var(--mono); word-break: break-all;">https://paydprotocol.eth.limo/app/?token=0x…</td></tr>
+                    </tbody>
+                  </table>
+                  <p style="margin: .6rem 0 0; font-size: .78125rem; color: var(--mut);">Creator wallet is the one that cannot be repaired. Leave every other field of theirs alone.</p>
+                </details>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ stage3 }}" hint-placeholder-val="{{ false }}">
+              <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem;">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap;"><div style="font: 500 .875rem var(--sans);">03 · Point the fees at it</div><span style="font: .75rem var(--mono); color: var(--dim);">anyone may send this</span></div>
+                <label style="display: block; font: .8125rem var(--sans); color: var(--mut); margin-top: .875rem;">The token to bind<input type="text" placeholder="0x… filled by itself if you launched above" style="width: 100%; margin-top: .3rem; min-height: 44px; font: .875rem var(--mono); background: var(--bg); color: var(--fg); border: 0; border-radius: 8px; padding: .45rem .7rem;"></label>
+                <p style="margin: .875rem 0 0; font-size: .78125rem; color: var(--mut); text-wrap: pretty;">Bind compares the Pons deployer with your payout's LAUNCHER, the creator wallet with the payout, and the pair token with the launch currency. The conditions are read before anything is sent, so a refusal names the one that gave way.</p>
+              </div>
+              </sc-if>
+            </div>
+
+            <!-- right, sticky -->
+            <div class="pd-right" style="flex: 1 1 18rem; min-width: 0; position: sticky; top: 1rem; display: flex; flex-direction: column; gap: .75rem;">
+              <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem 1.375rem;">
+                <div style="font: 500 .6875rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ok);">What a trade will pay</div>
+                <div style="display: flex; height: 40px; border-radius: 10px; overflow: hidden; margin-top: .875rem;"><i style="flex-grow: {{ holdersPct }}; background: var(--ok);"></i><i style="flex-grow: {{ creatorPct }}; background: var(--mut);"></i><i style="flex-grow: 3; background: var(--dim);"></i></div>
+                <div style="display: flex; flex-direction: column; gap: .45rem; margin-top: .875rem;">
+                  <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: .8125rem; align-items: baseline;"><span style="display: flex; align-items: center; gap: .5rem; color: var(--mut);"><span style="width: 8px; height: 8px; border-radius: 2px; background: var(--ok);"></span>to holders, in stock</span><span style="font-family: var(--mono); color: var(--fg);">{{ holdersPct }}.00 %</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: .8125rem; align-items: baseline;"><span style="display: flex; align-items: center; gap: .5rem; color: var(--mut);"><span style="width: 8px; height: 8px; border-radius: 2px; background: var(--mut);"></span>to you, the creator</span><span style="font-family: var(--mono); color: var(--fg);">the rest</span></div>
+                  <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: .8125rem; align-items: baseline;"><span style="display: flex; align-items: center; gap: .5rem; color: var(--mut);"><span style="width: 8px; height: 8px; border-radius: 2px; background: var(--dim);"></span>to the platform</span><span style="font-family: var(--mono); color: var(--fg);">— (read from the registry, ≤ 15 %)</span></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: .8125rem; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--hair);"><span style="font: 500 .6875rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--dim);">Of what this token collects</span><span style="font: 500 .8125rem var(--mono);">100.00 %</span></div>
+              </div>
+              <div style="border-radius: 14px; background: var(--surface); padding: 1.25rem 1.375rem 1.375rem;">
+                <div style="display: flex; flex-direction: column; gap: .5rem;">
+                  <sc-for list="{{ checks }}" as="c" hint-placeholder-count="4">
+                    <div style="display: flex; gap: .55rem; align-items: flex-start; font-size: .8125rem;"><span style="font: .6875rem var(--mono); color: {{ c.ink }}; flex-shrink: 0; width: .75rem;">{{ c.mark }}</span><span style="color: var(--mut); text-wrap: pretty;">{{ c.label }}</span></div>
+                  </sc-for>
+                </div>
+                <button type="button" onClick="{{ ctaRun }}" disabled="{{ ctaDisabled }}" style="width: 100%; margin-top: 1.125rem; font: 600 .9375rem var(--sans); padding: .75rem 1rem; min-height: 48px; border: 0; border-radius: 10px; background: {{ ctaBg }}; color: {{ ctaInk }}; cursor: pointer;">{{ ctaLabel }}</button>
+                <p style="margin: .75rem 0 0; font-size: .75rem; line-height: 1.55; color: var(--dim); text-wrap: pretty;">{{ ctaNote }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        </sc-if>
+
+        <sc-if value="{{ isOther }}" hint-placeholder-val="{{ false }}">
+        <section style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <h1 style="font: 600 2.25rem/1.05 var(--sans); letter-spacing: -.03em; margin: 0;">{{ otherTitle }}</h1>
+          <p style="color: var(--mut); margin: 0; max-width: 34rem; text-wrap: pretty;">{{ otherNote }}</p>
+        </section>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- phone: the one pinned action -->
+    <sc-if value="{{ barShown }}" hint-placeholder-val="{{ false }}">
+    <button class="pd-bar" type="button" style="display: none; align-items: center; justify-content: center; gap: .5rem; background: var(--ok); color: var(--on); border: 0; border-radius: 13px; padding: .95rem 1rem; min-height: 48px; font: 600 .875rem var(--sans); cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,.35);">{{ barLabel }}</button>
+    </sc-if>
+
+    <!-- phone: the switcher sheet -->
+    <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ toggleSheet }}" style="position: fixed; inset: 0; z-index: 40; background: var(--veil);"></div>
+    <div style="position: fixed; left: 0; right: 0; bottom: 0; z-index: 50; max-height: 80%; overflow-y: auto; background: var(--surface); border-radius: 26px 26px 0 0; padding: 1.125rem 1.125rem 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+      <span style="display: block; width: 2.5rem; height: 4px; border-radius: 999px; background: var(--edge); margin: 0 auto;"></span>
+      <div style="display: flex; align-items: baseline; gap: .5rem;"><b style="font: 600 1.0625rem/1 var(--sans);">Switch token</b><span style="font: .8125rem var(--mono); color: var(--dim);">8 tokens</span></div>
+      <sc-for list="{{ tableRows }}" as="r" hint-placeholder-count="8">
+        <a href="#" onClick="{{ goAppSheet }}" style="display: flex; align-items: center; gap: .6rem; padding: .6rem .7rem; min-height: 44px; color: var(--fg); border-radius: 9px; border-bottom: 0;">
+          <span style="width: .6rem; height: .6rem; border-radius: 3px; background: {{ r.sq }};"></span><span style="flex: 1; font: 500 .875rem/1 var(--sans);">{{ r.sym }}</span><span style="font: 500 .75rem var(--mono); color: var(--dim);">{{ r.railV }}</span>
+        </a>
+      </sc-for>
+    </div>
+    </sc-if>
+
+    <footer style="display: flex; justify-content: space-between; gap: 1.5rem; margin: 3rem 1.75rem 0; padding-top: 1.25rem; border-top: 1px solid var(--hair); font: .75rem/1.7 var(--mono); color: var(--dim); flex-wrap: wrap;">
+      <span>Payd Protocol · paydprotocol.eth</span>
+      <span style="display: flex; gap: .875rem; flex-wrap: wrap;"><a href="https://x.com/PaydRH" style="color: var(--mut); border: 0;">@PaydRH</a><a href="https://robinhoodchain.blockscout.com" style="color: var(--mut); border: 0;">explorer</a></span>
+    </footer>
+  </div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;\&quot;dark\&quot; | \&quot;light\&quot;&quot;,&quot;section&quot;:&quot;Brand&quot;},&quot;launchShape&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;one&quot;,&quot;three&quot;],&quot;default&quot;:&quot;one&quot;,&quot;tsType&quot;:&quot;\&quot;one\&quot; | \&quot;three\&quot;&quot;,&quot;section&quot;:&quot;Launch&quot;},&quot;scenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;connected&quot;,&quot;no-wallet&quot;,&quot;two-wallets&quot;,&quot;wrong-network&quot;,&quot;partial&quot;,&quot;redirected&quot;,&quot;unknown-mode&quot;,&quot;below-threshold&quot;,&quot;zero&quot;],&quot;default&quot;:&quot;connected&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;States&quot;},&quot;phone&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  state = { view: "index", mode: "distribution", list: "cards", onlyYours: false, onlyLive: true, filter: "All", sort: "Newest", openRow: null, picks: ["NVDA", "QQQ", "GLD"], weightsOpen: false, openDefault: null, name: "", ticker: "", stage: 1, menuOpen: false, sheetOpen: false };
+  renderVals() {
+    const p = this.props, s = this.state;
+    const scenario = p.scenario ?? "connected";
+    const shape = p.launchShape ?? "one";
+    const theme = p.theme ?? "dark";
+    const set = (patch) => () => this.setState(patch);
+    const v = s.view;
+    const go = (x) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ view: x, sheetOpen: false }); };
+
+    const noWallet = scenario === "no-wallet" || scenario === "two-wallets";
+    const connected = !noWallet;
+    const wrongNet = scenario === "wrong-network";
+    const partial = scenario === "partial";
+    const redirected = scenario === "redirected";
+    const unknownMode = scenario === "unknown-mode";
+    const below = scenario === "below-threshold";
+    const zero = scenario === "zero";
+    const menuOpen = scenario === "two-wallets" ? !s.menuClosed : s.menuOpen;
+    const walletRows = scenario === "two-wallets"
+      ? [{ name: "MetaMask", run: set({ menuOpen: false, menuClosed: true }) }, { name: "Phantom", run: set({ menuOpen: false, menuClosed: true }) }]
+      : connected ? [{ name: "Disconnect", run: set({ menuOpen: false }) }] : [{ name: "Connect the injected wallet", run: set({ menuOpen: false }) }];
+
+    // ---- rows (the app's ?mock fixture + $PAYD; figures are chain reads, shown as — )
+    const STATUS = {
+      0: ["not launched", "var(--dim)", "var(--edge)", "the payout contracts exist, the token has not been launched yet"],
+      1: ["collecting", "var(--ok)", "var(--ok)", "the creator fees from Pons arrive here every harvest"],
+      2: ["redirect scheduled", "var(--warn)", "var(--warn)", "Pons has proposed sending these fees elsewhere · effective — UTC"],
+      3: ["fees lost", "var(--bad)", "var(--bad)", "the fees no longer come here — what it already holds stays claimable"],
+    };
+    const MODE_NOTE = { "": "distribution — the fees buy the basket, every holder's share is theirs to collect", tontine: "tontine — the holders who stay share what the leavers left behind", backing: "backing — burn your tokens to take your share of the pot", lottery: "lottery — each draw pays its whole pot to one holder" };
+    const raw = [["PAYD", 1, "", true, "0x4DBA…8A64"], ["VOLT", 1, "", true, "0x…"], ["MESA", 0, "", false, "0x…"], ["KIRN", 2, "", true, "0x…"], ["ORBIT", 3, "", false, "0x…"], ["PALLAS", 1, "tontine", false, "0x…"], ["DRIFT", 1, "backing", false, "0x…"], ["SOL8", 1, "lottery", false, "0x…"]];
+    const KEEP = { All: () => true, Yours: (r) => r.held, Collecting: (r) => r.s === 1, Curve: (r) => r.s === 0 };
+    let rows = raw.map(([sym, st, mode, held, addr]) => {
+      const heldNow = connected && held;
+      return { sym, s: st, mode, held: heldNow, addr, status: STATUS[st][0], pillInk: STATUS[st][1], sq: STATUS[st][2], statusNote: STATUS[st][3],
+        modeNote: MODE_NOTE[mode], heldChip: heldNow ? "held" : "", rowInk: st === 0 ? "var(--dim)" : "var(--fg)",
+        rate: st === 0 ? "—" : "— %", yours: heldNow ? "—" : "—", yoursInk: heldNow ? "var(--ok)" : "var(--dim)",
+        railV: st === 0 ? "—" : "— %", railBg: sym === "PAYD" && v === "app" ? "var(--raised)" : "transparent",
+        open: s.openRow === sym, chev: s.openRow === sym ? "rotate(180deg)" : "none", bg: s.openRow === sym ? "var(--raised)" : "transparent",
+        toggle: () => this.setState({ openRow: s.openRow === sym ? null : sym }) };
+    });
+    const shown = rows.filter((r) => (!s.onlyYours || r.held) && (!s.onlyLive || r.s === 1 || r.s === 2));
+    const tableRows = s.sort === "Yours" ? [...shown].sort((a, b) => (a.held === b.held ? 0 : a.held ? -1 : 1)) : shown;
+    const PAID = "${{paid_usd}}", AGE = "{{age}} ago", OWED = "{{owed_usd}}";
+    const BADGE = { 0: "not launched", 2: "redirect scheduled", 3: "fees redirected" };
+    const cardRows = tableRows.map((r) => ({ ...r, fallback: r.sym.slice(0, 4), modeTag: r.mode || "distribution", age: r.s === 0 ? "on the curve" : AGE, badge: BADGE[r.s] || "", paid: r.s === 0 ? "—" : PAID,
+      figInk: r.s === 3 ? "var(--mut)" : "var(--fg)", opacity: r.s === 0 ? .6 : 1, ring: r.s === 3 ? "rgba(226,133,122,.35)" : "transparent",
+      secondaryK: r.held ? "Yours to collect" : "To holders, of a trade", secondaryV: r.held ? OWED : "{{rewards_pct}}", secondaryInk: r.held ? "var(--ok)" : "var(--fg)" }));
+    const heldRows = rows.filter((r) => r.held), restRows = rows.filter((r) => !r.held);
+    const seg = (list, key, prop) => list.map((label) => ({ label, run: () => this.setState({ [prop]: label === "On the curve" ? "Curve" : label }), bg: (s[prop] === label || (label === "On the curve" && s[prop] === "Curve")) ? "var(--raised)" : "transparent", ink: (s[prop] === label || (label === "On the curve" && s[prop] === "Curve")) ? "var(--fg)" : "var(--mut)" }));
+
+    // ---- $PAYD state
+    const hookS = redirected ? 3 : 1;
+    const yoursFig = connected ? (zero ? "0.0000 ETH" : "—") : "—";
+    const yoursNote = !connected ? "connect, or type an address, to see what it is owed here" : zero ? "no trade yet — the first epoch has nothing to buy" : below ? "below the automatic delivery floor — collect it yourself, or let it keep adding up" : redirected ? "still claimable — what the payout already bought is yours" : unknownMode ? "this build cannot read this payout's shares" : "read from the published root · stocks, not ETH";
+    const collectDisabled = !connected || wrongNet || unknownMode || zero;
+    const collectLabel = wrongNet ? "Switch to Robinhood Chain" : !connected ? "Connect to collect" : zero ? "Nothing to collect yet" : unknownMode ? "No claim under this mode" : "Collect now";
+
+    // ---- launch
+    const oneShot = shape === "one";
+    const LISTED = [["NVDA", 3000], ["AAPL", 3000], ["TSLA", 10000], ["QQQ", 3000], ["GLD", 3000], ["USO", 10000], ["AMZN", 3000], ["GOOGL", 3000], ["GME", 10000], ["SPCX", 10000], ["META", 3000], ["MSFT", 3000]];
+    const listed = LISTED.map(([sym, fee]) => { const on = s.picks.includes(sym); return { sym, tier: (fee / 10000).toFixed(2) + " %", on, bg: on ? "var(--raised)" : "var(--bg)", ink: on ? "var(--fg)" : "var(--mut)", ring: on ? "var(--okring)" : "transparent",
+      toggle: () => this.setState({ picks: on ? s.picks.filter((x) => x !== sym) : [...s.picks, sym] }) }; });
+    const MODES = [
+      ["distribution", "Distribution", "default", "The fees buy a basket of stocks; every holder's share is theirs to collect."],
+      ["tontine", "Tontine", "", "Same, plus part of the token burnt or locked as liquidity; the rest shared between the holders who stayed."],
+      ["backing", "Backing", "", "The pot stays in the contract: burn your tokens to take your share."],
+      ["lottery", "Lottery", "", "Each draw pays one holder, from a public randomness beacon nobody here controls."],
+      ["portfolio", "Portfolio", "", "The fees become dollars and each holder picks their own stocks."],
+    ];
+    const modes = MODES.map(([id, name, tag, line]) => { const on = s.mode === id; return { id, name, tag, line, on, bg: on ? "var(--raised)" : "var(--bg)", ink: on ? "var(--ok)" : "var(--fg)", ring: on ? "var(--okring)" : "transparent", pick: () => this.setState({ mode: id }) }; });
+    const modeTontine = s.mode === "tontine", modeLottery = s.mode === "lottery";
+    const createCall = s.mode === "distribution" ? "Payd.createVault" : "Payd.createVaultWith";
+    const n = s.picks.length;
+    const bpsEach = n ? Math.floor(10000 / n) : 0;
+    const picked = s.picks.map((sym, i) => { const bps = i === 0 ? 10000 - bpsEach * (n - 1) : bpsEach; return { sym, pct: (bps / 100).toFixed(2) + " %", num: bps / 100, w: bps / 100 + "%" }; });
+    const basketOk = n >= 2 && n <= 8;
+    const holders = 70;
+    const nameOk = s.name.trim().length > 0 && s.ticker.trim().length > 0;
+    const DEF = [
+      { k: "Holders' share of what the token collects", v: "70 %", kind: "range", num: 70, min: 50, max: 90, unit: "%", note: "At least 50 % by contract, and you can raise it later but never lower it. The rest is yours, less the platform's fixed share, which is stamped at birth and read from the registry." },
+      { k: "Epoch length", v: "30 minutes", kind: "number", num: 30, min: 30, max: 1440, step: 30, unit: "minutes · 48 buys a day", note: "How often the snapshot closes and the whole basket is bought. 30 minutes to 24 hours." },
+      { k: "Launch currency", v: "native ETH", kind: "select", note: "Written in for good. Pons keeps one fee ledger per currency; bind refuses a launch quoted in any other. Step 2 fills Pons's field from this by itself." },
+      { k: "Your creator tax", v: "3 %", kind: "number", num: 3, min: 0, max: 10, step: 0.25, unit: "% on top of the curve fee", note: "It is what funds the payout. Pons applies it to every trade." },
+      { k: "Your first buy", v: "none", kind: "number", num: 0, min: 0, max: 1000, step: 0.001, unit: "ETH", note: "Bought in the same transaction as the launch; you are the only address exempt from the 3-second snipe tax. Native-ETH launches only." },
+      { k: "Logo", v: "none", kind: "text", placeholder: "ipfs://bafk… or https://…", note: "Stored on the token forever — there is no setter to fix it later. Pons's own uploader only works from their site; the handoff table covers that path." },
+      { k: "Links", v: "your Payd page", kind: "links", note: "Website is filled with your token's own page on Payd — where a holder reaches what they are owed. Type your own site over it if you have one." },
+      { k: "Intended token", v: "any you deploy", kind: "text", placeholder: "0x… leave empty to accept any", note: "Pins the address this launch will accept at bind time. Left empty, it binds to whichever token names it and was deployed by you." },
+    ];
+    const defaults = DEF.map((d, i) => ({ ...d, open: s.openDefault === i, action: s.openDefault === i ? "close" : "change", vInk: "var(--fg)",
+      isNumber: d.kind === "number" || d.kind === "range", isRange: d.kind === "range", isSelect: d.kind === "select", isText: d.kind === "text", isLegs: d.kind === "legs", isLinks: d.kind === "links",
+      step: d.step ?? 1, toggle: () => this.setState({ openDefault: s.openDefault === i ? null : i }) }));
+    const stage = oneShot ? 1 : s.stage;
+    const STEPS = [
+      { tag: "01", who: "you", label: "Prepare the payout", n: "Nothing is launched. You become its LAUNCHER.", call: createCall },
+      { tag: "02", who: "you", label: "Launch on Pons", n: "Built here, so the three checked fields cannot be mistyped.", call: "PonsV2.launchToken" },
+      { tag: "03", who: "anyone", label: "Point the fees at it", n: "Open to all: the destination is written in the launch, not in the caller.", call: "FeeVault.bind" },
+    ].map((x, i) => ({ ...x, ring: i + 1 === stage ? "var(--okring)" : "transparent", tagInk: i + 1 < stage ? "var(--ok)" : i + 1 === stage ? "var(--ok)" : "var(--dim)", opacity: i + 1 > stage ? .55 : 1, tag: i + 1 < stage ? x.tag + " · done" : x.tag }));
+    const checks = [
+      { ok: basketOk, label: n < 2 ? "pick 2 to 8 stocks" : `${n} stocks, each at least 10 %, adding up to 100 %` },
+      { ok: true, label: "holders' share between 50 % and what the platform leaves" },
+      { ok: true, label: "epoch between 30 minutes and 24 hours" },
+      { ok: nameOk, label: nameOk ? `name and ticker: ${s.name.trim()} · ${s.ticker.trim().toUpperCase()}` : "a name and a ticker" },
+    ].map((c) => ({ ...c, mark: c.ok ? "✓" : "·", ink: c.ok ? "var(--ok)" : "var(--dim)" }));
+    const ready = basketOk && (oneShot ? nameOk : true);
+    let ctaLabel, ctaDisabled = false, ctaRun = () => {};
+    if (!connected) { ctaLabel = "Connect a wallet"; ctaRun = set({ menuOpen: true }); }
+    else if (wrongNet) ctaLabel = "Switch to Robinhood Chain";
+    else if (oneShot) { ctaLabel = ready ? "Create, launch and bind — one signature" : nameOk ? "Fix the basket" : "Name the token"; ctaDisabled = !ready; }
+    else if (stage === 1) { ctaLabel = ready ? "Prepare the payout" : "Fix the basket"; ctaDisabled = !ready; ctaRun = set({ stage: 2 }); }
+    else if (stage === 2) { ctaLabel = nameOk ? "Launch on Pons" : "Name the token first"; ctaDisabled = !nameOk; ctaRun = set({ stage: 3 }); }
+    else { ctaLabel = "Bind"; ctaRun = set({ stage: 1 }); }
+    const ctaNote = !connected ? "Nothing here needs a wallet until you sign. Everything on this page can be filled first." : wrongNet ? "Every field is kept; only the signature waits for the network." : oneShot ? "One transaction. Either all three land or none of them do — and if none do, no launch fee is spent." : stage === 1 ? "One transaction, and it launches nothing. You become the payout's LAUNCHER — step 3 checks the token's Pons deployer against it." : stage === 2 ? "Your second signature. The launch fee goes to Pons; a first buy rides in the same transaction." : "Anyone may send it: it costs gas and nothing else, and a refusal names the condition that gave way.";
+    const titles = { stats: "Protocol stats", treasury: "Treasury", docs: "Docs" };
+    const otherNotes = { stats: "The root everything derives from, named in one line, then five figures and the basket table. Same card grammar as the rest; hidden entirely for a launch without a distribution root.", treasury: "Four pockets as four cards, each with its balance and what it is for.", docs: "Table of contents left, §1 The cycle right. On a phone the contents become a chip row under the header." };
+    const hasRail = v !== "create" && v !== "docs";
+    const tab = (x) => v === x ? "var(--fg)" : "var(--dim)";
+    const line = (x) => v === x ? "inset 0 -2px 0 var(--ok)" : "none";
+    return {
+      theme, maxW: p.phone ? "390px" : "74rem",
+      isIndex: v === "index", isApp: v === "app", isStats: v === "stats", isTreasury: v === "treasury", isCreate: v === "create", isDocs: v === "docs",
+      isOther: !!titles[v], otherTitle: titles[v] || "", otherNote: otherNotes[v] || "",
+      goIndex: go("index"), goApp: go("app"), goAppSheet: go("app"), goStats: go("stats"), goTreasury: go("treasury"), goCreate: go("create"), goDocs: go("docs"),
+      tabIndex: tab("index"), tabApp: tab("app"), tabStats: tab("stats"), tabTreasury: tab("treasury"), tabCreate: tab("create"), tabDocs: tab("docs"),
+      tabIndexLine: line("index"), tabAppLine: line("app"), tabStatsLine: line("stats"), tabTreasuryLine: line("treasury"), tabCreateLine: line("create"), tabDocsLine: line("docs"),
+      hasRail, frameCols: hasRail ? "19rem minmax(0, 1fr)" : "minmax(0, 1fr)", chipName: v === "app" ? "PAYD" : "All tokens",
+      connected, notConnected: !connected, wrongNet, partial, notPartial: !partial, unknownMode, knownMode: !unknownMode,
+      netDot: wrongNet ? "var(--bad)" : "var(--ok)",
+      connectLabel: connected ? (wrongNet ? "0x8d21…44af · wrong network" : "0x8d21…44af") : "Connect",
+      menuOpen, toggleMenu: () => this.setState({ menuOpen: !menuOpen, menuClosed: menuOpen }), walletRows,
+      showCollectAll: connected && v !== "index",
+      sorts: seg(["Newest", "Paid to holders", "Yours"], "s", "sort"),
+      cardsView: s.list === "cards", tableView: s.list === "table", showCards: set({ list: "cards" }), showTable: set({ list: "table" }),
+      cardsBg: s.list === "cards" ? "var(--raised)" : "transparent", cardsInk: s.list === "cards" ? "var(--fg)" : "var(--mut)", tableBg: s.list === "table" ? "var(--raised)" : "transparent", tableInk: s.list === "table" ? "var(--fg)" : "var(--mut)",
+      onlyYours: s.onlyYours, onlyLive: s.onlyLive, toggleYours: set({ onlyYours: !s.onlyYours }), toggleLive: set({ onlyLive: !s.onlyLive }), cardRows,
+      yoursHead: connected ? "Yours" : "Yours · connect to see", tableRows, heldRows, restRows,
+      hookSq: STATUS[hookS][2], hookInk: STATUS[hookS][1], hookLabel: STATUS[hookS][0], hookNote: redirected ? "— the fees no longer come here. What the payout already holds stays claimable, and this page keeps reading the live recipient." : "— creator fees from Pons arrive here, are turned into the basket every epoch, and split between holders.",
+      collectRing: connected && !zero && !unknownMode ? "var(--okring)" : "transparent",
+      yoursAcct: connected ? "0x8d21…44af" : "", yoursFig, yoursInk: connected && !zero ? "var(--ok)" : "var(--mut)", yoursNote,
+      collectDisabled, collectLabel, collectBg: collectDisabled ? "var(--raised)" : "var(--ok)", collectInk: collectDisabled ? "var(--dim)" : "var(--on)",
+      zeroInk: zero ? "var(--mut)" : "var(--fg)", reserveFig: zero ? "0.0000 ETH" : "—", reserveNote: zero ? "no trade yet" : "waiting to be spent on stocks", handedFig: zero ? "0.0000 ETH" : "—", harvestFig: zero ? "0.0000 ETH" : "—",
+      basket: ["QQQ", "NVDA", "GLD", "SPCX", "TSLA"].map((sym) => ({ sym, pct: "20.00 %", w: "20%" })),
+      stocksHint: below ? "below the delivery floor — yours to collect any time" : "settled through the last published root",
+      cellRing: below ? "var(--okring)" : "transparent", cellChecked: true, cellInk: zero ? "var(--dim)" : "var(--ok)", cellFig: zero ? "0" : "—", cellNote: zero ? "nothing bought yet" : "in wallet — · earned —",
+      selCount: connected ? "5" : "—",
+      launchIntro: oneShot ? "One signature from this wallet: the payout contracts, the launch on Pons and the bind that points the fees at them go out as one transaction. Three decisions are yours; everything else has a default you can change." : "Three signatures from this wallet, all sent from this page: the payout contracts, the launch on Pons, then the bind that points the fees at them. Until the three are done they hold nothing, so an abandoned attempt costs no one anything.",
+      oneShot, threeShot: !oneShot, steps: STEPS, stage1: stage === 1, stage2: stage === 2, stage3: stage === 3, stageDone1: stage > 1, reopen1: set({ stage: 1 }),
+      name: s.name, ticker: s.ticker, setName: (e) => this.setState({ name: e.target.value }), setTicker: (e) => this.setState({ ticker: e.target.value }),
+      nameShown: s.name.trim() || "—", tickerShown: s.ticker.trim().toUpperCase() || "—",
+      modes, modeTontine, modeLottery, createCall,
+      listed, picked, hasPicks: n > 0, basketSum: n === 0 ? "nothing picked yet" : basketOk ? `${n} picked · 100.00 %` : n < 2 ? `${n} picked · one more at least` : `${n} picked · 8 at most`, basketInk: basketOk ? "var(--ok)" : "var(--dim)",
+      weightsOpen: s.weightsOpen, toggleWeights: set({ weightsOpen: !s.weightsOpen }), weightsLabel: s.weightsOpen ? "Even the split" : "Edit the weights",
+      defaults, holdersPct: holders, creatorPct: 100 - holders - 3,
+      checks, ctaLabel, ctaDisabled, ctaRun, ctaBg: ctaDisabled ? "var(--raised)" : "var(--ok)", ctaInk: ctaDisabled ? "var(--dim)" : "var(--on)", ctaNote,
+      barShown: v === "app" || v === "create", barLabel: v === "app" ? collectLabel : ctaLabel,
+      sheetOpen: s.sheetOpen, toggleSheet: () => this.setState({ sheetOpen: !s.sheetOpen }),
+    };
+  }
+}
+</script>
+</body>
+</html>

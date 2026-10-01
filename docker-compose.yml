@@ -1,0 +1,54 @@
+# Payd keeper.
+#
+#   cp .env.example .env   # then fill in the addresses and the key
+#   docker compose up -d
+#   docker compose logs -f keeper
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# WHAT IS LOST IF YOU CHANGE MACHINE
+#
+#   data/shares-*.json, data/ethcum-*.json   NOTHING. Pure cache, recomputed
+#                                            from the chain. Only cost: a longer
+#                                            first tick.
+#   KEEPER_PRIVATE_KEY                       Replaceable: the timelock rotates
+#                                            the keeper in 48 h. The key NEVER
+#                                            holds funds, only gas.
+#   IPFS pins                                THE ONLY REAL RISK. If IPFS_API_URL
+#                                            points at a local kubo, artifacts
+#                                            die with the machine — and holders
+#                                            can no longer build their proofs.
+#                                            Use a pinning service, not a local
+#                                            node.
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  keeper:
+    build: .
+    image: payd-keeper
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - keeper-data:/app/data
+    # The keeper serves nothing and listens to nothing: it only emits
+    # transactions. No port exposed, and a read-only filesystem apart from its
+    # cache.
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    # One tick replays logs and builds a Merkle tree: bounded, but not free.
+    # These limits hold for a few thousand holders; beyond that, watch memory.
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  keeper-data:

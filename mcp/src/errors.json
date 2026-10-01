@@ -1,0 +1,495 @@
+[
+ {
+  "type": "error",
+  "name": "AlreadyBound",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "AlreadyInitialised",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "AlreadyMigrated",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "BadEpochLength",
+  "inputs": [
+   {
+    "name": "given",
+    "type": "uint256",
+    "internalType": "uint256"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "BadInput",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "BadMode",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "BadModeData",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "BadPayoutRate",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "BadQuote",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "BadSplit",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "BadWeights",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "BatchMismatch",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "BatchTooLarge",
+  "inputs": [
+   {
+    "name": "max",
+    "type": "uint256",
+    "internalType": "uint256"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "BelowMinBuy",
+  "inputs": [
+   {
+    "name": "have",
+    "type": "uint256",
+    "internalType": "uint256"
+   },
+   {
+    "name": "need",
+    "type": "uint256",
+    "internalType": "uint256"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "CoSignerStampFailed",
+  "inputs": [
+   {
+    "name": "vault",
+    "type": "address",
+    "internalType": "address"
+   },
+   {
+    "name": "distributor",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "DuplicateStock",
+  "inputs": [
+   {
+    "name": "stock",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "ECDSAInvalidSignature",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "ECDSAInvalidSignatureLength",
+  "inputs": [
+   {
+    "name": "length",
+    "type": "uint256",
+    "internalType": "uint256"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "ECDSAInvalidSignatureS",
+  "inputs": [
+   {
+    "name": "s",
+    "type": "bytes32",
+    "internalType": "bytes32"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "EmptyRange",
+  "inputs": [
+   {
+    "name": "from",
+    "type": "uint256",
+    "internalType": "uint256"
+   },
+   {
+    "name": "to",
+    "type": "uint256",
+    "internalType": "uint256"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "EpochNotOver",
+  "inputs": [
+   {
+    "name": "endsAt",
+    "type": "uint256",
+    "internalType": "uint256"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "FactoryIsTheDefault",
+  "inputs": [
+   {
+    "name": "factory",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "FactoryNotEnabled",
+  "inputs": [
+   {
+    "name": "factory",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "InvalidProof",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "LengthMismatch",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "MinOutZero",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NoActiveRoot",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NoLiquidityAt",
+  "inputs": [
+   {
+    "name": "token",
+    "type": "address",
+    "internalType": "address"
+   },
+   {
+    "name": "against",
+    "type": "address",
+    "internalType": "address"
+   },
+   {
+    "name": "poolFee",
+    "type": "uint24",
+    "internalType": "uint24"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "NoPool",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotApproved",
+  "inputs": [
+   {
+    "name": "candidate",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "NotAVault",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotBound",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotCoSigned",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotCreator",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotFeeVault",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotGenerationKey",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NothingDelivered",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NothingToDo",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotKeeper",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotOurLaunch",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotOurMode",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "NotTimelock",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "PlatformBpsTooHigh",
+  "inputs": [
+   {
+    "name": "given",
+    "type": "uint256",
+    "internalType": "uint256"
+   },
+   {
+    "name": "cap",
+    "type": "uint256",
+    "internalType": "uint256"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "PoolNotReady",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "QuoteNotAllowed",
+  "inputs": [
+   {
+    "name": "quote",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "QuoteNotSweepable",
+  "inputs": [
+   {
+    "name": "quote",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "Reentrancy",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "RoleCollapse",
+  "inputs": [
+   {
+    "name": "who",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "RouteTooThin",
+  "inputs": [
+   {
+    "name": "quote",
+    "type": "address",
+    "internalType": "address"
+   },
+   {
+    "name": "depth",
+    "type": "uint256",
+    "internalType": "uint256"
+   },
+   {
+    "name": "required",
+    "type": "uint256",
+    "internalType": "uint256"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "StillHooked",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "StockNotAllowed",
+  "inputs": [
+   {
+    "name": "stock",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "TooLittleOut",
+  "inputs": [
+   {
+    "name": "got",
+    "type": "uint256",
+    "internalType": "uint256"
+   },
+   {
+    "name": "floor",
+    "type": "uint256",
+    "internalType": "uint256"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "TransferFailed",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "TwapUnavailable",
+  "inputs": []
+ },
+ {
+  "type": "error",
+  "name": "UnsupportedPair",
+  "inputs": [
+   {
+    "name": "pairToken",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "WrongFeed",
+  "inputs": [
+   {
+    "name": "stock",
+    "type": "address",
+    "internalType": "address"
+   },
+   {
+    "name": "want",
+    "type": "address",
+    "internalType": "address"
+   },
+   {
+    "name": "got",
+    "type": "address",
+    "internalType": "address"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "WrongPoolFee",
+  "inputs": [
+   {
+    "name": "stock",
+    "type": "address",
+    "internalType": "address"
+   },
+   {
+    "name": "want",
+    "type": "uint24",
+    "internalType": "uint24"
+   },
+   {
+    "name": "got",
+    "type": "uint24",
+    "internalType": "uint24"
+   }
+  ]
+ },
+ {
+  "type": "error",
+  "name": "ZeroAddress",
+  "inputs": []
+ }
+]

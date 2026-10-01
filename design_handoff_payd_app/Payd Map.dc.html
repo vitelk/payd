@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  body { margin: 0; background: #14130f; color: #eeebe3; font: 400 14px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #ccff00; text-decoration: none; border-bottom: 1px solid rgba(204,255,0,.28); }
+  a:hover { color: #eeebe3; border-bottom-color: #eeebe3; }
+</style>
+</helmet>
+<div style="max-width: 62rem; margin: 0 auto; padding: 3rem clamp(1.25rem,4vw,3rem) 5rem; display: flex; flex-direction: column; gap: 2.5rem;">
+  <header style="display: flex; flex-direction: column; gap: .75rem;">
+    <div style="font: 500 .6875rem/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .16em; text-transform: uppercase; color: #ccff00;">Payd app · redesign map</div>
+    <h1 style="font: 600 2.25rem/1.05 ui-sans-serif, system-ui, sans-serif; letter-spacing: -.03em; margin: 0;">Six views, one page. What each first screen says, and what moves on a phone.</h1>
+    <p style="color: #97917f; margin: 0; max-width: 40rem; text-wrap: pretty;">The set of views and the URL that opens each are <code style="font-family: ui-monospace, Menlo, monospace; color: #eeebe3;">route.ts</code>'s and are not touched. Everything below is what the visitor sees inside them. Files: <a href="Payd App (today).dc.html">today's app, recreated</a> · <a href="Payd App.dc.html">the redesign, interactive</a>.</p>
+  </header>
+
+  <section style="display: flex; flex-direction: column; gap: .75rem;">
+    <h2 style="font: 600 1.0625rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: -.015em; margin: 0;">1 · The map</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: .75rem;">
+      <div style="background: #191813; border-radius: 14px; padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><b style="font-weight: 600;">Tokens</b><span style="font: .6875rem ui-monospace, Menlo, monospace; color: #6b675c;">/app/ · #index</span></div>
+        <p style="margin: 0; color: #97917f; font-size: .8125rem;"><b style="color: #eeebe3; font-weight: 500;">First screen:</b> your position first — what you are owed across every launch and one button to collect it — then the list, ranked with held rows on top. Each row answers "who gets paid, how much, is it still collecting". Rates stay figures; the explorer columns (creator / platform split, reserve) fold into a row's expansion.</p>
+        <p style="margin: 0; color: #6b675c; font-size: .78125rem;"><b style="color: #97917f; font-weight: 500;">Phone:</b> rail becomes the token chip in the header; rows become two lines (ticker + yours / status + rate); tabs drop to a bottom bar; "Collect everything" pins above it.</p>
+      </div>
+      <div style="background: #191813; border-radius: 14px; padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><b style="font-weight: 600;">$PAYD</b><span style="font: .6875rem ui-monospace, Menlo, monospace; color: #6b675c;">?token=0x… · #app</span></div>
+        <p style="margin: 0; color: #97917f; font-size: .8125rem;"><b style="color: #eeebe3; font-weight: 500;">First screen:</b> the ticker, its live state (collecting / redirected / lost) said in words beside the name, four figures, and the collect button in the first viewport. Simple / Advanced stays. The fee-recipient reading is a sentence with a slot for the bad answer, never a badge that only knows "live".</p>
+        <p style="margin: 0; color: #6b675c; font-size: .78125rem;"><b style="color: #97917f; font-weight: 500;">Phone:</b> KPI row goes 2×2; the collect summary pins to the bottom above the tab bar; "Your stocks" cells go two per row, figure on its own line.</p>
+      </div>
+      <div style="background: #191813; border-radius: 14px; padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><b style="font-weight: 600;">Stats</b><span style="font: .6875rem ui-monospace, Menlo, monospace; color: #6b675c;">#stats · distribution only</span></div>
+        <p style="margin: 0; color: #97917f; font-size: .8125rem;"><b style="color: #eeebe3; font-weight: 500;">First screen:</b> the root everything derives from, named in one line, then five figures and the basket table. Unchanged in structure; restyled to the same card grammar. Hidden by <code style="font-family: ui-monospace, Menlo, monospace;">hasStats</code> for other modes — the tab is absent, not empty.</p>
+        <p style="margin: 0; color: #6b675c; font-size: .78125rem;"><b style="color: #97917f; font-weight: 500;">Phone:</b> five figures become 2+2+1; the table scrolls inside its panel.</p>
+      </div>
+      <div style="background: #191813; border-radius: 14px; padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><b style="font-weight: 600;">Treasury</b><span style="font: .6875rem ui-monospace, Menlo, monospace; color: #6b675c;">?treasury= · #treasury</span></div>
+        <p style="margin: 0; color: #97917f; font-size: .8125rem;"><b style="color: #eeebe3; font-weight: 500;">First screen:</b> four pockets as four cards, each with its balance and one sentence on what it is for. Nothing else above the fold.</p>
+        <p style="margin: 0; color: #6b675c; font-size: .78125rem;"><b style="color: #97917f; font-weight: 500;">Phone:</b> cards stack; addresses wrap at the 0x boundary.</p>
+      </div>
+      <div style="background: #191813; border-radius: 14px; padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .5rem; box-shadow: inset 0 0 0 1px rgba(204,255,0,.22);">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><b style="font-weight: 600;">Launch</b><span style="font: .6875rem ui-monospace, Menlo, monospace; color: #ccff00;">?create · #create</span></div>
+        <p style="margin: 0; color: #97917f; font-size: .8125rem;"><b style="color: #eeebe3; font-weight: 500;">First screen:</b> the token (name, ticker), the basket (pick stocks, evened for you), and the button. Everything else — holders' share, epoch, currency, legs, tax, first buy, logo, links — is a "Set for you" list beside the form, each line with its default and a <i>change</i> that opens that field in place. Nothing is removed; the default path is three decisions.</p>
+        <p style="margin: 0; color: #97917f; font-size: .8125rem;"><b style="color: #eeebe3; font-weight: 500;">Two shapes:</b> one transaction shows one step card and one button. Three signatures shows a step rail; steps 02 and 03 appear as 01 lands, and the handoff table folds under 02.</p>
+        <p style="margin: 0; color: #6b675c; font-size: .78125rem;"><b style="color: #97917f; font-weight: 500;">Phone:</b> the sticky right column ("what a trade will pay" + button) becomes a pinned bottom sheet with the split bar and the CTA; the "Set for you" list moves under the basket.</p>
+      </div>
+      <div style="background: #191813; border-radius: 14px; padding: 1.25rem 1.375rem; display: flex; flex-direction: column; gap: .5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;"><b style="font-weight: 600;">Docs</b><span style="font: .6875rem ui-monospace, Menlo, monospace; color: #6b675c;">#docs</span></div>
+        <p style="margin: 0; color: #97917f; font-size: .8125rem;"><b style="color: #eeebe3; font-weight: 500;">First screen:</b> table of contents left, §1 The cycle right. Unchanged content; no rail.</p>
+        <p style="margin: 0; color: #6b675c; font-size: .78125rem;"><b style="color: #97917f; font-weight: 500;">Phone:</b> the TOC becomes a horizontal chip row that scrolls, pinned under the header.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: .75rem;">
+    <h2 style="font: 600 1.0625rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: -.015em; margin: 0;">Why Tokens, and not $PAYD, for the full view</h2>
+    <p style="margin: 0; color: #97917f; max-width: 40rem; text-wrap: pretty;">Tokens is the screen every non-creator lands on, and it is the one the brief calls a block explorer. $PAYD already had a Simple / Advanced pass (the French mockup's 1c is what shipped); its remaining problem is state language, which the redesign fixes with a shared status sentence rather than a new layout. Tokens is where the layout itself is wrong for the reader.</p>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: .75rem;">
+    <h2 style="font: 600 1.0625rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: -.015em; margin: 0;">2 · The ugly states, one line each</h2>
+    <div style="background: #191813; border-radius: 14px; overflow: hidden;">
+      <table style="width: 100%; border-collapse: collapse; font-size: .8125rem;">
+        <tbody>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 0; color: #eeebe3; font-weight: 500; width: 34%; vertical-align: top;">No wallet connected</td><td style="padding: .85rem 1.375rem; color: #97917f; vertical-align: top;">Everything reads. The "Yours" column says <i>connect to see</i> once, in the header of the column, not in every cell; the address field in the header lets anyone look at a position without connecting.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Two wallet extensions</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">Connect opens a picker listing each by its announced name and icon (EIP-6963); the one-transaction probe waits until one is chosen, so the Launch form never says "your wallet cannot batch" about a wallet that is not yours.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Wrong network</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">A notice strip under the header — reading still works, signing does not — with one button: <i>Switch to Robinhood Chain</i>. Every sign button is replaced by the same words until it is done.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">One panel's read failed</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">That card keeps its label, shows <i>could not read</i> in place of the figure, a one-line reason and a <i>retry</i> link. Neighbours are untouched; nothing covers the view.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Fees redirected away</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">The status beside the name says <i>fees lost</i> in the alarm colour, with the sentence "the fees no longer come here — what it already holds stays claimable"; the collect button stays exactly where it was.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Unknown payout mode</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">The head, the address and the fee split still render (they are FeeVault reads); the payout panel says which mode id the chain answered and that this build cannot show it, with the explorer link. No claim table is drawn, so nothing reads as "you are owed nothing".</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Owed, below the push threshold</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">The "Yours right now" card carries the figure in lime and the note <i>below the automatic delivery floor — collect it yourself, or let it keep adding up</i>; the button reads <i>Collect now</i> and is enabled.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Zero volume</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">Zeros are printed as zeros, in the muted ink, with the note <i>no trade yet</i>. The basket and the split still show — they are the launch's promise and exist before any trade.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: .75rem;">
+    <h2 style="font: 600 1.0625rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: -.015em; margin: 0;">3 · What was cut, and where it went</h2>
+    <div style="background: #191813; border-radius: 14px; overflow: hidden;">
+      <table style="width: 100%; border-collapse: collapse; font-size: .8125rem;">
+        <tbody>
+          <tr><td style="padding: .85rem 1.375rem; color: #eeebe3; font-weight: 500; width: 34%; vertical-align: top;">Launch · holders' share, epoch, currency, legs, tax, first buy, logo, links as open boxes</td><td style="padding: .85rem 1.375rem; color: #97917f; vertical-align: top;">Into the "Set for you" list with defaults (70 %, 30 min, native ETH, none, 3 %, none, —, your Payd page). Each line opens its own field in place. Same ids, same inputs.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Launch · "Intended token" box</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">Same list, last line, off by default — it exists for the creator who launches on Pons's own site.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Launch · the handoff table</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">Folded under step 02 in the three-signature shape only, titled "launching on Pons's site instead?". Absent in one-transaction, where there is nothing to copy.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Tokens · "Creator / platform" and "Waiting to buy" columns</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">Into the row's expansion (one click on the row), with the mode sentence and the redirect date that used to ride on a tooltip.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Tokens · the footnote paragraph on how "Collect everything" settles</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">One line under the position card, shown only while there is something to collect.</td></tr>
+          <tr><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #eeebe3; font-weight: 500; vertical-align: top;">Header · the "check an address" field</td><td style="padding: .85rem 1.375rem; border-top: 1px solid #211f1a; color: #97917f; vertical-align: top;">Kept, but as the second entry of the Connect menu ("or look at an address") so the header holds one control on a phone. <code style="font-family: ui-monospace, Menlo, monospace;">?address=</code> still fills it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+</x-dc>
+</body>
+</html>

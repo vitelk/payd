@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  :root { --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; --mono: ui-monospace, SFMono-Regular, Menlo, "Cascadia Mono", monospace;
+    --bg:#14130f; --surface:#191813; --raised:#201e18; --fg:#eeebe3; --mut:#97917f; --dim:#6b675c; --hair:#211f1a; --edge:#3a372e; --ok:#ccff00; --warn:#d2a24a; --bad:#e2857a; --on:#14130f; --okring: rgba(204,255,0,.22); --oktint: rgba(204,255,0,.15); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 400 14px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: var(--ok); text-decoration: none; border-bottom: 1px solid var(--okring); }
+  a:hover { color: var(--fg); border-bottom-color: var(--fg); }
+</style>
+</helmet>
+<div style="max-width: 68rem; margin: 0 auto; padding: 3rem clamp(1rem,4vw,3rem) 5rem; display: flex; flex-direction: column; gap: 2.5rem;">
+  <header style="display: flex; flex-direction: column; gap: .75rem;">
+    <div style="font: 500 .6875rem/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ok);">Payd app · Tokens page</div>
+    <h1 style="font: 600 2.25rem/1.05 var(--sans); letter-spacing: -.03em; margin: 0;">One card, three states. Then the grid.</h1>
+    <p style="color: var(--mut); margin: 0; max-width: 40rem; text-wrap: pretty;">Figures the page does not read today are shown as <code style="font-family: var(--mono); color: var(--dim);">{{ phSyntax }}</code> placeholders, listed at the end. The live grid with the Cards / Table toggle is in <a href="Payd App.dc.html">the app</a>, Tokens tab.</p>
+  </header>
+
+  <!-- ============ 1 · the card ============ -->
+  <section style="display: flex; flex-direction: column; gap: .75rem;">
+    <h2 style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.015em; margin: 0;">1 · The card</h2>
+    <p style="color: var(--mut); margin: 0; max-width: 40rem; font-size: .8125rem; text-wrap: pretty;">Logo, ticker, one large number — what this token has actually paid its holders, in dollars — the mode as a tag, a badge only when something is wrong, and what the visitor is owed when a wallet is connected. The headline arrives last and the card paints without it.</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 1rem; align-items: start;">
+      <sc-for list="{{ cards }}" as="c" hint-placeholder-count="3">
+        <div style="display: flex; flex-direction: column; gap: .6rem;">
+          <span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">{{ c.state }}</span>
+          <article data-screen-label="{{ c.state }}" style="border-radius: 14px; background: var(--surface); padding: 1.125rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: .875rem; container-type: inline-size; box-shadow: inset 0 0 0 1px {{ c.ring }};">
+            <div style="display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;">
+              <span style="width: 40px; height: 40px; border-radius: 10px; background: var(--raised); display: flex; align-items: center; justify-content: center; font: 600 .75rem var(--sans); letter-spacing: -.01em; color: var(--ok); flex-shrink: 0;">{{ c.fallback }}</span>
+              <div style="display: flex; flex-direction: column; gap: .15rem; min-width: 0; flex: 1 1 8rem;">
+                <div style="display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap;"><span style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.02em;">{{ c.sym }}</span><span style="font: .625rem var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--dim);">{{ c.mode }}</span></div>
+                <span style="font: .75rem var(--mono); color: var(--dim);">{{ c.age }}</span>
+              </div>
+              <sc-if value="{{ c.bad }}" hint-placeholder-val="{{ false }}">
+                <span style="display: inline-flex; align-items: center; gap: .4rem; font: 500 .625rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; padding: .36rem .5rem; border-radius: 6px; background: var(--raised); color: var(--bad); white-space: nowrap;"><span style="width: .45rem; height: .45rem; border-radius: 2px; background: var(--bad);"></span>fees redirected</span>
+              </sc-if>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: .3rem;">
+              <span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Paid to holders</span>
+              <span style="font: 500 clamp(1.25rem, 11cqw, 2rem)/1 var(--mono); letter-spacing: -.03em; overflow-wrap: anywhere; color: {{ c.figInk }};">{{ c.paid }}</span>
+              <span style="font: .75rem var(--mono); color: var(--dim);">{{ c.paidNote }}</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding-top: .75rem; border-top: 1px solid var(--hair);">
+              <span style="font-size: .8125rem; color: var(--mut);">{{ c.secondaryK }}</span>
+              <span style="font: 500 .875rem var(--mono); color: {{ c.secondaryInk }};">{{ c.secondaryV }}</span>
+            </div>
+            <sc-if value="{{ c.bad }}" hint-placeholder-val="{{ false }}">
+              <p style="margin: 0; font-size: .78125rem; color: var(--mut); text-wrap: pretty;">The fees no longer come here. What the payout already holds stays claimable; the page reads the live recipient every time.</p>
+            </sc-if>
+          </article>
+          <p style="margin: 0; font-size: .78125rem; color: var(--dim); text-wrap: pretty;">{{ c.why }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ 2 · the grid ============ -->
+  <section style="display: flex; flex-direction: column; gap: .75rem;">
+    <h2 style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.015em; margin: 0;">2 · The grid</h2>
+    <p style="color: var(--mut); margin: 0; max-width: 40rem; font-size: .8125rem; text-wrap: pretty;">Newest first. "Launch a token" is the first cell. One toggle brings back the six-column table, markup untouched. Live and interactive in the app; this is the static frame.</p>
+    <div style="display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;">
+      <div style="display: flex; gap: .2rem; padding: .2rem; border-radius: 10px; background: var(--surface);">
+        <button type="button" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; background: var(--raised); color: var(--fg); cursor: pointer;">Cards</button>
+        <button type="button" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; background: transparent; color: var(--mut); cursor: pointer;">Table</button>
+      </div>
+      <label style="display: inline-flex; align-items: center; gap: .45rem; font: 500 .78125rem var(--sans); color: var(--mut); padding: .35rem .6rem; border-radius: 10px; background: var(--surface); min-height: 32px;"><input type="checkbox" style="margin: 0; accent-color: var(--ok);"> Yours</label>
+      <label style="display: inline-flex; align-items: center; gap: .45rem; font: 500 .78125rem var(--sans); color: var(--mut); padding: .35rem .6rem; border-radius: 10px; background: var(--surface); min-height: 32px;"><input type="checkbox" checked style="margin: 0; accent-color: var(--ok);"> Live only</label>
+      <span style="flex: 1;"></span>
+      <span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Sort</span>
+      <div style="display: flex; gap: .2rem; padding: .2rem; border-radius: 10px; background: var(--surface);">
+        <button type="button" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; background: var(--raised); color: var(--fg); cursor: pointer;">Newest</button>
+        <button type="button" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; background: transparent; color: var(--mut); cursor: pointer;">Paid to holders</button>
+        <button type="button" style="font: 500 .78125rem/1 var(--sans); padding: .5rem .75rem; min-height: 32px; border: 0; border-radius: 8px; background: transparent; color: var(--mut); cursor: pointer;">Yours</button>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: .75rem;">
+      <a href="Payd App.dc.html" data-screen-label="Launch a token cell" style="border-radius: 14px; background: var(--surface); padding: 1.125rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: .875rem; container-type: inline-size; box-shadow: inset 0 0 0 1px var(--okring); color: var(--fg); border-bottom: 0; min-height: 13rem;">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: var(--ok); color: var(--on); display: flex; align-items: center; justify-content: center; font: 500 1.5rem/1 var(--sans);">+</span>
+        <span style="font: 600 1.0625rem/1.2 var(--sans); letter-spacing: -.02em;">Launch a token</span>
+        <span style="font-size: .8125rem; color: var(--mut); text-wrap: pretty; flex: 1;">Pons launches it. Payd pays your holders in tokenised stock, from the first trade. One signature with a wallet that batches, three otherwise.</span>
+        <span style="display: inline-flex; align-self: flex-start; align-items: center; padding: .55rem .9rem; min-height: 40px; border-radius: 10px; background: var(--ok); color: var(--on); font: 600 .8125rem var(--sans);">Start</span>
+      </a>
+      <sc-for list="{{ grid }}" as="c" hint-placeholder-count="7">
+        <article style="border-radius: 14px; background: var(--surface); padding: 1.125rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: .875rem; container-type: inline-size; opacity: {{ c.opacity }};">
+          <div style="display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;">
+            <span style="width: 40px; height: 40px; border-radius: 10px; background: var(--raised); display: flex; align-items: center; justify-content: center; font: 600 .75rem var(--sans); color: var(--ok); flex-shrink: 0;">{{ c.fallback }}</span>
+            <div style="display: flex; flex-direction: column; gap: .15rem; min-width: 0; flex: 1 1 8rem;">
+              <div style="display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap;"><span style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.02em;">{{ c.sym }}</span><span style="font: .625rem var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--dim);">{{ c.mode }}</span></div>
+              <span style="font: .75rem var(--mono); color: var(--dim);">{{ c.age }}</span>
+            </div>
+            <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}">
+              <span style="font: 500 .625rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; padding: .36rem .5rem; border-radius: 6px; background: var(--raised); color: {{ c.badgeInk }}; white-space: nowrap;">{{ c.badge }}</span>
+            </sc-if>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: .3rem;">
+            <span style="font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim);">Paid to holders</span>
+            <span style="font: 500 clamp(1.25rem, 11cqw, 2rem)/1 var(--mono); letter-spacing: -.03em; overflow-wrap: anywhere; color: {{ c.figInk }};">{{ c.paid }}</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding-top: .75rem; border-top: 1px solid var(--hair);">
+            <span style="font-size: .8125rem; color: var(--mut);">{{ c.secondaryK }}</span>
+            <span style="font: 500 .875rem var(--mono); color: {{ c.secondaryInk }};">{{ c.secondaryV }}</span>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <p style="margin: 0; font-size: .78125rem; color: var(--dim); text-wrap: pretty;">Empty registry: the grid shows the "Launch a token" cell alone, with the line <i>no launch yet — yours would be the first</i>. A launch whose economics did not answer keeps its card with the headline slot reading <i>could not read · retry</i>. A logo that fails to load falls back to the ticker in the accent colour, as every card above does.</p>
+  </section>
+
+  <!-- ============ 3 · reads ============ -->
+  <section style="display: flex; flex-direction: column; gap: .75rem;">
+    <h2 style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.015em; margin: 0;">3 · Reads the card needs that the page does not make today</h2>
+    <div style="background: var(--surface); border-radius: 14px; overflow: hidden;">
+      <table style="width: 100%; border-collapse: collapse; font-size: .8125rem;">
+        <thead><tr>
+          <th style="text-align: left; font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); padding: .75rem 1.375rem .8rem;">Read</th>
+          <th style="text-align: left; font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); padding: .75rem 1.375rem .8rem;">Feeds</th>
+          <th style="text-align: right; font: 500 .6875rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); padding: .75rem 1.375rem .8rem; white-space: nowrap;">Cost per card</th>
+        </tr></thead>
+        <tbody>
+          <sc-for list="{{ reads }}" as="r" hint-placeholder-count="5">
+            <tr>
+              <td style="padding: .85rem 1.375rem; border-top: 1px solid var(--hair); font-family: var(--mono); color: var(--fg); vertical-align: top;">{{ r.call }}</td>
+              <td style="padding: .85rem 1.375rem; border-top: 1px solid var(--hair); color: var(--mut); vertical-align: top;">{{ r.feeds }}</td>
+              <td style="padding: .85rem 1.375rem; border-top: 1px solid var(--hair); font-family: var(--mono); color: var(--mut); text-align: right; white-space: nowrap; vertical-align: top;">{{ r.cost }}</td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin: 0; font-size: .78125rem; color: var(--dim); text-wrap: pretty;">All in the same multicall tick as the six reads the index already makes, so the round-trip count stays at two whatever the length of the list. The card paints from round one (ticker, mode, status, age) and fills the headline from round two.</p>
+  </section>
+
+  <!-- ============ 4 · placeholders ============ -->
+  <section style="display: flex; flex-direction: column; gap: .75rem;">
+    <h2 style="font: 600 1.0625rem/1 var(--sans); letter-spacing: -.015em; margin: 0;">4 · Placeholders</h2>
+    <div style="background: var(--surface); border-radius: 14px; overflow: hidden;">
+      <table style="width: 100%; border-collapse: collapse; font-size: .8125rem;">
+        <tbody>
+          <sc-for list="{{ placeholders }}" as="p" hint-placeholder-count="4">
+            <tr>
+              <td style="padding: .85rem 1.375rem; border-top: 1px solid var(--hair); font-family: var(--mono); color: var(--fg); white-space: nowrap; vertical-align: top; width: 1%;">{{ p.key }}</td>
+              <td style="padding: .85rem 1.375rem; border-top: 1px solid var(--hair); color: var(--mut); vertical-align: top;">{{ p.what }}</td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin: 0; font-size: .78125rem; color: var(--dim); text-wrap: pretty;">Wanted and not readable from the chain alone: nothing else. No market cap, no 24 h volume, no holder count — none is read today and none goes on the card.</p>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const PAID = "${{paid_usd}}", AGE = "{{age}} ago", OWED = "{{owed_usd}}";
+    const cards = [
+      { state: "Healthy · wallet connected", ring: "transparent", fallback: "PAYD", sym: "PAYD", mode: "distribution", age: AGE, bad: false, paid: PAID, figInk: "var(--fg)", paidNote: "in tokenised stock, since launch", secondaryK: "Yours to collect", secondaryV: OWED, secondaryInk: "var(--ok)", why: "One number large. The mode is a tag, not a column; the rate a holder gets per trade lives on the token's page." },
+      { state: "Fees redirected", ring: "rgba(226,133,122,.35)", fallback: "ORB", sym: "ORBIT", mode: "distribution", age: AGE, bad: true, paid: PAID, figInk: "var(--mut)", paidNote: "delivered before the redirect", secondaryK: "Yours to collect", secondaryV: OWED, secondaryInk: "var(--ok)", why: "Kept in the grid, said in the alarm colour, and the visitor's claim stays where it was. The card is honest, not hidden." },
+      { state: "No wallet connected", ring: "transparent", fallback: "PAYD", sym: "PAYD", mode: "distribution", age: AGE, bad: false, paid: PAID, figInk: "var(--fg)", paidNote: "in tokenised stock, since launch", secondaryK: "To holders, of a trade", secondaryV: "{{rewards_pct}}", secondaryInk: "var(--fg)", why: "The one secondary line switches to the rate: with nobody connected there is no position to show, and the card should not say so in every cell." },
+    ];
+    const raw = [["PAYD", "", 1, true], ["VOLT", "", 1, true], ["MESA", "", 0, false], ["KIRN", "", 2, true], ["ORBIT", "", 3, false], ["PALLAS", "tontine", 1, false], ["DRIFT", "backing", 1, false], ["SOL8", "lottery", 1, false]];
+    const BADGE = { 0: ["not launched", "var(--dim)"], 2: ["redirect scheduled", "var(--warn)"], 3: ["fees redirected", "var(--bad)"] };
+    const grid = raw.map(([sym, mode, s, held]) => ({ sym, mode: mode || "distribution", fallback: sym.slice(0, 4), age: s === 0 ? "on the curve" : AGE, badge: BADGE[s] ? BADGE[s][0] : "", badgeInk: BADGE[s] ? BADGE[s][1] : "", paid: s === 0 ? "—" : PAID, figInk: s === 3 ? "var(--mut)" : "var(--fg)", opacity: s === 0 ? .6 : 1,
+      secondaryK: held ? "Yours to collect" : "To holders, of a trade", secondaryV: held ? OWED : "{{rewards_pct}}", secondaryInk: held ? "var(--ok)" : "var(--fg)" }));
+    const reads = [
+      { call: "Token.logo()", feeds: "the 40 px image — an IPFS URI written at launch, no setter; fetched through the same gateway list as the epoch data, ticker fallback on failure", cost: "1 call" },
+      { call: "Distributor.totalDistributed(stock)", feeds: "the headline: what has left the contract, per stock, summed over the basket", cost: "1 per stock · ≤ 8" },
+      { call: "Distributor.totalFunded(stock)", feeds: "the bar under the headline on the token's own page (delivered ÷ bought); optional on the card", cost: "1 per stock · ≤ 8" },
+      { call: "metrics.ts pricing of each stock", feeds: "converts the stock amounts to dollars the way the shop window already does", cost: "shared, cached" },
+      { call: "VaultCreated log block → timestamp", feeds: "the age line and the Newest sort; the registry's creation log is already scanned for the allowlist", cost: "1 per launch, cached" },
+      { call: "Distributor claimable for the viewer", feeds: "Yours to collect — today read only on the token's page, from the published root artifact", cost: "1 artifact per held launch" },
+    ];
+    const placeholders = [
+      { key: "{{paid_usd}}", what: "dollars of equities delivered to holders since launch — Σ totalDistributed(stock) × price; the headline" },
+      { key: "{{owed_usd}}", what: "what the connected address can collect on this launch, priced; from the launch's published root" },
+      { key: "{{rewards_pct}}", what: "share of a trade paid to holders — economics().rewardsOfVolumeBps, read today, shown on the no-wallet card" },
+      { key: "{{age}}", what: "time since the launch's VaultCreated block — '2 h', '6 d'; also the default sort key" },
+    ];
+    return { cards, grid, reads, placeholders, phSyntax: "{{…}}" };
+  }
+}
+</script>
+</body>
+</html>
